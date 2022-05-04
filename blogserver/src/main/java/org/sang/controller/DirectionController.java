@@ -9,6 +9,7 @@ package org.sang.controller;
         import org.springframework.web.bind.annotation.RequestMethod;
         import org.springframework.web.bind.annotation.RestController;
 
+        import javax.swing.plaf.synth.SynthEditorPaneUI;
         import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class DirectionController {
         if ("".equals(direction.getDirectionName()) || direction.getDirectionName() == null) {
             return new RespBean("error", "请输入栏目名称!");
         }
-
+        System.out.println("get here!");
         int result = directionService.addDirection(direction);
 
         if (result == 1) {
@@ -51,10 +52,6 @@ public class DirectionController {
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public RespBean updateDirection(Direction direction) {
-        System.out.println(1111111);
-        System.out.println(direction);
-        System.out.println(direction.getDirectionName());
-        System.out.println(1111111);
         int i = directionService.updateDirectionById(direction);
         if (i == 1) {
             return new RespBean("success", "修改成功!");

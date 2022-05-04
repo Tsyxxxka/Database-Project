@@ -3,7 +3,11 @@
     <el-header class="cate_mana_header">
       <el-input
         placeholder="请输入研究方向名称"
-        v-model="cateName" style="width: 200px;">
+        v-model="directionName" style="width: 200px;">
+      </el-input>
+      <el-input
+        placeholder="请输入归属研究方向ID"
+        v-model="parentId" style="width: 200px;">
       </el-input>
       <el-button type="primary" size="medium" style="margin-left: 10px" @click="addNewCate">新增研究方向</el-button>
     </el-header>
@@ -62,11 +66,15 @@ export default{
     addNewCate(){
       this.loading = true;
       var _this = this;
-      postRequest('/admin/category/', {cateName: this.cateName}).then(resp=> {
+      console.info(232323)
+      postRequest('/admin/direction/',
+                  {directionName: this.directionName,
+                          parentId: this.parentId}).then(resp=> {
         if (resp.status == 200) {
           var json = resp.data;
           _this.$message({type: json.status, message: json.msg});
-          _this.cateName = '';
+          _this.directionName = '';
+          _this.parentId = '';
           _this.refresh();
         }
         _this.loading = false;
@@ -75,6 +83,11 @@ export default{
           _this.$message({
             type: 'error',
             message: resp.response.data
+          });
+        } else if (resp.response.status == 500) {
+          _this.$message({
+            type: 'error',
+            message: '添加失败，请检查归属方向ID是否正确！'
           });
         }
         _this.loading = false;
@@ -138,7 +151,7 @@ export default{
     },
     handleDelete(index, row){
       let _this = this;
-      this.$confirm('确认删除 ' + row.cateName + ' ?', '提示', {
+      this.$confirm('确认删除 ' + row.directionName + ' ?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -153,7 +166,7 @@ export default{
       var _this = this;
       this.loading = true;
       //删除
-      deleteRequest("/admin/category/" + ids).then(resp=> {
+      deleteRequest("/admin/direction/" + ids).then(resp=> {
         var json = resp.data;
         _this.$message({
           type: json.status,
@@ -170,16 +183,16 @@ export default{
         } else if (resp.response.status == 500) {
           _this.$message({
             type: 'error',
-            message: '该栏目下尚有文章，删除失败!'
+            message: '该方向下尚有文章/该方向下尚有方向,删除失败!'
           });
         }
       })
     },
-    refresh(){
+    refresh(){ //list directions
       let _this = this;
       getRequest("/admin/direction/all").then(resp=> {
         _this.categories = resp.data;
-        console.info(resp.data)
+        //console.info(resp.data)
         _this.loading = false;
       }, resp=> {
         if (resp.response.status == 403) {
@@ -198,7 +211,8 @@ export default{
   },
   data(){
     return {
-      cateName: '',
+      directionName: '',
+      parentId: '',
       selItems: [],
       categories: [],
       loading: false

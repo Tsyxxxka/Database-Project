@@ -7,16 +7,15 @@
         SELECT * FROM search_direction
     </select>
     <delete id="deleteDirectionByIds">
-        DELETE FROM category WHERE id IN
+        DELETE FROM search_direction WHERE id IN
         <foreach collection="ids" separator="," open="(" close=")" item="id">
             #{id}
         </foreach>
     </delete>
     <update id="updateDirectionById" parameterType="org.sang.bean.Direction">
-        UPDATE search_direction SET direction_name=#{direction_name} WHERE direction_id=#{direction_id}
-        /*UPDATE search_direction SET direction_name="fx1" WHERE direction_id=1*/
+        UPDATE search_direction SET directionName=#{directionName} WHERE ID=#{id}
     </update>
     <insert id="addDirection" parameterType="org.sang.bean.Direction">
-        INSERT INTO category SET date=#{date},cateName=#{cateName}
+        INSERT INTO search_direction SET directionName=#{directionName},parentID=#{parentId}
     </insert>
 </mapper>

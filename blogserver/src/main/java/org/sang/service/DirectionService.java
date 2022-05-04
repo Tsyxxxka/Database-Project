@@ -26,7 +26,9 @@ public class DirectionService {
     }
 
     public int updateDirectionById(Direction direction) {
+        System.out.println(22222);
         System.out.println(direction);
+        System.out.println(22222);
         return directionMapper.updateDirectionById(direction);
     }
 
