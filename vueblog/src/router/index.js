@@ -8,7 +8,8 @@ import DataCharts from '@/components/DataCharts'
 import PostArticle from '@/components/PostArticle'
 import UserMana from '@/components/UserMana'
 import BlogDetail from '@/components/BlogDetail'
-import SetSearchDirection from "../pages/SetSearchDirection";
+import SetSearchDirection from "../pages/SetSearchDirection"
+import Register from "../pages/Register"
 
 Vue.use(Router)
 
@@ -110,6 +111,18 @@ export default new Router({
           iconCls: 'fa fa-reorder',
           name: '研究方向管理',
           component: SetSearchDirection
+        }
+      ]
+    }, {
+      path: '/home',
+      component: Home,
+      name: '用户注册',
+      children: [
+        {
+          path: '/register',
+          iconCls: 'fa fa-reorder',
+          name: '用户注册',
+          component: Register,
         }
       ]
     },

@@ -53,4 +53,10 @@ public class UserController {
         }
         return new RespBean("error", "开启失败!");
     }
+
+    @RequestMapping(value = "/sendMail",method = RequestMethod.POST)
+    public RespBean sendMail(String email) {
+        System.out.println(email);
+        return new RespBean("success", "!!!!!!!!!");
+    }
 }
