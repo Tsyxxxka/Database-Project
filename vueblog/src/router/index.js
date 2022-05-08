@@ -9,6 +9,7 @@ import PostArticle from '@/components/PostArticle'
 import UserMana from '@/components/UserMana'
 import BlogDetail from '@/components/BlogDetail'
 import SetSearchDirection from "../pages/SetSearchDirection";
+import ThesisList from "../pages/ThesisList";
 
 Vue.use(Router)
 
@@ -110,6 +111,18 @@ export default new Router({
           iconCls: 'fa fa-reorder',
           name: '研究方向管理',
           component: SetSearchDirection
+        }
+      ]
+    },{
+      path: '/home',
+      component: Home,
+      name: '论文列表',
+      children: [
+        {
+          path: '/thesisList',
+          iconCls: 'fa fa-reorder',
+          name: '论文列表',
+          component: ThesisList
         }
       ]
     },

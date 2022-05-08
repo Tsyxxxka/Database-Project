@@ -21,20 +21,21 @@
         WHERE id=#{id}
     </update>
     <select id="getArticleByState" resultType="org.sang.bean.Article">
-        SELECT a.title, a.publishDate, a.editTime, a.author, a.conference, a.link, a.type, u.nickname, d.directionName FROM article a, user u, search_direction d WHERE a.uid=u.id AND a.direction=d.ID
-            <if test="state==2">
-                AND state=#{state}
-            </if>
-            <if test="state==-1">
-                AND state=1
-            </if>
-            <if test="state==0">
-                AND uid=#{uid} AND state=1
-            </if>
-            <if test="keywords!=null">
-                AND title LIKE concat('%',#{keywords},'%')
-            </if>
-        ORDER BY editTime DESC limit #{start},#{count};
+        SELECT a.id,a.`title`,a.`editTime`,a.`pageView`,a.`state`,u.`nickname`,c.`cateName`,a.uid FROM article a,user
+        u,category c WHERE a.`cid`=c.`id` AND a.`uid`=u.`id`
+        <if test="state!=-2">
+            and a.uid=#{uid}
+        </if>
+        <if test="state!=-1 and state!=-2">
+            and a.state=#{state}
+        </if>
+        <if test="state==-2">
+            and a.state=1
+        </if>
+        <if test="keywords!=null">
+            AND title LIKE concat('%',#{keywords},'%')
+        </if>
+        ORDER BY a.editTime DESC limit #{start},#{count};
     </select>
     <select id="getArticleByStateByAdmin" resultType="org.sang.bean.Article">
         SELECT a.id,a.`title`,a.`editTime`,a.`pageView`,a.`state`,u.`nickname`,c.`cateName`,a.uid FROM article a,user
@@ -47,14 +48,11 @@
     <select id="getArticleCountByState" resultType="int">
         SELECT count(*) FROM article
         <where>
-            <if test="state==2">
+            <if test="state!=-1">
                 AND state=#{state}
             </if>
-            <if test="state==-1">
-                AND state=1
-            </if>
-            <if test="state==0">
-                AND uid=#{uid} AND state=1
+            <if test="uid!=null">
+                AND uid=#{uid}
             </if>
             <if test="keywords!=null">
                 AND title LIKE concat('%',#{keywords},'%')
