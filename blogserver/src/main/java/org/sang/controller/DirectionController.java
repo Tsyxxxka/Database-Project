@@ -12,9 +12,6 @@ package org.sang.controller;
         import javax.swing.plaf.synth.SynthEditorPaneUI;
         import java.util.List;
 
-/**
- * 超级管理员专属Controller
- */
 @RestController
 @RequestMapping("/admin/direction")
 public class DirectionController {

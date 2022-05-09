@@ -22,18 +22,33 @@
     </update>
     <select id="getArticleByState" resultType="org.sang.bean.Article">
         SELECT a.title, a.publishDate, a.editTime, a.author, a.conference, a.link, a.type, u.nickname, d.directionName FROM article a, user u, search_direction d WHERE a.uid=u.id AND a.direction=d.ID
-            <if test="state==2">
-                AND state=#{state}
-            </if>
-            <if test="state==-1">
-                AND state=1
-            </if>
-            <if test="state==0">
-                AND uid=#{uid} AND state=1
-            </if>
-            <if test="keywords!=null">
-                AND title LIKE concat('%',#{keywords},'%')
-            </if>
+        <if test="state==2">
+            AND state=#{state}
+        </if>
+        <if test="state==-1">
+            AND state=1
+        </if>
+        <if test="state==0">
+            AND uid=#{uid} AND state=1
+        </if>
+        <if test="keywords!=null">
+            AND title LIKE concat('%',#{keywords},'%')
+        </if>
+        <if test="nickname!=''">
+            AND u.nickname=#{nickname}
+        </if>
+        <if test="author!=''">
+            AND a.author LIKE concat('%',#{author},'%')
+        </if>
+        <if test="type!=null">
+            AND a.type=#{type}
+        </if>
+        <if test="conference!=''">
+            AND a.conference LIKE concat('%',#{conference},'%')
+        </if>
+        <if test="direction!=''">
+            AND d.directionName=#{direction}
+        </if>
         ORDER BY editTime DESC limit #{start},#{count};
     </select>
     <select id="getArticleByStateByAdmin" resultType="org.sang.bean.Article">
@@ -45,21 +60,34 @@
         ORDER BY a.editTime DESC limit #{start},#{count};
     </select>
     <select id="getArticleCountByState" resultType="int">
-        SELECT count(*) FROM article
-        <where>
-            <if test="state==2">
-                AND state=#{state}
-            </if>
-            <if test="state==-1">
-                AND state=1
-            </if>
-            <if test="state==0">
-                AND uid=#{uid} AND state=1
-            </if>
-            <if test="keywords!=null">
-                AND title LIKE concat('%',#{keywords},'%')
-            </if>
-        </where>
+        SELECT count(*) FROM article a, user u, search_direction d WHERE a.uid=u.id AND a.direction=d.ID
+        <if test="state==2">
+            AND state=#{state}
+        </if>
+        <if test="state==-1">
+            AND state=1
+        </if>
+        <if test="state==0">
+            AND uid=#{uid} AND state=1
+        </if>
+        <if test="keywords!=null">
+            AND a.title LIKE concat('%',#{keywords},'%')
+        </if>
+        <if test="nickname!=''">
+            AND u.nickname=#{nickname}
+        </if>
+        <if test="author!=''">
+            AND a.author LIKE concat('%',#{author},'%')
+        </if>
+        <if test="type!=null">
+            AND a.type=#{type}
+        </if>
+        <if test="conference!=''">
+            AND a.conference LIKE concat('%',#{conference},'%')
+        </if>
+        <if test="direction!=''">
+            AND d.directionName=#{direction}
+        </if>
     </select>
     <update id="updateArticleState">
         UPDATE article SET state=#{state} WHERE id IN

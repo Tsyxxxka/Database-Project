@@ -10,6 +10,7 @@ import UserMana from '@/components/UserMana'
 import BlogDetail from '@/components/BlogDetail'
 import SetSearchDirection from "../pages/SetSearchDirection";
 import ThesisList from "../pages/ThesisList";
+import test from "../pages/test";
 
 Vue.use(Router)
 
@@ -85,7 +86,7 @@ export default new Router({
           path: '/cateMana',
           iconCls: 'fa fa-reorder',
           name: '栏目管理',
-          component: CateMana
+          component: test
         }
       ]
     }, {

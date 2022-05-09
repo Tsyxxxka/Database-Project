@@ -90,10 +90,10 @@ public class ArticleService {
         return content;
     }
 
-    public List<Article> getArticleByState(Integer state, Integer page, Integer count,String keywords) {
+    public List<Article> getArticleByState(Integer state, Integer page, Integer count,String keywords,String nickname, Integer type, String author, String conference, String direction) {
         int start = (page - 1) * count;
         Long uid = Util.getCurrentUser().getId();
-        return articleMapper.getArticleByState(state, start, count, uid,keywords);
+        return articleMapper.getArticleByState(state, start, count, uid,keywords,nickname,type,author,conference,direction);
     }
 
 //    public List<Article> getArticleByStateByAdmin(Integer page, Integer count,String keywords) {
@@ -101,8 +101,8 @@ public class ArticleService {
 //        return articleMapper.getArticleByStateByAdmin(start, count,keywords);
 //    }
 
-    public int getArticleCountByState(Integer state, Long uid,String keywords) {
-        return articleMapper.getArticleCountByState(state, uid,keywords);
+    public int getArticleCountByState(Integer state, Long uid,String keywords, String nickname, Integer type, String author, String conference, String direction) {
+        return articleMapper.getArticleCountByState(state, uid,keywords,nickname,type,author,conference,direction);
     }
 
     public int updateArticleState(Long[] aids, Integer state) {

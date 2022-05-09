@@ -5,7 +5,7 @@
         <el-tab-pane label="全部论文" name="all">
           <thesis-table state="-1" :showEdit="false" :showDelete="false" :showRestore="false" :activeName="activeName"></thesis-table>
         </el-tab-pane>
-        <el-tab-pane label="我的论文" name="myAll">
+        <el-tab-pane label="我上传的论文" name="myAll">
           <thesis-table state="0" :showEdit="true" :showDelete="true" :showRestore="false" :activeName="activeName"></thesis-table>
         </el-tab-pane>
         <el-tab-pane label="回收站" name="dustbin">
