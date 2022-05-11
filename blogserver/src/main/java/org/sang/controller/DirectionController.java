@@ -13,7 +13,7 @@ package org.sang.controller;
         import java.util.List;
 
 @RestController
-@RequestMapping("/admin/direction")
+@RequestMapping("/direction")
 public class DirectionController {
     @Autowired
     DirectionService directionService;

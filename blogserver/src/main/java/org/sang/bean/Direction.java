@@ -1,5 +1,5 @@
 package org.sang.bean;
-
+    
 import java.sql.Timestamp;
 
 public class Direction {

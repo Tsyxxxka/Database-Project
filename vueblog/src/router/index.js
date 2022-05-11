@@ -11,6 +11,7 @@ import BlogDetail from '@/components/BlogDetail'
 import SetSearchDirection from "../pages/SetSearchDirection";
 import ThesisList from "../pages/ThesisList";
 import test from "../pages/test";
+import uploadThesis from "../pages/UploadThesis";
 
 Vue.use(Router)
 
@@ -30,20 +31,20 @@ export default new Router({
     }, {
       path: '/home',
       component: Home,
-      name: '文章管理',
+      name: '论文管理',
       iconCls: 'fa fa-file-text-o',
       children: [
         {
-          path: '/articleList',
-          name: '文章列表',
-          component: ArticleList,
+          path: '/thesisList',
+          name: '论文列表',
+          component: ThesisList,
           meta: {
             keepAlive: true
           }
         }, {
-          path: '/postArticle',
-          name: '发表文章',
-          component: PostArticle,
+          path: '/uploadThesis',
+          name: '上传论文',
+          component: uploadThesis,
           meta: {
             keepAlive: false
           }
@@ -114,18 +115,23 @@ export default new Router({
           component: SetSearchDirection
         }
       ]
-    },{
-      path: '/home',
-      component: Home,
-      name: '论文列表',
-      children: [
-        {
-          path: '/thesisList',
-          iconCls: 'fa fa-reorder',
-          name: '论文列表',
-          component: ThesisList
-        }
-      ]
-    },
+    }
   ]
 })
+
+const reSetPermissionList = to => {
+  return new Promise((resolve, reject) => {
+    if (to.path !== '/login' && store.state.permission.permissionList.length === 0) {
+      store
+        .dispatch('permission/getPermissionList')
+        .then(() => {
+          resolve('permCode')
+        })
+        .catch(error => {
+          resolve('permCode')
+        })
+    } else {
+      resolve()
+    }
+  })
+}

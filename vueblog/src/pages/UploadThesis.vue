@@ -1,6 +1,7 @@
 <template>
   <el-container v-loading="loading" class="post-article">
     <el-header class="header">
+      <thesis-search-bar @getSearchForm="getSearchForm"></thesis-search-bar>
       <el-select v-model="article.cid" placeholder="请选择文章栏目" style="width: 150px;">
         <el-option
           v-for="item in categories"
@@ -58,6 +59,7 @@ import {mavonEditor} from 'mavon-editor'
 // 可以通过 mavonEditor.markdownIt 获取解析器markdown-it对象
 import 'mavon-editor/dist/css/index.css'
 import {isNotNullORBlank} from '../utils/utils'
+import thesisSearchBar from "./ThesisSearchBar";
 
 export default {
   mounted: function () {
@@ -88,7 +90,8 @@ export default {
     }
   },
   components: {
-    mavonEditor
+    mavonEditor,
+    thesisSearchBar
   },
   methods: {
     cancelEdit(){
