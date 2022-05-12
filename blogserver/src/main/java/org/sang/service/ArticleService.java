@@ -1,7 +1,9 @@
 package org.sang.service;
 
 import org.sang.bean.Article;
+import org.sang.bean.Direction;
 import org.sang.mapper.ArticleMapper;
+import org.sang.mapper.DirectionMapper;
 import org.sang.mapper.TagsMapper;
 import org.sang.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,24 @@ public class ArticleService {
     ArticleMapper articleMapper;
     @Autowired
     TagsMapper tagsMapper;
+    @Autowired
+    DirectionMapper directionMapper;
 
     public int addNewArticle(Article article) {
+        String directionName = article.getDirectionName();
+        List<Direction> allDirections = directionMapper.getAllDirection();
+        for (Direction d : allDirections) {
+            if (directionName.equals(d.getDirectionName())) {
+                article.setDirection(d.getId());
+                break;
+            }
+        }
+        article.setEditTime(new Timestamp(System.currentTimeMillis()));
+        article.setUid(Util.getCurrentUser().getId());
+        int i = articleMapper.addNewArticle(article);
+        return i;
+    }
+    /*public int addNewArticle(Article article) {
         //处理文章摘要
         if (article.getSummary() == null || "".equals(article.getSummary())) {
             //直接截取
@@ -69,7 +87,7 @@ public class ArticleService {
             }
             return i;
         }
-    }
+    }*/
 
     private int addTagsToArticle(String[] dynamicTags, Long aid) {
         //1.删除该文章目前所有的标签

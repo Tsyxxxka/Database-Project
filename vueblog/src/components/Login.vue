@@ -47,6 +47,7 @@
           _this.loading = false;
           if (resp.status == 200) {
             //成功
+            console.info(resp.data);
             var json = resp.data;
             if (json.status == 'success') {
               _this.$router.replace({path: '/home'});

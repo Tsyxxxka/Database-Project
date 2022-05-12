@@ -2,6 +2,7 @@ package org.sang.controller;
 
 import org.apache.commons.io.IOUtils;
 import org.sang.bean.Article;
+import org.sang.bean.Direction;
 import org.sang.bean.RespBean;
 import org.sang.service.ArticleService;
 import org.sang.utils.Util;
@@ -28,7 +29,7 @@ public class ArticleController {
     @Autowired
     ArticleService articleService;
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/", method = RequestMethod.POST)
     public RespBean addNewArticle(Article article) {
         int result = articleService.addNewArticle(article);
         if (result == 1) {
@@ -36,7 +37,7 @@ public class ArticleController {
         } else {
             return new RespBean("error", article.getState() == 0 ? "文章保存失败!" : "文章发表失败!");
         }
-    }
+    }*/
 
     /**
      * 上传图片
@@ -78,6 +79,13 @@ public class ArticleController {
         map.put("totalCount", totalCount);
         map.put("articles", articles);
         return map;
+    }
+
+    @RequestMapping(value = "/addNew", method = RequestMethod.POST)
+    public RespBean addNewArticle(Article article) {
+        System.out.println(111111);
+        int result = articleService.addNewArticle(article);
+        return new RespBean("error", "上传失败!");
     }
 
     @RequestMapping(value = "/{aid}", method = RequestMethod.GET)

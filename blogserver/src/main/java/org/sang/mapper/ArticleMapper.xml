@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.sang.mapper.ArticleMapper">
     <insert id="addNewArticle" parameterType="org.sang.bean.Article" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO article SET title=#{title},mdContent=#{mdContent},htmlContent=#{htmlContent},summary=#{summary},cid=#{cid},uid=#{uid},publishDate=#{publishDate},state=#{state},editTime=#{editTime}
+        INSERT INTO article SET title=#{title},summary=#{summary},uid=#{uid},editTime=#{editTime},state=1,author=#{author},conference=#{conference},type=#{type},link=#{link},publishDate=#{publishDate},direction=#{direction}
     </insert>
     <update id="pvIncrement" parameterType="Long">
         UPDATE article set pageView=pageView+1 WHERE id=#{aid}
