@@ -76,6 +76,10 @@
           @select="handleSelectDirection"
         ></el-autocomplete>
       </el-form-item>
+<!--      TODO-->
+<!--      <el-form-item v-if="barType!=1" style="margin-left: 100px;">
+        没有所需研究方向？联系管理员（普通用户）或<el-button type="text">添加研究方向</el-button>
+      </el-form-item>-->
       <el-form-item v-if="barType!=1">
         <el-button >
           论文链接

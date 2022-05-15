@@ -49,6 +49,12 @@ export default {
     getNext() {
       if (this.active==0) {
         this.$refs.searchBar.searchClick();
+        for (let k in this.uploadForm) {
+          if (this.uploadForm[k] == '') {
+            this.$message.error('请填上必要信息！');
+            return;
+          }
+        }
       }
       this.active = this.active + 1;
     },
@@ -68,7 +74,8 @@ export default {
       }).then(resp => {
         if (resp.status == 200) {
           //成功
-          console.info(resp.data);
+          this.$message.success('上传成功!');
+          this.$router.push('/thesisList');
           /*var json = resp.data;
           if (json.status == 'success') {
             _this.$router.replace({path: '/home'});
