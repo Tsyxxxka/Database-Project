@@ -3,13 +3,13 @@
     <el-main class="main">
       <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
         <el-tab-pane label="全部论文" name="all">
-          <thesis-table :state=1 :showEdit="false" :showDelete="false" :showRestore="false" :activeName="activeName"></thesis-table>
+          <thesis-table :state=1 :showEdit="false" :showDelete="false" :showRestore="false"></thesis-table>
         </el-tab-pane>
         <el-tab-pane label="我上传的论文" name="myAll">
-          <thesis-table :state=0 :showEdit="true" :showDelete="true" :showRestore="false" :activeName="activeName"></thesis-table>
+          <thesis-table :state=0 :showEdit="true" :showDelete="true" :showRestore="false"></thesis-table>
         </el-tab-pane>
         <el-tab-pane label="回收站" name="dustbin">
-          <thesis-table :state=2 :showEdit="false" :showDelete="true" :showRestore="true" :activeName="activeName"></thesis-table>
+          <thesis-table :state=2 :showEdit="false" :showDelete="true" :showRestore="true"></thesis-table>
         </el-tab-pane>
       </el-tabs>
     </el-main>

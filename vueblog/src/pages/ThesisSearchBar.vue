@@ -52,7 +52,7 @@
           v-model="searchForm.conference" style="width: 400px" >
         </el-input>
       </el-form-item>
-      <el-form-item v-if="barType==0">
+      <el-form-item v-if="barType!=1">
         <el-button>
           发表日期
         </el-button>
@@ -76,7 +76,7 @@
           @select="handleSelectDirection"
         ></el-autocomplete>
       </el-form-item>
-      <el-form-item v-if="barType==0">
+      <el-form-item v-if="barType!=1">
         <el-button >
           论文链接
         </el-button>
@@ -85,7 +85,7 @@
           v-model="searchForm.link" style="width: 400px" >
         </el-input>
       </el-form-item>
-      <el-form-item v-if="barType==0">
+      <el-form-item v-if="barType!=1">
         <el-button style="margin-bottom: 100px;">
           论文摘要
         </el-button>
@@ -96,7 +96,7 @@
           v-model="searchForm.summary" style="width: 400px" >
         </el-input>
       </el-form-item>
-      <el-button type="primary" style="margin-left: 400px" icon="el-icon-search" @click="searchClick" v-if="barType!=0">搜索
+      <el-button type="primary" style="margin-left: 400px" icon="el-icon-search" @click="searchClick" v-if="barType==1">搜索
       </el-button>
     </el-form>
   </div>
@@ -114,8 +114,8 @@ export default {
     },
     barType: {
       type: Number,
-      default: 1,
-    }
+      default: 1, //1:search 0:upload
+    },
   },
   data() {
     return {
@@ -199,7 +199,6 @@ export default {
       this.searchForm.direction = item.value;
     },
     searchClick() {
-      console.info(typeof (this.searchForm.publishDate))
       if (this.searchType == '') {
         this.searchForm.type = '';
       }

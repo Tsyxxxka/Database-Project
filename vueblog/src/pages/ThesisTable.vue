@@ -36,26 +36,26 @@
       <el-table-column
         prop="nickname"
         label="上传用户"
-        width="120" align="left">
+        width="150" align="left">
       </el-table-column>
       <el-table-column
         prop="author"
         label="论文作者"
-        width="120" align="left">
+        width="150" align="left">
       </el-table-column>
       <el-table-column
         prop="conference"
         label="发表会议"
-        width="120" align="left">
+        width="150" align="left">
       </el-table-column>
       <el-table-column
         label="发表日期" width="130" align="left">
-        <template slot-scope="scope">{{ scope.row.publishDate | formatDateTime}}</template>
+        <template slot-scope="scope">{{ scope.row.publishDate.toString().slice(0,10) }}</template>
       </el-table-column>
       <el-table-column
         prop="directionName"
         label="所属研究方向"
-        width="120" align="left">
+        width="150" align="left">
       </el-table-column>
       <el-table-column
         prop="type"
@@ -64,26 +64,18 @@
         :formatter="typeFormatter">
       </el-table-column>
       <el-table-column
-        prop="link"
-        label="论文链接"
-        width="120" align="left">
-      </el-table-column>
-      <el-table-column
         label="最近编辑时间" width="140" align="left">
         <template slot-scope="scope">{{ scope.row.editTime | formatDateTime}}</template>
       </el-table-column>
       <el-table-column label="操作" align="left" v-if="showEdit || showDelete">
         <template slot-scope="scope">
           <el-button
-
             @click="handleEdit(scope.$index, scope.row)" v-if="showEdit">编辑
           </el-button>
-<!--          <el-button
-
-            @click="handleRestore(scope.$index, scope.row)" v-if="showRestore">还原
-          </el-button>-->
           <el-button
-
+            @click="handleRestore(scope.$index, scope.row)" v-if="showRestore">还原
+          </el-button>
+          <el-button
             type="danger"
             @click="handleDelete(scope.$index, scope.row)" v-if="showDelete">删除
           </el-button>
@@ -135,7 +127,21 @@
         dustbinData: [],
       }
     },
-    props: ['state', 'showEdit', 'showDelete', 'activeName', 'showRestore'],
+    props: {
+      state: {
+        type: Number,
+        default: 1
+      },
+      showEdit: {
+        type: Boolean
+      },
+      showDelete: {
+        type: Boolean
+      },
+      showRestore: {
+        type: Boolean
+      }
+    },
     mounted: function () {
       //init the page
       var _this = this;
@@ -154,14 +160,14 @@
         this.loadBlogs(1, this.pageSize);
       },
       itemClick(row){
-        this.$router.push({path: '/blogDetail', query: {aid: row.id}})
+        this.$router.push({path: '/thesisDetail', query: {aid: row.id}})
       },
       deleteMany(){
         var selItems = this.selItems;
         for (var i = 0; i < selItems.length; i++) {
           this.dustbinData.push(selItems[i].id)
         }
-        this.deleteToDustBin(selItems[0].state)
+        this.deleteToDustBin(this.state)
       },
       //翻页
       currentChange(currentPage){
@@ -180,7 +186,6 @@
               "&author=" + this.searchForm.author +
               "&conference=" + this.searchForm.conference +
               "&direction=" + this.searchForm.direction;
-        console.info()
         /*if (this.state == -2) {
           url = "/admin/article/all" + "?page=" + page + "&count=" + count + "&keywords=" + this.keywords;
         } else {
@@ -211,11 +216,11 @@
         this.selItems = val;
       },
       handleEdit(index, row) {
-        this.$router.push({path: '/editBlog', query: {from: this.activeName,id:row.id}});
+        this.$router.push({path: '/editThesis', query: {aid:row.id}});
       },
       handleDelete(index, row) {
         this.dustbinData.push(row.id);
-        this.deleteToDustBin(row.state);
+        this.deleteToDustBin(this.state);
       },
       handleRestore(index, row) {
         let _this = this;
@@ -245,20 +250,21 @@
         });
       },
       deleteToDustBin(state){
-        var _this = this;
+        var _this = this; // 0:myAll  2:dustbin
         this.$confirm(state != 2 ? '将该文件放入回收站，是否继续?' : '永久删除该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           _this.loading = true;
-          var url = '';
+          /*var url = '';
           if (_this.state == -2) {
             url = "/admin/article/dustbin";
           } else {
             url = "/article/dustbin";
-          }
-          putRequest(url, {aids: _this.dustbinData, state: state}).then(resp=> {
+          }*/
+          console.info(typeof(state));
+          putRequest('/article/dustbin', {aids: _this.dustbinData, state: state}).then(resp=> {
             if (resp.status == 200) {
               var data = resp.data;
               _this.$message({type: data.status, message: data.msg});

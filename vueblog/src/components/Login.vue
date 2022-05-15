@@ -33,9 +33,9 @@
       }
     },
     //develop!!!!!!!!!11
-    mounted() {
+/*    mounted() {
       this.submitClick()
-    },
+    },*/
     methods: {
       submitClick: function () {
         var _this = this;

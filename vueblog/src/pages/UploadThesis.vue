@@ -45,7 +45,6 @@ export default {
   methods: {
     getUploadForm(data) {
       this.uploadForm = data;
-      console.info(data);
     },
     getNext() {
       if (this.active==0) {
@@ -57,7 +56,6 @@ export default {
       this.active = this.active - 1;
     },
     uploadThesis() {
-      console.info(typeof(this.uploadForm.publishDate));
       postRequest('/article/addNew', {
         title: this.uploadForm.keywords,
         type: this.uploadForm.type,

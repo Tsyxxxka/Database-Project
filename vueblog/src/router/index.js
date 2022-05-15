@@ -7,16 +7,16 @@ import CateMana from '@/components/CateMana'
 import DataCharts from '@/components/DataCharts'
 import PostArticle from '@/components/PostArticle'
 import UserMana from '@/components/UserMana'
-import BlogDetail from '@/components/BlogDetail'
+import ThesisDetail from "../pages/ThesisDetail";
 import SetSearchDirection from "../pages/SetSearchDirection";
 import ThesisList from "../pages/ThesisList";
 import test from "../pages/test";
 import uploadThesis from "../pages/UploadThesis";
+import ThesisEdit from "../pages/ThesisEdit";
 
 Vue.use(Router)
 
 export default new Router({
-  mode: "history",
   routes: [
     {
       path: '/',
@@ -39,7 +39,7 @@ export default new Router({
           name: '论文列表',
           component: ThesisList,
           meta: {
-            keepAlive: true
+            keepAlive: false
           }
         }, {
           path: '/uploadThesis',
@@ -49,17 +49,17 @@ export default new Router({
             keepAlive: false
           }
         }, {
-          path: '/blogDetail',
-          name: '博客详情',
-          component: BlogDetail,
+          path: '/thesisDetail',
+          name: '论文详情',
+          component: ThesisDetail,
           hidden: true,
           meta: {
             keepAlive: false
           }
         }, {
-          path: '/editBlog',
-          name: '编辑博客',
-          component: PostArticle,
+          path: '/editThesis',
+          name: '编辑论文信息',
+          component: ThesisEdit,
           hidden: true,
           meta: {
             keepAlive: false

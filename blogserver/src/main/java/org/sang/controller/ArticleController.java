@@ -83,9 +83,16 @@ public class ArticleController {
 
     @RequestMapping(value = "/addNew", method = RequestMethod.POST)
     public RespBean addNewArticle(Article article) {
-        System.out.println(111111);
         int result = articleService.addNewArticle(article);
+        //TODO
         return new RespBean("error", "上传失败!");
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public RespBean updateArticle(Article article) {
+        int result = articleService.updateArticle(article);
+        //TODO
+        return new RespBean("error", "haha!");
     }
 
     @RequestMapping(value = "/{aid}", method = RequestMethod.GET)

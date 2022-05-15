@@ -6,27 +6,17 @@
     <insert id="addNewArticle" parameterType="org.sang.bean.Article" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO article SET title=#{title},summary=#{summary},uid=#{uid},editTime=#{editTime},state=1,author=#{author},conference=#{conference},type=#{type},link=#{link},publishDate=#{publishDate},direction=#{direction}
     </insert>
+    <update id="updateArticle" parameterType="org.sang.bean.Article">
+        UPDATE article SET title=#{title},summary=#{summary},author=#{author},conference=#{conference},type=#{type},link=#{link},publishDate=#{publishDate},direction=#{direction}
+        WHERE id=#{id}
+    </update>
     <update id="pvIncrement" parameterType="Long">
         UPDATE article set pageView=pageView+1 WHERE id=#{aid}
     </update>
-    <update id="updateArticle" parameterType="org.sang.bean.Article">
-        UPDATE article SET
-        title=#{title},mdContent=#{mdContent},htmlContent=#{htmlContent},summary=#{summary},cid=#{cid},editTime=#{editTime}
-        <if test="state==1">
-            ,state=1
-        </if>
-        <if test="publishDate!=null">
-            ,publishDate=#{publishDate}
-        </if>
-        WHERE id=#{id}
-    </update>
     <select id="getArticleByState" resultType="org.sang.bean.Article">
-        SELECT a.title, a.publishDate, a.editTime, a.author, a.conference, a.link, a.type, u.nickname, d.directionName FROM article a, user u, search_direction d WHERE a.uid=u.id AND a.direction=d.ID
+        SELECT a.id, a.title, a.publishDate, a.editTime, a.author, a.conference, a.link, a.type, u.nickname, d.directionName FROM article a, user u, search_direction d WHERE a.uid=u.id AND a.direction=d.ID
         <if test="state==2">
             AND state=#{state}
-        </if>
-        <if test="state==-1">
-            AND state=1
         </if>
         <if test="state==0">
             AND uid=#{uid} AND state=1
@@ -63,9 +53,6 @@
         SELECT count(*) FROM article a, user u, search_direction d WHERE a.uid=u.id AND a.direction=d.ID
         <if test="state==2">
             AND state=#{state}
-        </if>
-        <if test="state==-1">
-            AND state=1
         </if>
         <if test="state==0">
             AND uid=#{uid} AND state=1
@@ -104,8 +91,8 @@
             #{aid}
         </foreach>
     </delete>
-    <select id="getArticleById" parameterType="Long" resultMap="BaseResultMap">
-        SELECT a.*,t.`tagName`,t.`id` AS tid,u.`nickname`,c.`cateName` FROM article a LEFT JOIN article_tags ats ON a.`id`=ats.`aid` LEFT JOIN tags t ON ats.`tid`=t.`id` LEFT JOIN user u ON a.`uid`=u.`id` LEFT JOIN category c ON a.`cid`=c.`id` WHERE a.id=#{aid}
+    <select id="getArticleById" parameterType="Long" resultType="org.sang.bean.Article">
+        SELECT a.*,u.`nickname`,d.`directionName` FROM article a LEFT JOIN user u ON a.`uid`=u.`id` LEFT JOIN search_direction d ON a.`direction`=d.`id` WHERE a.id=#{aid}
     </select>
 
     <resultMap id="BaseResultMap" type="org.sang.bean.Article">

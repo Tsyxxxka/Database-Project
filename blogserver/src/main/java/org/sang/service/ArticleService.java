@@ -41,6 +41,19 @@ public class ArticleService {
         int i = articleMapper.addNewArticle(article);
         return i;
     }
+
+    public int updateArticle(Article article) {
+        String directionName = article.getDirectionName();
+        List<Direction> allDirections = directionMapper.getAllDirection();
+        for (Direction d : allDirections) {
+            if (directionName.equals(d.getDirectionName())) {
+                article.setDirection(d.getId());
+                break;
+            }
+        }
+        int i = articleMapper.updateArticle(article);
+        return i;
+    }
     /*public int addNewArticle(Article article) {
         //处理文章摘要
         if (article.getSummary() == null || "".equals(article.getSummary())) {
@@ -124,10 +137,10 @@ public class ArticleService {
     }
 
     public int updateArticleState(Long[] aids, Integer state) {
-        if (state == 2) {
+        if (state == 2) { //delete from dustbin
             return articleMapper.deleteArticleById(aids);
-        } else {
-            return articleMapper.updateArticleState(aids, 2);//放入到回收站中
+        } else { //set state = 2
+            return articleMapper.updateArticleState(aids, 2);
         }
     }
 
