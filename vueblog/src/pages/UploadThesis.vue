@@ -50,7 +50,7 @@ export default {
       if (this.active==0) {
         this.$refs.searchBar.searchClick();
         for (let k in this.uploadForm) {
-          if (this.uploadForm[k] == '') {
+          if (this.uploadForm[k].length == 0 && k != 'user') {
             this.$message.error('请填上必要信息！');
             return;
           }
