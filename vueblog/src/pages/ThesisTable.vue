@@ -207,7 +207,7 @@
             _this.$message({type: 'error', message: '数据加载失败!'});
           }
         }).catch(resp=> {
-          //压根没见到服务器
+          //服务器 fail
           _this.loading = false;
           _this.$message({type: 'error', message: '数据加载失败!'});
         })

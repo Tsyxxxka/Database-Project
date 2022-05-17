@@ -127,6 +127,9 @@ public class ArticleService {
         return articleMapper.getArticleByState(state, start, count, uid,keywords,nickname,type,author,conference,direction);
     }
 
+    public List<Article> getAllArticles() {
+        return articleMapper.getAllArticles();
+    }
 //    public List<Article> getArticleByStateByAdmin(Integer page, Integer count,String keywords) {
 //        int start = (page - 1) * count;
 //        return articleMapper.getArticleByStateByAdmin(start, count,keywords);

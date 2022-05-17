@@ -2,17 +2,19 @@
   <div style="margin-top: 30px;">
     <el-steps :active="active" finish-status="success" simple style="margin-top: 20px; margin-bottom: 40px; height: 50px;">
       <el-step title="基本信息"></el-step>
+      <el-step title="引用文献"></el-step>
       <el-step title="论文笔记"></el-step>
       <el-step title="附加文件"></el-step>
     </el-steps>
     <div style="height: 600px">
       <thesis-search-bar ref="searchBar" @getSearchForm="getUploadForm" :state="0" :bar-type="0" v-if="active==0"></thesis-search-bar>
-      <mavon-editor style="height: 90%;width: 100%;" v-model="note" v-if="active==1"></mavon-editor>
+      <reference-thesis ref="referenceForm" @getReferenceArticles="getReferenceArticles" v-if="active==1"></reference-thesis>
+      <mavon-editor style="height: 90%;width: 100%;" v-model="note" v-if="active==2"></mavon-editor>
     </div>
     <el-button-group>
       <el-button type="primary" icon="el-icon-arrow-left" @click="getFront" :disabled="active==0">上一步</el-button>
-      <el-button type="primary" @click="getNext" :disabled="active==2">下一步<i class="el-icon-arrow-right el-icon--right"></i></el-button>
-      <el-button type="success" @click="uploadThesis" v-if="active==2">上传</el-button>
+      <el-button type="primary" @click="getNext" :disabled="active==3">下一步<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+      <el-button type="success" @click="uploadThesis" v-if="active==3">上传</el-button>
     </el-button-group>
   </div>
 </template>
@@ -21,11 +23,13 @@
 import ThesisSearchBar from "./ThesisSearchBar";
 import {postRequest} from "../utils/api";
 import {mavonEditor} from "mavon-editor";
+import ReferenceThesis from "./ReferenceThesis";
 export default {
   name: "UploadThesis",
   components: {
     ThesisSearchBar,
-    mavonEditor
+    mavonEditor,
+    ReferenceThesis
   },
   data() {
     return {
@@ -39,6 +43,7 @@ export default {
         summary: '',
         publishDate: ''
       },
+      referenceArticles: [],
       note: '', //markdown
     }
   },
@@ -46,8 +51,11 @@ export default {
     getUploadForm(data) {
       this.uploadForm = data;
     },
+    getReferenceArticles(data) {
+      this.referenceArticles = data;
+    },
     getNext() {
-      if (this.active==0) {
+      /*if (this.active==0) {
         this.$refs.searchBar.searchClick();
         for (let k in this.uploadForm) {
           if (this.uploadForm[k].length == 0 && k != 'user') {
@@ -55,11 +63,17 @@ export default {
             return;
           }
         }
+      }*/
+      if (this.active == 1) {
+       this.$refs.referenceForm.getReferenceForm();
       }
       this.active = this.active + 1;
     },
     getFront() {
       this.active = this.active - 1;
+      if (this.active==0) {
+        //TODO: remain info
+      }
     },
     uploadThesis() {
       postRequest('/article/addNew', {
@@ -87,7 +101,8 @@ export default {
           this.$alert('失败!', '失败!');
         }
       })
-      console.info(this.uploadForm);
+      // insert reference dependencies
+
     }
   }
 }

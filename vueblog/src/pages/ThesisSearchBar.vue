@@ -185,6 +185,7 @@ export default {
     querySearchDirection(queryString, cb) {
       var directionAll = this.directionAll;
       var results = queryString ? directionAll.filter(this.createFilter(queryString)) : directionAll;
+      console.info(results);
       cb(results);
     },
     createFilter(queryString) {

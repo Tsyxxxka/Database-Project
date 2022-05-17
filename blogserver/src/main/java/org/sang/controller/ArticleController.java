@@ -81,6 +81,11 @@ public class ArticleController {
         return map;
     }
 
+    @RequestMapping(value = "/getAllArticles", method = RequestMethod.GET)
+    public List<Article> getAllArticles() {
+        return articleService.getAllArticles();
+    }
+
     @RequestMapping(value = "/addNew", method = RequestMethod.POST)
     public RespBean addNewArticle(Article article) {
         int result = articleService.addNewArticle(article);
