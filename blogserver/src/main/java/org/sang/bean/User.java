@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,13 +22,14 @@ public class User implements UserDetails {
     private List<Role> roles;
     private String email;
     private String userface;
-    private Timestamp regTime;
+    private String regTime;
+    private String code;
 
-    public Timestamp getRegTime() {
+    public String getRegTime() {
         return regTime;
     }
 
-    public void setRegTime(Timestamp regTime) {
+    public void setRegTime(String regTime) {
         this.regTime = regTime;
     }
 
@@ -66,6 +68,15 @@ public class User implements UserDetails {
     public String getUsername() {
         return username;
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
 
     @Override
     @JsonIgnore

@@ -8,12 +8,14 @@ import DataCharts from '@/components/DataCharts'
 import PostArticle from '@/components/PostArticle'
 import UserMana from '@/components/UserMana'
 import BlogDetail from '@/components/BlogDetail'
-import SetSearchDirection from "../pages/SetSearchDirection";
+import SetSearchDirection from "../pages/SetSearchDirection"
+import Register from "../pages/Register"
+import SelfUser from "../components/SelfUser";
 
 Vue.use(Router)
 
 export default new Router({
-  mode: "history",
+  //mode: "history",
   routes: [
     {
       path: '/',
@@ -21,6 +23,11 @@ export default new Router({
       hidden: true,
       component: Login
     }, {
+      path: '/toRegister',
+      name: '注册',
+      hidden: true,
+      component: Register
+    },{
       path: '/home',
       name: '',
       component: Home,
@@ -110,6 +117,30 @@ export default new Router({
           iconCls: 'fa fa-reorder',
           name: '研究方向管理',
           component: SetSearchDirection
+        }
+      ]
+    },/* {
+      path: '/home',
+      component: Home,
+      name: '用户注册',
+      children: [
+        {
+          path: '/register',
+          iconCls: 'fa fa-reorder',
+          name: '用户注册',
+          component: Register,
+        }
+      ]
+    },*/{
+      path: '/home',
+      component: Home,
+      name: '个人主页',
+      children: [
+        {
+          path: '/selfUser',
+          iconCls: 'fa fa-reorder',
+          name: '个人主页',
+          component: SelfUser,
         }
       ]
     },
