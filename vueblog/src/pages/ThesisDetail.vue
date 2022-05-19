@@ -14,7 +14,6 @@
       <span style="color: #335A66;margin-right:20px;font-size: 15px;">最近编辑于 {{article.editTime | formatDateTime}}</span>
     </div>
     <div class="content">
-      <h3> 基本信息 </h3>
       <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">
         <el-descriptions-item label="论文类型">{{typeName}}</el-descriptions-item>
         <el-descriptions-item label="论文作者">{{article.author}}</el-descriptions-item>
@@ -24,16 +23,50 @@
       </el-descriptions>
     </div>
     <div class="content">
-      <h3> 论文链接 </h3>
       <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">
-        <el-descriptions-item label="点击跳转">{{article.link}}</el-descriptions-item>
+        <el-descriptions-item label="论文链接">
+          <el-button type="text" @click="">
+            {{article.link}}
+          </el-button>
+        </el-descriptions-item>
+      </el-descriptions>
+    </div>
+    <div class="content">
+      <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">
+        <el-descriptions-item label="用户笔记">
+          <mavon-editor
+            :value="article.note"
+            :subfield="prop.subfield"
+            :defaultOpen="prop.defaultOpen"
+            :toolbarsFlag="prop.toolbarsFlag"
+            :editable="prop.editable"
+            :scrollStyle="prop.scrollStyle"
+          />
+        </el-descriptions-item>
       </el-descriptions>
     </div>
   </div>
 </template>
 <script>
   import {getRequest} from '../utils/api'
+  import {mavonEditor} from "mavon-editor";
   export default{
+    components: {
+      mavonEditor
+    },
+    computed: {
+      // 解析器配置
+      prop() {
+        let data = {
+          subfield: false,// 单双栏模式
+          defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域
+          editable: false,	// 是否允许编辑
+          toolbarsFlag: false,
+          scrollStyle: true
+        }
+        return data
+      }
+    },
     methods: {
       goBack(){
         this.$router.go(-1);

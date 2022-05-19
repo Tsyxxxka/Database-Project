@@ -235,7 +235,7 @@
               var data = resp.data;
               _this.$message({type: data.status, message: data.msg});
               if (data.status == 'success') {
-                window.bus.$emit('blogTableReload')//通过选项卡都重新加载数据
+                window.bus.$emit('blogTableReload')//
               }
             } else {
               _this.$message({type: 'error', message: '还原失败!'});
@@ -263,13 +263,13 @@
           } else {
             url = "/article/dustbin";
           }*/
-          console.info(typeof(state));
           putRequest('/article/dustbin', {aids: _this.dustbinData, state: state}).then(resp=> {
             if (resp.status == 200) {
               var data = resp.data;
               _this.$message({type: data.status, message: data.msg});
               if (data.status == 'success') {
-                window.bus.$emit('blogTableReload')//通过选项卡都重新加载数据
+                window.bus.$emit('blogTableReload');
+                _this.$message({type: 'success', message: '删除成功!'});
               }
             } else {
               _this.$message({type: 'error', message: '删除失败!'});

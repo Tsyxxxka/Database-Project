@@ -10,7 +10,6 @@ import UserMana from '@/components/UserMana'
 import ThesisDetail from "../pages/ThesisDetail";
 import SetSearchDirection from "../pages/SetSearchDirection";
 import ThesisList from "../pages/ThesisList";
-import test from "../pages/test";
 import uploadThesis from "../pages/UploadThesis";
 import ThesisEdit from "../pages/ThesisEdit";
 
@@ -76,18 +75,6 @@ export default new Router({
           iconCls: 'fa fa-user-o',
           name: '用户管理',
           component: UserMana
-        }
-      ]
-    }, {
-      path: '/home',
-      component: Home,
-      name: '栏目管理',
-      children: [
-        {
-          path: '/cateMana',
-          iconCls: 'fa fa-reorder',
-          name: '栏目管理',
-          component: test
         }
       ]
     }, {

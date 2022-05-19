@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.sang.bean.Article;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -27,9 +28,12 @@ public interface ArticleMapper {
     int updateArticleStateById(@Param("articleId") Integer articleId, @Param("state") Integer state);
 
     int deleteArticleById(@Param("aids") Long[] aids);
-
+    int getReferencedNumber(@Param("aids") Long[] aids);
+    int getReferencingNumber(@Param("aids") Long[] aids);
+    int deleteReference(@Param("aids") Long[] aids);
     Article getArticleById(Long aid);
 
+    String getNoteByAid(Long aid);
     void pvIncrement(Long aid);
 
     //INSERT INTO pv(countDate,pv,uid) SELECT NOW(),SUM(pageView),uid FROM article GROUP BY uid
@@ -40,4 +44,7 @@ public interface ArticleMapper {
     List<Integer> getDataStatistics(Long uid);
 
     int addReference(@Param("aid")Long aid, @Param("rid")Long reference);
+
+    int addNote(@Param("aid") Long aid, @Param("note") String note, @Param("uid")Long uid, @Param("uploadTime")Timestamp uploadTime);
+
 }

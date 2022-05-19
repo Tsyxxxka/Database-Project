@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by sang on 2017/12/20.
@@ -33,9 +34,16 @@ public class Article {
     private String link;
     private Integer type;
     private Integer direction;
-
     private List<Long> referenceList;
+    private String note;
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
     public List<Long> getReferenceList() {
         return referenceList;
     }

@@ -12,6 +12,9 @@
     <insert id="addReference">
         INSERT INTO reference SET id=#{aid},rid=#{rid}
     </insert>
+    <insert id="addNote" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO note SET aid=#{aid},content=#{note},uploadTime=#{uploadTime},uid=#{uid}
+    </insert>
     <update id="updateArticle" parameterType="org.sang.bean.Article">
         UPDATE article SET title=#{title},summary=#{summary},author=#{author},conference=#{conference},type=#{type},link=#{link},publishDate=#{publishDate},direction=#{direction}
         WHERE id=#{id}
@@ -98,9 +101,31 @@
         </foreach>
     </delete>
     <select id="getArticleById" parameterType="Long" resultType="org.sang.bean.Article">
-        SELECT a.*,u.`nickname`,d.`directionName` FROM article a LEFT JOIN user u ON a.`uid`=u.`id` LEFT JOIN search_direction d ON a.`direction`=d.`id` WHERE a.id=#{aid}
+        SELECT a.*,u.`nickname`,d.`directionName`
+        FROM article a LEFT JOIN user u ON a.`uid`=u.`id` LEFT JOIN search_direction d ON a.`direction`=d.`id`
+        WHERE a.id=#{aid}
     </select>
-
+    <select id="getNoteByAid" parameterType="Long" resultType="String">
+        SELECT content FROM note WHERE note.aid=#{aid}
+    </select>
+    <select id="getReferencedNumber" resultType="Integer">
+        SELECT count(*) FROM reference WHERE rid IN
+        <foreach collection="aids" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </select>
+    <select id="getReferencingNumber" resultType="Integer">
+        SELECT count(*) FROM reference WHERE id IN
+        <foreach collection="aids" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </select>
+    <delete id="deleteReference">
+        DELETE FROM reference WHERE id IN
+        <foreach collection="aids" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </delete>
     <resultMap id="BaseResultMap" type="org.sang.bean.Article">
         <id column="id" property="id"/>
         <result column="title" property="title"/>

@@ -54,6 +54,12 @@ public class ArticleService {
         return 1;
     }
 
+    public int addNote(Long aid, String note) {
+        Long uid = Util.getCurrentUser().getId();
+        Timestamp uploadTime = new Timestamp(System.currentTimeMillis());
+        int i = articleMapper.addNote(aid,note,uid,uploadTime);
+        return i;
+    }
     public int updateArticle(Article article) {
         String directionName = article.getDirectionName();
         List<Direction> allDirections = directionMapper.getAllDirection();
@@ -152,10 +158,25 @@ public class ArticleService {
     }
 
     public int updateArticleState(Long[] aids, Integer state) {
-        if (state == 2) { //delete from dustbin
-            return articleMapper.deleteArticleById(aids);
-        } else { //set state = 2
-            return articleMapper.updateArticleState(aids, 2);
+        if (state == 2) {
+            // delete from dustbin
+            int result = articleMapper.deleteArticleById(aids);
+            return result;
+        } else {
+            // check being referenced
+            int referenced = articleMapper.getReferencedNumber(aids);
+            if(referenced != 0) {
+                return -1;
+            }
+            // set state = 2
+            int resullt = articleMapper.updateArticleState(aids, 2);
+            // delete reference
+            int referencing = articleMapper.getReferencingNumber(aids);
+            int deleted = articleMapper.deleteReference(aids);
+            if (referencing != deleted) {
+                return -2;
+            }
+            return resullt;
         }
     }
 
@@ -164,8 +185,10 @@ public class ArticleService {
     }
 
     public Article getArticleById(Long aid) {
+        String note = articleMapper.getNoteByAid(aid);
         Article article = articleMapper.getArticleById(aid);
         articleMapper.pvIncrement(aid);
+        article.setNote(note);
         return article;
     }
 

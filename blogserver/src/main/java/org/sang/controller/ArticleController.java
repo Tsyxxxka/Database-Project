@@ -89,16 +89,21 @@ public class ArticleController {
     @RequestMapping(value = "/addNew", method = RequestMethod.POST)
     public RespBean addNewArticle(Article article) {
         int result1 = articleService.addNewArticle(article);
+        if (result1 != 1) {
+            return new RespBean("error", "Upload failed!");
+        }
         Long aid = article.getId();
         List<Long> referenceList = article.getReferenceList();
         int result2 = articleService.addReference(aid,referenceList);
-        if (result1 == 1 && result2 == 1) {
-            return new RespBean("success", "upload succeeded!");
-        } else if (result1 == 1){
+        if (result2 != 1) {
             return new RespBean("error","Set reference thesis failed!");
-        } else {
-            return new RespBean("error", "upload failed!");
         }
+        String note = article.getNote();
+        int result3 = articleService.addNote(aid, note);
+        if (result3 != 1) {
+            return new RespBean("error","Upload note failed!");
+        }
+        return new RespBean("success","Upload succeeded!");
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -117,8 +122,13 @@ public class ArticleController {
 
     @RequestMapping(value = "/dustbin", method = RequestMethod.PUT)
     public RespBean updateArticleState(Long[] aids, Integer state) {
-        if (articleService.updateArticleState(aids, state) == aids.length) {
+        int result = articleService.updateArticleState(aids, state);
+        if ( result == aids.length) {
             return new RespBean("success", "删除成功!");
+        } else if (result == -1) {
+            return new RespBean("error", "有选中的论文已被引用，无法删除！");
+        } else if (result == -2) {
+            return new RespBean("error", "有选中的论文引用删除失败，论文删除失败！请联系管理员！");
         }
         return new RespBean("error", "删除失败!");
     }

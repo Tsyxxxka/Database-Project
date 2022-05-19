@@ -9,7 +9,11 @@
     <div style="height: 600px">
       <thesis-search-bar ref="searchBar" @getSearchForm="getUploadForm" :state="0" :bar-type="0" v-if="active==0"></thesis-search-bar>
       <reference-thesis ref="referenceForm" @getReferenceArticles="getReferenceArticles" v-if="active==1"></reference-thesis>
-      <mavon-editor style="height: 90%;width: 100%;" v-model="note" v-if="active==2"></mavon-editor>
+      <mavon-editor
+        style="height: 90%;width: 100%;"
+        v-model="note"
+        @change="change"
+        v-if="active==2"></mavon-editor>
     </div>
     <el-button-group>
       <el-button type="primary" icon="el-icon-arrow-left" @click="getFront" :disabled="active==0">上一步</el-button>
@@ -90,7 +94,8 @@ export default {
         link: this.uploadForm.link,
         publishDate: this.uploadForm.publishDate,
         directionName: this.uploadForm.direction,
-        referenceList: referenceList
+        referenceList: referenceList,
+        note: this.note
       }).then(resp => {
         if (resp.status == 200) {
           //成功
@@ -107,8 +112,10 @@ export default {
           this.$alert('失败!', '失败!');
         }
       })
-      // insert reference dependencies
-
+    },
+    change (value, render) {
+      // render 为 markdown 解析后的结果(转化成了HTML格式）
+      this.note = render;
     }
   }
 }
