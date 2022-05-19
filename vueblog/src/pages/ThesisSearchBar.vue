@@ -185,7 +185,6 @@ export default {
     querySearchDirection(queryString, cb) {
       var directionAll = this.directionAll;
       var results = queryString ? directionAll.filter(this.createFilter(queryString)) : directionAll;
-      console.info(results);
       cb(results);
     },
     createFilter(queryString) {
@@ -207,8 +206,6 @@ export default {
       if (this.searchType == '') {
         this.searchForm.type = '';
       }
-      console.info("here");
-      console.info(this.searchForm);
       this.$emit('getSearchForm',this.searchForm);
     }
   }

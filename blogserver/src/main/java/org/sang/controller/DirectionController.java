@@ -38,7 +38,6 @@ public class DirectionController {
         if ("".equals(direction.getDirectionName()) || direction.getDirectionName() == null) {
             return new RespBean("error", "请输入栏目名称!");
         }
-        System.out.println("get here!");
         int result = directionService.addDirection(direction);
 
         if (result == 1) {

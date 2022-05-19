@@ -66,7 +66,6 @@ export default{
     addNewCate(){
       this.loading = true;
       var _this = this;
-      console.info(232323)
       postRequest('/direction/',
                   {directionName: this.directionName,
                           parentId: this.parentId}).then(resp=> {
@@ -192,7 +191,6 @@ export default{
       let _this = this;
       getRequest("/direction/all").then(resp=> {
         _this.categories = resp.data;
-        //console.info(resp.data)
         _this.loading = false;
       }, resp=> {
         if (resp.response.status == 403) {

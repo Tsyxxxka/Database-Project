@@ -51,7 +51,6 @@ public class CategoryController {
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public RespBean updateCate(Category category) {
-        System.out.println(category.getCateName());
         int i = categoryService.updateCategoryById(category);
         if (i == 1) {
             return new RespBean("success", "修改成功!");

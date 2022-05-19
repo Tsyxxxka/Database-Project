@@ -159,9 +159,13 @@ public class ArticleService {
 
     public int updateArticleState(Long[] aids, Integer state) {
         if (state == 2) {
+            // delete note
+            int result1 = articleMapper.deleteNoteByArticleId(aids);
+            if (result1 != 1) {
+                return -3;
+            }
             // delete from dustbin
-            int result = articleMapper.deleteArticleById(aids);
-            return result;
+            return articleMapper.deleteArticleById(aids);
         } else {
             // check being referenced
             int referenced = articleMapper.getReferencedNumber(aids);

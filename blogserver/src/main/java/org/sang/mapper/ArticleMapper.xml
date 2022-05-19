@@ -126,6 +126,12 @@
             #{aid}
         </foreach>
     </delete>
+    <delete id="deleteNoteByArticleId">
+        DELETE FROM note WHERE aid IN
+        <foreach collection="aids" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </delete>
     <resultMap id="BaseResultMap" type="org.sang.bean.Article">
         <id column="id" property="id"/>
         <result column="title" property="title"/>

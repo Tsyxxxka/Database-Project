@@ -80,7 +80,6 @@ export default {
       }
     },
     uploadThesis() {
-      console.info(this.uploadForm);
       var referenceList = [];
       this.referenceArticles.forEach(a => {
         referenceList.push(a);

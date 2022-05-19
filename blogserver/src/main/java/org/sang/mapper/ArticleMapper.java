@@ -31,6 +31,7 @@ public interface ArticleMapper {
     int getReferencedNumber(@Param("aids") Long[] aids);
     int getReferencingNumber(@Param("aids") Long[] aids);
     int deleteReference(@Param("aids") Long[] aids);
+    int deleteNoteByArticleId(@Param("aids")Long[] aids);
     Article getArticleById(Long aid);
 
     String getNoteByAid(Long aid);
