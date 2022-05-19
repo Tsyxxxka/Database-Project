@@ -34,6 +34,16 @@ public class Article {
     private Integer type;
     private Integer direction;
 
+    private List<Long> referenceList;
+
+    public List<Long> getReferenceList() {
+        return referenceList;
+    }
+
+    public void setReferenceList(List<Long> referenceList) {
+        this.referenceList = referenceList;
+    }
+
     public String getStateStr() {
         return stateStr;
     }

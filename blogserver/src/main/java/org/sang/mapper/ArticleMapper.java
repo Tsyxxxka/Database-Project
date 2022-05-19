@@ -38,4 +38,6 @@ public interface ArticleMapper {
     List<String> getCategories(Long uid);
 
     List<Integer> getDataStatistics(Long uid);
+
+    int addReference(@Param("aid")Long aid, @Param("rid")Long reference);
 }

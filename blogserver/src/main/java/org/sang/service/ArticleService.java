@@ -42,6 +42,18 @@ public class ArticleService {
         return i;
     }
 
+
+    public int addReference(Long aid,List<Long> referenceList) {
+        for (Long r : referenceList) {
+            int i = articleMapper.addReference(aid,r);
+            // UNDO the FINISHED insert
+            if (i != 1) {
+                return i;
+            }
+        }
+        return 1;
+    }
+
     public int updateArticle(Article article) {
         String directionName = article.getDirectionName();
         List<Direction> allDirections = directionMapper.getAllDirection();

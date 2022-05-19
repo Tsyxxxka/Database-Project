@@ -9,6 +9,9 @@
     <insert id="addNewArticle" parameterType="org.sang.bean.Article" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO article SET title=#{title},summary=#{summary},uid=#{uid},editTime=#{editTime},state=1,author=#{author},conference=#{conference},type=#{type},link=#{link},publishDate=#{publishDate},direction=#{direction}
     </insert>
+    <insert id="addReference">
+        INSERT INTO reference SET id=#{aid},rid=#{rid}
+    </insert>
     <update id="updateArticle" parameterType="org.sang.bean.Article">
         UPDATE article SET title=#{title},summary=#{summary},author=#{author},conference=#{conference},type=#{type},link=#{link},publishDate=#{publishDate},direction=#{direction}
         WHERE id=#{id}

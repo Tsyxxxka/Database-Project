@@ -55,7 +55,7 @@ export default {
       this.referenceArticles = data;
     },
     getNext() {
-      /*if (this.active==0) {
+      if (this.active==0) {
         this.$refs.searchBar.searchClick();
         for (let k in this.uploadForm) {
           if (this.uploadForm[k].length == 0 && k != 'user') {
@@ -63,7 +63,7 @@ export default {
             return;
           }
         }
-      }*/
+      }
       if (this.active == 1) {
        this.$refs.referenceForm.getReferenceForm();
       }
@@ -76,6 +76,11 @@ export default {
       }
     },
     uploadThesis() {
+      console.info(this.uploadForm);
+      var referenceList = [];
+      this.referenceArticles.forEach(a => {
+        referenceList.push(a);
+      })
       postRequest('/article/addNew', {
         title: this.uploadForm.keywords,
         type: this.uploadForm.type,
@@ -84,7 +89,8 @@ export default {
         summary: this.uploadForm.summary,
         link: this.uploadForm.link,
         publishDate: this.uploadForm.publishDate,
-        directionName: this.uploadForm.direction
+        directionName: this.uploadForm.direction,
+        referenceList: referenceList
       }).then(resp => {
         if (resp.status == 200) {
           //成功

@@ -207,6 +207,8 @@ export default {
       if (this.searchType == '') {
         this.searchForm.type = '';
       }
+      console.info("here");
+      console.info(this.searchForm);
       this.$emit('getSearchForm',this.searchForm);
     }
   }
