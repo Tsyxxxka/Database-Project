@@ -25,7 +25,7 @@
     <div class="content">
       <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">
         <el-descriptions-item label="论文链接">
-          <el-button type="text" @click="">
+          <el-button type="text" @click="openUrl">
             {{article.link}}
           </el-button>
         </el-descriptions-item>
@@ -70,6 +70,9 @@
     methods: {
       goBack(){
         this.$router.go(-1);
+      },
+      openUrl() {
+        window.open(this.article.link,"_blank");
       }
     },
     mounted: function () {
