@@ -3,37 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.sang.mapper.UserMapper">
-    <select id="getAllNickname" resultType="org.sang.bean.User">
-        SELECT nickname FROM user
-    </select>
     <select id="loadUserByUsername" resultType="org.sang.bean.User">
         SELECT * FROM user WHERE username=#{username}
     </select>
     <insert id="reg" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user set username=#{username},password=#{password}
-    </insert>
-    <insert id="regMail" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user set username=#{username},password=#{password},email=#{email},code=#{code},regTime=#{regTime}
-    </insert>
-    <select id="findTrueCodeByEmail" resultType="org.sang.bean.UserCode">
-        SELECT * FROM user_code WHERE email=#{email}
-    </select>
-    <insert id="saveCode" useGeneratedKeys="true" keyProperty="email">
-        INSERT INTO user_code set email=#{email},trueCode=#{trueCode}
+        INSERT INTO user set username=#{username},password=#{password},nickname=#{nickname}
     </insert>
     <update id="updateUserEmail">
         UPDATE user set email=#{email} WHERE id=#{id}
     </update>
-    <update id="updateUserNickname">
-        UPDATE user set nickname=#{nickname} WHERE id=#{id}
-    </update>
-    <update id="updateCode">
-        UPDATE user_code set trueCode=#{trueCode} WHERE email=#{email}
-    </update>
-    <update id="updateUserPwd">
-        UPDATE user set password=#{password} WHERE id=#{id}
-    </update>
-
     <select id="getUserByNickname" resultMap="BaseResultMap">
         SELECT u.*,r.`id` AS rid,r.`name` AS rname FROM user u,roles r,roles_user ru WHERE u.`id`=ru.`uid` AND
         r.`id`=ru.`rid` AND u.`id` NOT IN(SELECT u.`id` FROM user u,roles_user ru WHERE u.`id`=ru.`uid` AND ru.`rid`=1)

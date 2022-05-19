@@ -103,8 +103,6 @@
         this.selItems = val;
       },
       handleEdit(index, row){
-        console.info(row);
-
         var _this = this;
         this.$prompt('请输入新名称', '编辑', {
           confirmButtonText: '更新',

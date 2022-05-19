@@ -10,6 +10,7 @@ import java.util.List;
 public interface DirectionMapper {
     List<Direction> getAllDirection();
 
+    int addReference(List<Integer> referenceList);
     int deleteDirectionByIds(@Param("ids") String[] ids);
 
     int updateDirectionById(Direction direction);

@@ -1,7 +1,12 @@
 package org.sang.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by sang on 2017/12/20.
@@ -14,15 +19,38 @@ public class Article {
     private String summary;
     private Long cid;
     private Long uid;
-    private Timestamp publishDate;
+    private String publishDate;
     private Integer state;
     private Integer pageView;
     private Timestamp editTime;
     private String[] dynamicTags;
     private String nickname;
+    private String directionName;
     private String cateName;
     private List<Tags> tags;
     private String stateStr;
+    private String author;
+    private String conference;
+    private String link;
+    private Integer type;
+    private Integer direction;
+    private List<Long> referenceList;
+    private String note;
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+    public List<Long> getReferenceList() {
+        return referenceList;
+    }
+
+    public void setReferenceList(List<Long> referenceList) {
+        this.referenceList = referenceList;
+    }
 
     public String getStateStr() {
         return stateStr;
@@ -46,6 +74,14 @@ public class Article {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getDirectionName() {
+        return directionName;
+    }
+
+    public void setDirectionName(String directionName) {
+        this.directionName = directionName;
     }
 
     public String getCateName() {
@@ -128,11 +164,11 @@ public class Article {
         this.uid = uid;
     }
 
-    public Timestamp getPublishDate() {
+    public String getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(Timestamp publishDate) {
+    public void setPublishDate(String publishDate) {
         this.publishDate = publishDate;
     }
 
@@ -150,5 +186,45 @@ public class Article {
 
     public void setPageView(Integer pageView) {
         this.pageView = pageView;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getConference() {
+        return conference;
+    }
+
+    public void setConference(String conference) {
+        this.conference = conference;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void  setLink(String link) {
+        this.link = link;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Integer direction) {
+        this.direction = direction;
     }
 }
