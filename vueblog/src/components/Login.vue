@@ -9,14 +9,16 @@
       <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
     </el-form-item>
     <el-checkbox class="login_remember" v-model="checked" label-position="left">记住密码</el-checkbox>
-    <el-button style="margin-left: 80px;"  @click.native.prevent="login=false; toRegister()">注册</el-button>
-    <el-button style="margin-left: 80px;"  @click.native.prevent="login=true; submitClick1()" >登录</el-button>
-
-    <!--<el-form-item style="width: 100%">
-      <el-button type="primary" @click.native.prevent="submitClick(1)" style="width: 100%" v-if="login">登录</el-button>
-      <el-button type="primary" @click.native.prevent="submitClick(2)" style="width: 100%" v-else>注册</el-button>
-    </el-form-item>-->
-
+    <el-button style="margin-left: 90px;"  type="text"> 没有账号？</el-button>
+    <el-button @click.native.prevent="login=false; toRegister();">注册</el-button>
+    <el-form-item>
+      <el-button
+        type="primary"
+        style="width: 100%;"
+        @click.native.prevent="login=true; submitClick();" >
+        登录
+      </el-button>
+    </el-form-item>
   </el-form>
 </template>
 <script>
@@ -46,7 +48,7 @@ export default{
       this.loginForm.username = '';
       this.loginForm.password = '';
     },
-    submitClick1: function (type) {
+    submitClick: function (type) {
       var _this = this;
       this.loading = true;
       postRequest( '/login', {
@@ -79,7 +81,7 @@ export default{
   border-radius: 15px;
   background-clip: padding-box;
   margin: 180px auto;
-  width: 350px;
+  width: 400px;
   padding: 35px 35px 15px 35px;
   background: #fff;
   border: 1px solid #eaeaea;

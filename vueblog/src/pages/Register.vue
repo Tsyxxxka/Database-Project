@@ -1,34 +1,34 @@
 <template>
-  <div class="register">
-    <h3 class="login_title">用户注册</h3>
-    <el-form ref="form" :model="mailForm" label-width="60px" size="mini">
-      <el-form-item label="邮箱" class="em">
-        <el-input style="width: 260px;padding-right:12px" v-model="mailForm.email"/>
-        <el-button type="primary" @click="getCode">
-          <span v-show="show">发送验证码</span>
-          <span v-show="!show">{{ count }} s后重发</span>
-        </el-button>
-      </el-form-item>
-      <el-form-item label="账户名" class="cd">
-        <el-input type="username" v-model="mailForm.username"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" class="cd">
-        <el-input type="password" v-model="mailForm.password"></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" class="cd">
-        <el-input type="password" v-model="password2"></el-input>
-      </el-form-item>
-      <el-form-item label="验证码" class="cd">
-        <el-input v-model="mailForm.code"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="getCurrentTime(); submit()">注册</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="toLogin">返回登陆</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+  <el-form
+    class="login-container"
+    label-position="left"
+    label-width="70px"
+    v-loading="loading">
+    <h3 class="login_title" >用户注册</h3>
+    <el-form-item label="账户名">
+      <el-input type="username" v-model="mailForm.username"></el-input>
+    </el-form-item>
+    <el-form-item label="密码">
+      <el-input type="password" v-model="mailForm.password"></el-input>
+    </el-form-item>
+    <el-form-item label="确认密码">
+      <el-input type="password" v-model="password2"></el-input>
+    </el-form-item>
+    <el-form-item label="邮箱">
+      <el-input style="width: 270px; padding-right:12px;" v-model="mailForm.email"/>
+      <el-button type="primary" @click="getCode">
+        <span v-show="show">发送验证码</span>
+        <span v-show="!show">{{ count }} s后重发</span>
+      </el-button>
+    </el-form-item>
+    <el-form-item label="验证码">
+      <el-input v-model="mailForm.code"></el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" style="width: 40%;" @click="getCurrentTime(); submit();">确认注册</el-button>
+      <el-button type="text" style="width: 40%;" @click="toLogin">返回登录</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
@@ -50,7 +50,8 @@ export default {
         code: '',
         username: '',
         regTime:''
-      }
+      },
+      loading: false
     };
   },
   methods: {
@@ -140,6 +141,12 @@ export default {
 </script>
 
 <style scoped>
+.el-form-item__label {
+  text-align: justify;
+}
+.el-input {
+  width: 400px;
+}
 .register {
   width: 435px;
   margin: 180px auto;
@@ -150,4 +157,21 @@ export default {
 .register el-input{
   width: 260px
 }
+.login-container {
+  border-radius: 15px;
+  background-clip: padding-box;
+  margin: 180px auto;
+  width: 500px;
+  padding: 35px 35px 15px 35px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 0 25px #cac6c6;
+}
+
+.login_title {
+  margin: 0px auto 40px auto;
+  text-align: center;
+  color: #505458;
+}
+
 </style>
