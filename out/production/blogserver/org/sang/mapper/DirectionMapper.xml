@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.DirectionMapper">
+    <select id="getAllDirection" resultType="org.sang.bean.Direction">
+        SELECT * FROM search_direction
+    </select>
+    <delete id="deleteDirectionByIds">
+        DELETE FROM search_direction WHERE id IN
+        <foreach collection="ids" separator="," open="(" close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="updateDirectionById" parameterType="org.sang.bean.Direction">
+        UPDATE search_direction SET directionName=#{directionName} WHERE ID=#{id}
+    </update>
+    <insert id="addDirection" parameterType="org.sang.bean.Direction">
+        INSERT INTO search_direction SET directionName=#{directionName},parentID=#{parentId}
+    </insert>
+</mapper>

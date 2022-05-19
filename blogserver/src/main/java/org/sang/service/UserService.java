@@ -134,6 +134,11 @@ public class UserService implements UserDetailsService {
         return list;
     }
 
+    public List<User> getAllNickname() {
+        List<User> list = userMapper.getAllNickname();
+        return list;
+    }
+
     public List<Role> getAllRole() {
         return userMapper.getAllRole();
     }

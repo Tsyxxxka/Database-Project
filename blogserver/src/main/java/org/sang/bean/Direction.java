@@ -3,9 +3,9 @@ package org.sang.bean;
 import java.sql.Timestamp;
 
 public class Direction {
-    private Long ID;
+    private Integer ID;
     private String directionName;
-    private Long parentID;
+    private Integer parentID;
 /*
     public Direction() {
     }*/
@@ -14,11 +14,11 @@ public class Direction {
         return date;
     }
 */
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.ID = id;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return ID;
     }
 
@@ -30,11 +30,11 @@ public class Direction {
         return directionName;
     }
 
-    public Long getParentId() {
+    public Integer getParentId() {
         return parentID;
     }
 
-    public void setParentId(Long parentID) {
+    public void setParentId(Integer parentID) {
         this.parentID = parentID;
     }
 }

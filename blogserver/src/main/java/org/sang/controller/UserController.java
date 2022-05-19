@@ -1,6 +1,7 @@
 package org.sang.controller;
 
 import org.sang.bean.RespBean;
+import org.sang.bean.User;
 import org.sang.service.UserService;
 import org.sang.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,4 +90,9 @@ public class UserController {
         System.out.println(email);
         return new RespBean("success", "!!!!!!!!!");
     }*/
+    //new add
+    @RequestMapping(value = "/getAllNickname", method = RequestMethod.GET)
+    public List<User> getAllNickname() {
+        return userService.getAllNickname();
+    }
 }
