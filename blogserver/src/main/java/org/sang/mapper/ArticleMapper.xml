@@ -162,4 +162,11 @@
     <select parameterType="long" id="getDataStatistics" resultType="int">
         SELECT pv from pv WHERE uid=#{uid} ORDER by countDate limit 7
     </select>
+
+    <select id="getUserCountByDirection" parameterType="long" resultType="org.sang.bean.Direction">
+        SELECT d.directionName, count(*) AS directionCount
+        FROM article a JOIN search_direction d ON a.direction=d.ID
+        WHERE a.uid=#{uid} AND state=1
+        GROUP BY d.directionName
+    </select>
 </mapper>

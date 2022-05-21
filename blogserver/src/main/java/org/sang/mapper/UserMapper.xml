@@ -13,7 +13,7 @@
         INSERT INTO user set username=#{username},password=#{password}
     </insert>
     <insert id="regMail" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user set username=#{username},password=#{password},email=#{email},code=#{code},regTime=#{regTime}
+        INSERT INTO user set username=#{username},nickname=#{nickname},password=#{password},email=#{email},regTime=#{regTime},auth=#{auth}
     </insert>
     <select id="findTrueCodeByEmail" resultType="org.sang.bean.UserCode">
         SELECT * FROM user_code WHERE email=#{email}

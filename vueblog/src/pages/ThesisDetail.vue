@@ -11,7 +11,7 @@
         上传用户: {{article.nickname}}
       </div>
       <span style="color: #335A66;margin-right:20px;font-size: 15px;">浏览 {{article.pageView==null?0:article.pageView}}</span>
-      <span style="color: #335A66;margin-right:20px;font-size: 15px;">最近编辑于 {{article.editTime | formatDateTime}}</span>
+      <span style="color: #335A66;margin-right:20px;font-size: 15px;">最近编辑于 {{article.editTime}}</span>
     </div>
     <div class="content">
       <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">

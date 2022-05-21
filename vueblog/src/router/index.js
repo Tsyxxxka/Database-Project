@@ -9,7 +9,7 @@ import PostArticle from '@/components/PostArticle'
 import UserMana from '@/components/UserMana'
 import BlogDetail from '@/components/BlogDetail'
 import Register from "../pages/Register"
-import SelfUser from "../components/SelfUser";
+import SelfUser from "../pages/SelfUser";
 import ThesisDetail from "../pages/ThesisDetail";
 import SetSearchDirection from "../pages/SetSearchDirection";
 import ThesisList from "../pages/ThesisList";

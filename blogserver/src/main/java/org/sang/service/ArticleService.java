@@ -215,4 +215,8 @@ public class ArticleService {
     public List<Integer> getDataStatistics() {
         return articleMapper.getDataStatistics(Util.getCurrentUser().getId());
     }
+
+    public List<Direction> getUserCountByDirection() {
+        return articleMapper.getUserCountByDirection(Util.getCurrentUser().getId());
+    }
 }

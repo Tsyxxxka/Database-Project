@@ -6,14 +6,16 @@ public class Direction {
     private Integer ID;
     private String directionName;
     private Integer parentID;
-/*
-    public Direction() {
-    }*/
-    /*
-    public Timestamp getDate() {
-        return date;
+    private Integer directionCount;
+
+    public Integer getDirectionCount() {
+        return directionCount;
     }
-*/
+
+    public void setDirectionCount(Integer directionCount) {
+        this.directionCount = directionCount;
+    }
+
     public void setId(Integer id) {
         this.ID = id;
     }
