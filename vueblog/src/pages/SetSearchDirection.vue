@@ -66,8 +66,7 @@ export default{
     addNewCate(){
       this.loading = true;
       var _this = this;
-      console.info(232323)
-      postRequest('/admin/direction/',
+      postRequest('/direction/',
                   {directionName: this.directionName,
                           parentId: this.parentId}).then(resp=> {
         if (resp.status == 200) {
@@ -130,7 +129,7 @@ export default{
           });
         } else {
           _this.loading = true;
-          putRequest("/admin/direction/", {id: row.id, directionName: value}).then(resp=> {
+          putRequest("/direction/", {id: row.id, directionName: value}).then(resp=> {
             var json = resp.data;
             _this.$message({
               type: json.status,
@@ -166,7 +165,7 @@ export default{
       var _this = this;
       this.loading = true;
       //删除
-      deleteRequest("/admin/direction/" + ids).then(resp=> {
+      deleteRequest("/direction/" + ids).then(resp=> {
         var json = resp.data;
         _this.$message({
           type: json.status,
@@ -190,9 +189,8 @@ export default{
     },
     refresh(){ //list directions
       let _this = this;
-      getRequest("/admin/direction/all").then(resp=> {
+      getRequest("/direction/all").then(resp=> {
         _this.categories = resp.data;
-        //console.info(resp.data)
         _this.loading = false;
       }, resp=> {
         if (resp.response.status == 403) {

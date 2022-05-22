@@ -8,12 +8,18 @@ import DataCharts from '@/components/DataCharts'
 import PostArticle from '@/components/PostArticle'
 import UserMana from '@/components/UserMana'
 import BlogDetail from '@/components/BlogDetail'
+import Register from "../pages/Register"
+import SelfUser from "../components/SelfUser";
+import ThesisDetail from "../pages/ThesisDetail";
 import SetSearchDirection from "../pages/SetSearchDirection";
+import ThesisList from "../pages/ThesisList";
+import uploadThesis from "../pages/UploadThesis";
+import ThesisEdit from "../pages/ThesisEdit";
 
 Vue.use(Router)
 
 export default new Router({
-  mode: "history",
+  //mode: "history",
   routes: [
     {
       path: '/',
@@ -21,6 +27,11 @@ export default new Router({
       hidden: true,
       component: Login
     }, {
+      path: '/toRegister',
+      name: '注册',
+      hidden: true,
+      component: Register
+    },{
       path: '/home',
       name: '',
       component: Home,
@@ -28,35 +39,35 @@ export default new Router({
     }, {
       path: '/home',
       component: Home,
-      name: '文章管理',
+      name: '论文管理',
       iconCls: 'fa fa-file-text-o',
       children: [
         {
-          path: '/articleList',
-          name: '文章列表',
-          component: ArticleList,
-          meta: {
-            keepAlive: true
-          }
-        }, {
-          path: '/postArticle',
-          name: '发表文章',
-          component: PostArticle,
+          path: '/thesisList',
+          name: '论文列表',
+          component: ThesisList,
           meta: {
             keepAlive: false
           }
         }, {
-          path: '/blogDetail',
-          name: '博客详情',
-          component: BlogDetail,
+          path: '/uploadThesis',
+          name: '上传论文',
+          component: uploadThesis,
+          meta: {
+            keepAlive: false
+          }
+        }, {
+          path: '/thesisDetail',
+          name: '论文详情',
+          component: ThesisDetail,
           hidden: true,
           meta: {
             keepAlive: false
           }
         }, {
-          path: '/editBlog',
-          name: '编辑博客',
-          component: PostArticle,
+          path: '/editThesis',
+          name: '编辑论文信息',
+          component: ThesisEdit,
           hidden: true,
           meta: {
             keepAlive: false
@@ -73,18 +84,6 @@ export default new Router({
           iconCls: 'fa fa-user-o',
           name: '用户管理',
           component: UserMana
-        }
-      ]
-    }, {
-      path: '/home',
-      component: Home,
-      name: '栏目管理',
-      children: [
-        {
-          path: '/cateMana',
-          iconCls: 'fa fa-reorder',
-          name: '栏目管理',
-          component: CateMana
         }
       ]
     }, {
@@ -112,6 +111,47 @@ export default new Router({
           component: SetSearchDirection
         }
       ]
+    },/* {
+      path: '/home',
+      component: Home,
+      name: '用户注册',
+      children: [
+        {
+          path: '/register',
+          iconCls: 'fa fa-reorder',
+          name: '用户注册',
+          component: Register,
+        }
+      ]
+    },*/{
+      path: '/home',
+      component: Home,
+      name: '个人主页',
+      children: [
+        {
+          path: '/selfUser',
+          iconCls: 'fa fa-reorder',
+          name: '个人主页',
+          component: SelfUser,
+        }
+      ]
     },
   ]
 })
+
+const reSetPermissionList = to => {
+  return new Promise((resolve, reject) => {
+    if (to.path !== '/login' && store.state.permission.permissionList.length === 0) {
+      store
+        .dispatch('permission/getPermissionList')
+        .then(() => {
+          resolve('permCode')
+        })
+        .catch(error => {
+          resolve('permCode')
+        })
+    } else {
+      resolve()
+    }
+  })
+}

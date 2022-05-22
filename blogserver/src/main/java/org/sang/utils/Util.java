@@ -11,4 +11,9 @@ public class Util {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return user;
     }
+
+    public static String getCurrentUsername() {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return username;
+    }
 }

@@ -1,7 +1,9 @@
 package org.sang.service;
 
 import org.sang.bean.Article;
+import org.sang.bean.Direction;
 import org.sang.mapper.ArticleMapper;
+import org.sang.mapper.DirectionMapper;
 import org.sang.mapper.TagsMapper;
 import org.sang.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,56 @@ public class ArticleService {
     ArticleMapper articleMapper;
     @Autowired
     TagsMapper tagsMapper;
+    @Autowired
+    DirectionMapper directionMapper;
 
     public int addNewArticle(Article article) {
+        String directionName = article.getDirectionName();
+        List<Direction> allDirections = directionMapper.getAllDirection();
+        for (Direction d : allDirections) {
+            if (directionName.equals(d.getDirectionName())) {
+                article.setDirection(d.getId());
+                break;
+            }
+        }
+        article.setEditTime(new Timestamp(System.currentTimeMillis()));
+        article.setUid(Util.getCurrentUser().getId());
+        article.setCommentCounts(0);
+        int i = articleMapper.addNewArticle(article);
+        return i;
+    }
+
+
+    public int addReference(Long aid,List<Long> referenceList) {
+        for (Long r : referenceList) {
+            int i = articleMapper.addReference(aid,r);
+            // UNDO the FINISHED insert
+            if (i != 1) {
+                return i;
+            }
+        }
+        return 1;
+    }
+
+    public int addNote(Long aid, String note) {
+        Long uid = Util.getCurrentUser().getId();
+        Timestamp uploadTime = new Timestamp(System.currentTimeMillis());
+        int i = articleMapper.addNote(aid,note,uid,uploadTime);
+        return i;
+    }
+    public int updateArticle(Article article) {
+        String directionName = article.getDirectionName();
+        List<Direction> allDirections = directionMapper.getAllDirection();
+        for (Direction d : allDirections) {
+            if (directionName.equals(d.getDirectionName())) {
+                article.setDirection(d.getId());
+                break;
+            }
+        }
+        int i = articleMapper.updateArticle(article);
+        return i;
+    }
+    /*public int addNewArticle(Article article) {
         //处理文章摘要
         if (article.getSummary() == null || "".equals(article.getSummary())) {
             //直接截取
@@ -69,7 +119,7 @@ public class ArticleService {
             }
             return i;
         }
-    }
+    }*/
 
     private int addTagsToArticle(String[] dynamicTags, Long aid) {
         //1.删除该文章目前所有的标签
@@ -90,26 +140,48 @@ public class ArticleService {
         return content;
     }
 
-    public List<Article> getArticleByState(Integer state, Integer page, Integer count,String keywords) {
+    public List<Article> getArticleByState(Integer state, Integer page, Integer count,String keywords,String nickname, Integer type, String author, String conference, String direction) {
         int start = (page - 1) * count;
         Long uid = Util.getCurrentUser().getId();
-        return articleMapper.getArticleByState(state, start, count, uid,keywords);
+        return articleMapper.getArticleByState(state, start, count, uid,keywords,nickname,type,author,conference,direction);
     }
 
+    public List<Article> getAllArticles() {
+        return articleMapper.getAllArticles();
+    }
 //    public List<Article> getArticleByStateByAdmin(Integer page, Integer count,String keywords) {
 //        int start = (page - 1) * count;
 //        return articleMapper.getArticleByStateByAdmin(start, count,keywords);
 //    }
 
-    public int getArticleCountByState(Integer state, Long uid,String keywords) {
-        return articleMapper.getArticleCountByState(state, uid,keywords);
+    public int getArticleCountByState(Integer state, Long uid,String keywords, String nickname, Integer type, String author, String conference, String direction) {
+        return articleMapper.getArticleCountByState(state, uid,keywords,nickname,type,author,conference,direction);
     }
 
     public int updateArticleState(Long[] aids, Integer state) {
         if (state == 2) {
+            // delete note
+            int result1 = articleMapper.deleteNoteByArticleId(aids);
+            if (result1 != 1) {
+                return -3;
+            }
+            // delete from dustbin
             return articleMapper.deleteArticleById(aids);
         } else {
-            return articleMapper.updateArticleState(aids, 2);//放入到回收站中
+            // check being referenced
+            int referenced = articleMapper.getReferencedNumber(aids);
+            if(referenced != 0) {
+                return -1;
+            }
+            // set state = 2
+            int resullt = articleMapper.updateArticleState(aids, 2);
+            // delete reference
+            int referencing = articleMapper.getReferencingNumber(aids);
+            int deleted = articleMapper.deleteReference(aids);
+            if (referencing != deleted) {
+                return -2;
+            }
+            return resullt;
         }
     }
 
@@ -118,8 +190,10 @@ public class ArticleService {
     }
 
     public Article getArticleById(Long aid) {
+        String note = articleMapper.getNoteByAid(aid);
         Article article = articleMapper.getArticleById(aid);
         articleMapper.pvIncrement(aid);
+        article.setNote(note);
         return article;
     }
 

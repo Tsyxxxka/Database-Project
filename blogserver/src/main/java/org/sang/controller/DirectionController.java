@@ -12,11 +12,8 @@ package org.sang.controller;
         import javax.swing.plaf.synth.SynthEditorPaneUI;
         import java.util.List;
 
-/**
- * 超级管理员专属Controller
- */
 @RestController
-@RequestMapping("/admin/direction")
+@RequestMapping("/direction")
 public class DirectionController {
     @Autowired
     DirectionService directionService;
@@ -41,7 +38,6 @@ public class DirectionController {
         if ("".equals(direction.getDirectionName()) || direction.getDirectionName() == null) {
             return new RespBean("error", "请输入栏目名称!");
         }
-        System.out.println("get here!");
         int result = directionService.addDirection(direction);
 
         if (result == 1) {

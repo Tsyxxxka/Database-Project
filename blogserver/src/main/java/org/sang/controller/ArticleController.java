@@ -2,6 +2,7 @@ package org.sang.controller;
 
 import org.apache.commons.io.IOUtils;
 import org.sang.bean.Article;
+import org.sang.bean.Direction;
 import org.sang.bean.RespBean;
 import org.sang.service.ArticleService;
 import org.sang.utils.Util;
@@ -28,7 +29,7 @@ public class ArticleController {
     @Autowired
     ArticleService articleService;
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/", method = RequestMethod.POST)
     public RespBean addNewArticle(Article article) {
         int result = articleService.addNewArticle(article);
         if (result == 1) {
@@ -36,7 +37,7 @@ public class ArticleController {
         } else {
             return new RespBean("error", article.getState() == 0 ? "文章保存失败!" : "文章发表失败!");
         }
-    }
+    }*/
 
     /**
      * 上传图片
@@ -71,15 +72,49 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public Map<String, Object> getArticleByState(@RequestParam(value = "state", defaultValue = "-1") Integer state, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "count", defaultValue = "6") Integer count,String keywords) {
-        int totalCount = articleService.getArticleCountByState(state, Util.getCurrentUser().getId(),keywords);
-        List<Article> articles = articleService.getArticleByState(state, page, count,keywords);
+    public Map<String, Object> getArticleByState(@RequestParam(value = "state", defaultValue = "-1") Integer state, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "count", defaultValue = "6") Integer count, String keywords, String nickname, Integer type, String author, String conference, String direction) {
+        int totalCount = articleService.getArticleCountByState(state, Util.getCurrentUser().getId(),keywords,nickname,type,author,conference,direction);
+        List<Article> articles = articleService.getArticleByState(state, page, count,keywords,nickname,type,author,conference,direction);
         Map<String, Object> map = new HashMap<>();
         map.put("totalCount", totalCount);
         map.put("articles", articles);
         return map;
     }
 
+    @RequestMapping(value = "/getAllArticles", method = RequestMethod.GET)
+    public List<Article> getAllArticles() {
+        return articleService.getAllArticles();
+    }
+
+    @RequestMapping(value = "/addNew", method = RequestMethod.POST)
+    public RespBean addNewArticle(Article article) {
+        int result1 = articleService.addNewArticle(article);
+        if (result1 != 1) {
+            return new RespBean("error", "Upload failed!");
+        }
+        Long aid = article.getId();
+        List<Long> referenceList = article.getReferenceList();
+        int result2 = articleService.addReference(aid,referenceList);
+        if (result2 != 1) {
+            return new RespBean("error","Set reference thesis failed!");
+        }
+        String note = article.getNote();
+        int result3 = articleService.addNote(aid, note);
+        if (result3 != 1) {
+            return new RespBean("error","Upload note failed!");
+        }
+        return new RespBean("success","Upload succeeded!");
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public RespBean updateArticle(Article article) {
+        int result = articleService.updateArticle(article);
+        if (result == 1) {
+            return new RespBean("success", "update succeeded!");
+        } else {
+            return new RespBean("error","update failed!");
+        }
+    }
     @RequestMapping(value = "/{aid}", method = RequestMethod.GET)
     public Article getArticleById(@PathVariable Long aid) {
         return articleService.getArticleById(aid);
@@ -87,8 +122,15 @@ public class ArticleController {
 
     @RequestMapping(value = "/dustbin", method = RequestMethod.PUT)
     public RespBean updateArticleState(Long[] aids, Integer state) {
-        if (articleService.updateArticleState(aids, state) == aids.length) {
+        int result = articleService.updateArticleState(aids, state);
+        if ( result == aids.length) {
             return new RespBean("success", "删除成功!");
+        } else if (result == -1) {
+            return new RespBean("error", "有选中的论文已被引用，无法删除！");
+        } else if (result == -2) {
+            return new RespBean("error", "有选中的论文引用删除失败，论文删除失败！请联系管理员！");
+        } else if (result == -3) {
+            return new RespBean("error", "有选中的论文笔记删除失败，论文永久删除失败！请联系管理员！");
         }
         return new RespBean("error", "删除失败!");
     }

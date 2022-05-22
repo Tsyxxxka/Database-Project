@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.sang.bean.Role;
 import org.sang.bean.User;
+import org.sang.bean.UserCode;
 
 import java.util.List;
 
@@ -15,11 +16,26 @@ public interface UserMapper {
 
     User loadUserByUsername(@Param("username") String username);
 
+    int saveCode(UserCode userCode);
+
+    int updateCode(@Param("email") String email, @Param("trueCode") String trueCode);
+
+    UserCode findTrueCodeByEmail(@Param("email") String email);
+
     long reg(User user);
+
+    long regMail(User user);
 
     int updateUserEmail(@Param("email") String email, @Param("id") Long id);
 
+    int updateUserNickname(@Param("nickname") String nickname, @Param("id") Long id);
+
+    int updateUserPwd(@Param("password") String password, @Param("id") Long id);
+
     List<User> getUserByNickname(@Param("nickname") String nickname);
+
+    //new add
+    List<User> getAllNickname();
 
     List<Role> getAllRole();
 
