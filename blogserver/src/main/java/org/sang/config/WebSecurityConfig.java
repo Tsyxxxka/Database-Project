@@ -1,6 +1,7 @@
 package org.sang.config;
 
 import org.sang.service.UserService;
+import org.sang.utils.XssFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.util.DigestUtils;
 
 import javax.servlet.ServletException;
@@ -37,6 +39,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        // 安全防护：开启xss过滤
+        http.addFilterAfter(new XssFilter(), CsrfFilter.class);
+
         http.authorizeRequests()
                 .antMatchers("/admin/category/all").authenticated()
                 .antMatchers("/sendMail","/insertUser","/comment/").permitAll()//访问此地址就不需要进行身份认证了，防止重定向死循环
