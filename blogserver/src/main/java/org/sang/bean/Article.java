@@ -36,6 +36,15 @@ public class Article {
     private Integer direction;
     private List<Long> referenceList;
     private String note;
+    private Integer commentCounts;
+
+    public Integer getCommentCounts() {
+        return commentCounts;
+    }
+
+    public void setCommentCounts(Integer commentCounts) {
+        this.commentCounts = commentCounts;
+    }
 
     public String getNote() {
         return note;

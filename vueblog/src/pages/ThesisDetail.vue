@@ -11,7 +11,7 @@
         上传用户: {{article.nickname}}
       </div>
       <span style="color: #335A66;margin-right:20px;font-size: 15px;">浏览 {{article.pageView==null?0:article.pageView}}</span>
-      <span style="color: #335A66;margin-right:20px;font-size: 15px;">最近编辑于 {{article.editTime | formatDateTime}}</span>
+      <span style="color: #335A66;margin-right:20px;font-size: 15px;">最近编辑于 {{article.editTime}}</span>
     </div>
     <div class="content">
       <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">
@@ -45,14 +45,56 @@
         </el-descriptions-item>
       </el-descriptions>
     </div>
+    <div class="content">
+      <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">
+        <el-descriptions-item label="评论区">
+          <div class="me-view-comment">
+            <div class="me-view-comment-write">
+              <el-row :gutter="20">
+                <el-col :span="22">
+                  <el-input
+                      type="textarea"
+                      :autosize="{ minRows: 4}"
+                      placeholder="你的评论..."
+                      class="me-view-comment-text"
+                      v-model="comment.content"
+                      resize="none"
+                      style="margin-left: 40px">
+                  </el-input>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="2" :offset="20" style="margin-top: 20px">
+                  <el-button type="primary" @click="publishComment" size="medium">发表评论</el-button>
+                </el-col>
+              </el-row>
+            </div>
+
+            <commment-item
+                v-for="(c,index) in comments"
+                :comment="c"
+                :articleId="article.id"
+                :index="index"
+                :rootCommentCounts="comments.length"
+                @commentCountsIncrement="commentCountsIncrement"
+                :key="c.id">
+            </commment-item>
+          </div>
+        </el-descriptions-item>
+      </el-descriptions>
+    </div>
   </div>
 </template>
 <script>
-  import {getRequest} from '../utils/api'
-  import {mavonEditor} from "mavon-editor";
-  export default{
+  import {getRequest, postRequest} from '../utils/api'
+  import {mavonEditor} from "mavon-editor"
+  import CommmentItem from '../components/CommentItem'
+
+
+  export default {
     components: {
-      mavonEditor
+      mavonEditor,
+      CommmentItem
     },
     computed: {
       // 解析器配置
@@ -68,19 +110,74 @@
       }
     },
     methods: {
-      goBack(){
+      goBack() {
         this.$router.go(-1);
       },
       openUrl() {
-        window.open(this.article.link,"_blank");
+        window.open(this.article.link, "_blank");
+      },
+
+      publishComment() {
+        //this.loading = true;
+        var that = this;
+        //if (!this.comment.content) {
+         // return;
+       // }
+        //that.comment.article.id = that.article.id;
+        postRequest('/comment/', {
+          articleId: this.article.id,
+          parentId: this.comment.parentId,
+          content: this.comment.content
+        }).then(resp => {
+          if(resp.status == 200){
+            if(resp.data.status == 'success')
+            {that.$message.success('评论成功!')
+              this.comment.content = ''
+              that.comments.unshift(resp.data);
+              that.commentCountsIncrement();
+              that.getCommentsByArticle();
+            }else{
+              that.$message.error(resp.data.msg);
+            }
+          }else{
+            that.$message.error(resp.data.msg)
+          }
+          this.loading = false;
+        })/*.catch(error => {
+          if (error !== 'error') {
+            that.$message.error(resp.data.msg)
+          }
+        })*/
+      },
+      getCommentsByArticle() {
+        let that = this;
+        var aid = this.$route.query.aid;
+        getRequest("/comment/" + aid).then(resp =>{
+          if (resp.status == 200) {
+            that.comments = resp.data;
+            //that.$message({type: 'success', message: resp.data});
+            console.info(resp.data);
+          }
+          console.info(resp.data);
+          that.loading = false;
+          }, resp => {
+          console.info(resp.data);
+          that.loading = false;
+          that.$message({type: 'error', message: resp.data});
+        });
+        console.info(222);
+      },
+      commentCountsIncrement() {
+        this.article.commentCounts += 1
       }
     },
     mounted: function () {
       var aid = this.$route.query.aid; //get id of the thesis
-      //this.activeName = this.$route.query.an
       var _this = this;
       this.loading = true;
-      getRequest("/article/" + aid).then(resp=> {
+      this.getCommentsByArticle();
+      console.info(this.comments);
+      getRequest("/article/" + aid).then(resp => {
         if (resp.status == 200) {
           _this.article = resp.data;
           var type = _this.article.type;
@@ -92,24 +189,35 @@
             this.typeName = "实验型";
           } else if (type == 3) {
             this.typeName = "工具型";
-          } else if (type == 4){
+          } else if (type == 4) {
             this.typeName = "数据集型";
           } else {
             this.typeName = "None";
           }
         }
         _this.loading = false;
-      }, resp=> {
+      }, resp => {
         _this.loading = false;
         _this.$message({type: 'error', message: '页面加载失败!'});
       });
+
     },
-    data(){
+
+    data() {
       return {
-        article: {},
+        article: {
+          commentCounts: 0,
+        },
         loading: false,
         activeName: '',
-        typeName: ''
+        typeName: '',
+
+        comments: [],
+        comment: {
+          article: {},
+          content: '',
+          parentId: 1,
+        }
       }
     }
   }
@@ -169,6 +277,24 @@ p {
   border-radius: 20px;
   border: #e3e1e4 1px solid;
   font-size: 20px;
+}
+
+.me-view-comment {
+  margin-top: 20px;
+}
+
+.me-view-comment-title {
+  font-weight: 600;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 20px;
+}
+
+.me-view-comment-write {
+  margin-top: 20px;
+}
+
+.me-view-comment-text {
+  font-size: 16px;
 }
 
 .bannerImg{

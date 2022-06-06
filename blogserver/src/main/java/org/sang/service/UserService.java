@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,10 +42,19 @@ public class UserService implements UserDetailsService {
             return new User();
         }
         //查询用户的角色信息，并返回存入user中
-        List<Role> roles = rolesMapper.getRolesByUid(user.getId());
+        List<Role> roles = new ArrayList<>();
+        Role r = new Role();
+        Long i = user.getAuth();
+        r.setId(i);
+        if (i==1) {
+            r.setName("超级管理员");
+        } else {
+            r.setName("普通用户");
+        }
         user.setRoles(roles);
         return user;
     }
+
 
     /**
      * @param user
@@ -87,16 +97,13 @@ public class UserService implements UserDetailsService {
         //插入用户,插入之前先对密码进行加密
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);//用户可用
+        user.setAuth(2L);
         UserCode userCode = userMapper.findTrueCodeByEmail(user.getEmail());
         boolean a = (user.getCode()).equals(userCode.getTrueCode());
         if(!a)
             return 3;
         long result = userMapper.regMail(user);
-        //配置用户的角色，默认都是普通用户
-        String[] roles = new String[]{"2"};
-        int i = rolesMapper.addRoles(roles, user.getId());
-        boolean b = i == roles.length && result == 1;
-        if (b) {
+        if (result == 1) {
             return 0;
         } else {
             return 2;

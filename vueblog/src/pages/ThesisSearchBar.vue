@@ -1,12 +1,12 @@
 <template>
   <div>
-    <el-form style="margin-bottom: 50px;margin-left: 10px;">
+    <el-form
+      style="margin-bottom: 50px;margin-left: 10px;">
       <el-form-item>
         <el-button>
           论文标题
         </el-button>
         <el-input
-          prefix-icon="el-icon-search"
           v-model="searchForm.keywords" style="width: 400px">
         </el-input>
       </el-form-item>
@@ -27,7 +27,6 @@
           论文作者
         </el-button>
         <el-input
-          prefix-icon="el-icon-search"
           v-model="searchForm.author" style="width: 400px" >
         </el-input>
       </el-form-item>
@@ -48,7 +47,6 @@
           发表会议
         </el-button>
         <el-input
-          prefix-icon="el-icon-search"
           v-model="searchForm.conference" style="width: 400px" >
         </el-input>
       </el-form-item>
@@ -64,8 +62,21 @@
           style="width: 400px">
         </el-date-picker>
       </el-form-item>
-      <el-form-item>
-        <el-button >
+      <el-form-item v-if="barType!=1">
+        <el-button>
+          研究方向
+        </el-button>
+        <el-autocomplete
+          style="width: 310px"
+          prefix-icon="el-icon-search"
+          v-model="searchForm.direction"
+          :fetch-suggestions="querySearchDirection"
+          @select="handleSelectDirection"
+        ></el-autocomplete>
+        <el-button type="text" @click="goToDirection">添加研究方向</el-button>
+      </el-form-item>
+      <el-form-item v-else>
+        <el-button>
           研究方向
         </el-button>
         <el-autocomplete
@@ -76,16 +87,11 @@
           @select="handleSelectDirection"
         ></el-autocomplete>
       </el-form-item>
-<!--      TODO-->
-<!--      <el-form-item v-if="barType!=1" style="margin-left: 100px;">
-        没有所需研究方向？联系管理员（普通用户）或<el-button type="text">添加研究方向</el-button>
-      </el-form-item>-->
       <el-form-item v-if="barType!=1">
         <el-button >
           论文链接
         </el-button>
         <el-input
-          prefix-icon="el-icon-search"
           v-model="searchForm.link" style="width: 400px" >
         </el-input>
       </el-form-item>
@@ -100,8 +106,12 @@
           v-model="searchForm.summary" style="width: 400px" >
         </el-input>
       </el-form-item>
-      <el-button type="primary" style="margin-left: 400px" icon="el-icon-search" @click="searchClick" v-if="barType==1">搜索
-      </el-button>
+      <el-form-item v-if="barType==1">
+        <el-button type="success" style="margin-left: 300px" @click="resetSearch">重置
+        </el-button>
+        <el-button type="primary" style="margin-left: 10px" icon="el-icon-search" @click="searchClick">搜索
+        </el-button>
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -207,6 +217,16 @@ export default {
         this.searchForm.type = '';
       }
       this.$emit('getSearchForm',this.searchForm);
+    },
+    resetSearch() {
+      for(let i in this.searchForm){
+        this.searchForm[i]='';
+      }
+      this.searchType='';
+      this.searchClick();
+    },
+    goToDirection() {
+      this.$router.push('/setSearchDirection');
     }
   }
 }

@@ -19,7 +19,7 @@ public class EmailServiceImpl implements EmailService{
     private String adminEmail;
 
     @Override
-    public String toUserEmailWithCode(String email) throws MessagingException, javax.mail.MessagingException{
+    public String toUserEmailWithCode(String email) throws MessagingException, MessagingException{
         String code = (Math.random()+"").substring(3,9);
         MimeMessage mimemessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimemessage,true,"UTF-8");

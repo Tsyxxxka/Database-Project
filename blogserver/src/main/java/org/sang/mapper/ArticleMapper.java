@@ -3,6 +3,7 @@ package org.sang.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.sang.bean.Article;
+import org.sang.bean.Direction;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -43,6 +44,8 @@ public interface ArticleMapper {
     List<String> getCategories(Long uid);
 
     List<Integer> getDataStatistics(Long uid);
+
+    List<Direction> getUserCountByDirection(Long uid);
 
     int addReference(@Param("aid")Long aid, @Param("rid")Long reference);
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.CommentMapper">
+
+    <delete id="deleteCommentByIds">
+        DELETE FROM comments WHERE id=#{id}
+    </delete>
+    <insert id="addNewComment" parameterType="org.sang.bean.Comments">
+        INSERT INTO comments SET articleId=#{articleId},content=#{content},publishDate=#{publishDate},parentId=#{parentId},uid=#{uid},toUid=#{toUid},level=#{level}
+    </insert>
+
+    <select id="findCommentByArticleIdLevel" resultType="org.sang.bean.Comments" >
+        SELECT * FROM comments where articleId=#{articleId} and level=#{level}
+        order by publishDate
+    </select>
+    <select id="findByParentIdLevel" resultType="org.sang.bean.Comments">
+        SELECT * FROM comments where parentId=#{parentId} and level=#{level}
+        order by publishDate
+    </select>
+    <select id="findCommentById" resultType="org.sang.bean.Comments" >
+        SELECT * FROM comments where id=#{id}
+    </select>
+    <update id="updateById" parameterType="org.sang.bean.Comments">
+        UPDATE comments SET content=#{content} WHERE id=#{id}
+    </update>
+</mapper>

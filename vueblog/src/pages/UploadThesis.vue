@@ -16,8 +16,8 @@
         v-if="active==2"></mavon-editor>
     </div>
     <el-button-group>
-      <el-button type="primary" icon="el-icon-arrow-left" @click="getFront" :disabled="active==0">上一步</el-button>
-      <el-button type="primary" @click="getNext" :disabled="active==3">下一步<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+<!--      <el-button type="primary" icon="el-icon-arrow-left" @click="getFront" :disabled="active==0">上一步</el-button>-->
+      <el-button type="primary" @click="getNext" :disabled="active==3">确定<i class="el-icon-arrow-right el-icon--right"></i></el-button>
       <el-button type="success" @click="uploadThesis" v-if="active==3">上传</el-button>
     </el-button-group>
   </div>
@@ -72,13 +72,13 @@ export default {
        this.$refs.referenceForm.getReferenceForm();
       }
       this.active = this.active + 1;
-    },
+    },/*
     getFront() {
       this.active = this.active - 1;
       if (this.active==0) {
         //TODO: remain info
       }
-    },
+    },*/
     uploadThesis() {
       var referenceList = [];
       this.referenceArticles.forEach(a => {

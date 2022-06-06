@@ -38,6 +38,7 @@ public class ArticleService {
         }
         article.setEditTime(new Timestamp(System.currentTimeMillis()));
         article.setUid(Util.getCurrentUser().getId());
+        article.setCommentCounts(0);
         int i = articleMapper.addNewArticle(article);
         return i;
     }
@@ -214,5 +215,9 @@ public class ArticleService {
      */
     public List<Integer> getDataStatistics() {
         return articleMapper.getDataStatistics(Util.getCurrentUser().getId());
+    }
+
+    public List<Direction> getUserCountByDirection() {
+        return articleMapper.getUserCountByDirection(Util.getCurrentUser().getId());
     }
 }
