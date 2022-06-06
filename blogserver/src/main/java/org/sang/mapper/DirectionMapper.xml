@@ -18,4 +18,9 @@
     <insert id="addDirection" parameterType="org.sang.bean.Direction">
         INSERT INTO search_direction SET directionName=#{directionName},parentID=#{parentId}
     </insert>
+
+    <select id="findDirectionNameById" parameterType="Long" resultType="org.sang.bean.Direction">
+        SELECT * FROM search_direction where id=#{id}
+    </select>
+
 </mapper>

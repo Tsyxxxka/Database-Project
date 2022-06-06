@@ -1,5 +1,6 @@
 package org.sang.controller;
 
+        import org.sang.bean.Article;
         import org.sang.bean.Direction;
         import org.sang.bean.RespBean;
         import org.sang.service.DirectionService;
@@ -54,4 +55,10 @@ public class DirectionController {
         }
         return new RespBean("error", "修改失败!");
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Direction findDirectionNameById(@PathVariable Long id) {
+        return directionService.findDirectionNameById(id);
+    }
+
 }
