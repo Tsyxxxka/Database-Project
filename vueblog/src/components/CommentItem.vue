@@ -2,25 +2,25 @@
   <div class="me-view-comment-item">
     <div class="me-view-comment-author">
       <div class="me-view-info">
+        <i class="icon-user"></i>
         <span class="me-view-nickname">{{comment.nickname}}</span>
-        <div class="me-view-meta">
-          <span>{{index + 1}}楼</span>
-          <span>{{comment.publishDate}}</span>
-        </div>
       </div>
     </div>
     <div>
       <p class="me-view-comment-content">{{comment.content}}</p>
-      <div class="me-view-comment-tools">
-        <a class="me-view-comment-tool" @click="showComment(-1,comment.nickname,comment.uid)">
-          <i class="me-icon-comment"></i>&nbsp;评论
+      <div class="me-view-meta">
+        <span style="color: #335A66">{{index + 1}}楼  {{comment.publishDate}}</span>
+      </div>
+      <div class="comment-edit-icon-class">
+        <a @click="showComment(-1,comment.nickname,comment.uid)">
+          <i class="icon-comment"></i>
         </a>
-        <div v-show="deleteShow">
-        <el-button @click="deleteMyComment()" type="text">删除</el-button>
-        </div>
-        <div v-show="updateShow">
-          <el-button @click="updateMyComment()" type="text">修改</el-button>
-        </div>
+        <a v-show="deleteShow" @click="deleteMyComment()" style="margin-left: 15px">
+          <i class="icon-delete"></i>
+        </a>
+        <a v-show="updateShow" @click="updateMyComment()" style="margin-left: 15px">
+          <i class="icon-edit"></i>
+        </a>
       </div>
 
       <div class="me-reply-list">
@@ -30,12 +30,16 @@
             <span v-if="c.level == 2" class="me-reply-user">@{{c.toUserNickname}} </span>
             <span>{{c.content}}</span>
           </div>
-          <div class="me-view-meta">
+          <div class="me-view-meta" style="margin-top: 10px;color: #78b6f7">
             <span style="padding-right: 10px">{{c.publishDate}}</span>
           </div>
-          <div>
-            <el-button style="margin-left: 6px; font-size: 10px" @click="deleteMyComment2(c.id)" type="text">删除</el-button>
-            <el-button style="margin-left: 6px; font-size: 10px" @click="updateMyComment2(c.id)" type="text">编辑</el-button>
+          <div class="comment-edit-icon-class2">
+            <a @click="deleteMyComment2(c.id)">
+              <i class="icon-small-delete"></i>
+            </a>
+            <a @click="updateMyComment2(c.id)">
+              <i class="icon-small-edit"></i>
+            </a>
           </div>
         </div>
         <div class="me-view-comment-write" v-show="commentShow">
@@ -48,7 +52,6 @@
               resize="none">
           </el-input>
           <el-button style="margin-left: 8px" @click="publishChildComment()" type="text">评论</el-button>
-
         </div>
       </div>
     </div>
@@ -65,17 +68,18 @@ export default {
     comment: Object,
     index: Number,
     rootCommentCounts: Number,
-    currentUid: ''
+
   },
   mounted: function (){
     let _this = this;
     this.getCurrentUid();
-    if(comment.uid != this.currentUid){
-      _this.deleteShow = false;
-    }
+    // if(this.comment.uid != this.currentUid){
+    //   _this.deleteShow = false;
+    // }
   },
   data() {
     return {
+      currentUid: '',
       placeholder: '你的评论...',
       commentShow: false,
       deleteShow: true,
@@ -282,18 +286,39 @@ export default {
 </script>
 
 <style>
-.me-view-tag-item {
-  margin: 0 4px;
+.icon-small-delete:hover {
+  color: #78b6f7;
 }
 
-.me-view-comment {
-  margin-top: 60px;
+.icon-small-edit:hover {
+  color: #78b6f7;
 }
 
-.me-view-comment-title {
-  font-weight: 600;
-  border-bottom: 1px solid #f0f0f0;
-  padding-bottom: 20px;
+.icon-edit:hover {
+  color: #78b6f7;
+}
+.icon-delete:hover {
+  color: #78b6f7;
+}
+.icon-comment:hover {
+  color: #78b6f7;
+}
+
+.comment-edit-icon-class {
+  margin-top: 10px;
+  margin-left: 800px;
+  height: 60px;
+  color: #335A66;
+}
+
+.comment-edit-icon-class {
+  margin-top: 10px;
+  height: 60px;
+  color: #335A66;
+}
+
+.me-view-meta {
+  font-size: 10px;
 }
 
 .me-view-comment-write {
@@ -324,11 +349,14 @@ export default {
 }
 
 .me-view-nickname {
-  font-size: 14px;
+  font-size: 25px;
+  font-family: "AR PL UKai CN";
+  color: #335A66;
 }
 
 .me-view-comment-content {
   line-height: 1.5;
+  font-family: Avenir;
 }
 
 .me-view-comment-tools {

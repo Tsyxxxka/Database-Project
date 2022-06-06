@@ -24,6 +24,15 @@ public class User implements UserDetails {
     private String userface;
     private String regTime;
     private String code;
+    private Long auth;
+
+    public Long getAuth() {
+        return auth;
+    }
+
+    public void setAuth(Long auth) {
+        this.auth = auth;
+    }
 
     public String getRegTime() {
         return regTime;

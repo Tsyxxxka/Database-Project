@@ -3,7 +3,7 @@ package org.sang.bean;
 /**
  * Created by sang on 2017/12/17.
  */
-public class Role {
+public class Role { //id= 1:chaoji 2:guanli 3:putong
     private Long id;
     private String name;
 

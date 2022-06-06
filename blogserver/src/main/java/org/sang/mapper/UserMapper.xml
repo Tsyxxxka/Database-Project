@@ -13,7 +13,7 @@
         INSERT INTO user set username=#{username},password=#{password}
     </insert>
     <insert id="regMail" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user set username=#{username},password=#{password},email=#{email},code=#{code},regTime=#{regTime}
+        INSERT INTO user set username=#{username},nickname=#{nickname},password=#{password},email=#{email},regTime=#{regTime},auth=#{auth}
     </insert>
     <select id="findTrueCodeByEmail" resultType="org.sang.bean.UserCode">
         SELECT * FROM user_code WHERE email=#{email}
@@ -46,9 +46,8 @@
             </otherwise>
         </choose>
     </select>
-    <select id="getUserById" resultMap="BaseResultMap">
-        SELECT u.*,r.`id` AS rid,r.`name` AS rname FROM user u,roles r,roles_user ru WHERE u.`id`=ru.`uid` AND
-        r.`id`=ru.`rid` AND u.`id`=#{id}
+    <select id="getUserById" resultType="org.sang.bean.User">
+        SELECT * FROM user WHERE id=#{id}
     </select>
     <resultMap id="BaseResultMap" type="org.sang.bean.User">
         <id column="id" property="id"/>

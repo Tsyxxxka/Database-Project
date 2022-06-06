@@ -11,7 +11,7 @@
         上传用户: {{article.nickname}}
       </div>
       <span style="color: #335A66;margin-right:20px;font-size: 15px;">浏览 {{article.pageView==null?0:article.pageView}}</span>
-      <span style="color: #335A66;margin-right:20px;font-size: 15px;">最近编辑于 {{article.editTime | formatDateTime}}</span>
+      <span style="color: #335A66;margin-right:20px;font-size: 15px;">最近编辑于 {{article.editTime}}</span>
     </div>
     <div class="content">
       <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">
@@ -51,22 +51,21 @@
           <div class="me-view-comment">
             <div class="me-view-comment-write">
               <el-row :gutter="20">
-                <el-col :span="2">
-                </el-col>
                 <el-col :span="22">
                   <el-input
                       type="textarea"
-                      :autosize="{ minRows: 2}"
+                      :autosize="{ minRows: 4}"
                       placeholder="你的评论..."
                       class="me-view-comment-text"
                       v-model="comment.content"
-                      resize="none">
+                      resize="none"
+                      style="margin-left: 40px">
                   </el-input>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="2" :offset="22">
-                  <el-button type="primary" @click="publishComment">评论</el-button>
+                <el-col :span="2" :offset="20" style="margin-top: 20px">
+                  <el-button type="primary" @click="publishComment" size="medium">发表评论</el-button>
                 </el-col>
               </el-row>
             </div>
@@ -156,13 +155,17 @@
         getRequest("/comment/" + aid).then(resp =>{
           if (resp.status == 200) {
             that.comments = resp.data;
-            that.$message({type: 'success', message: resp.response.data});
+            //that.$message({type: 'success', message: resp.data});
+            console.info(resp.data);
           }
+          console.info(resp.data);
           that.loading = false;
           }, resp => {
+          console.info(resp.data);
           that.loading = false;
-          that.$message({type: 'error', message: resp.response.data});
+          that.$message({type: 'error', message: resp.data});
         });
+        console.info(222);
       },
       commentCountsIncrement() {
         this.article.commentCounts += 1
@@ -170,10 +173,10 @@
     },
     mounted: function () {
       var aid = this.$route.query.aid; //get id of the thesis
-      //this.activeName = this.$route.query.an
       var _this = this;
       this.loading = true;
       this.getCommentsByArticle();
+      console.info(this.comments);
       getRequest("/article/" + aid).then(resp => {
         if (resp.status == 200) {
           _this.article = resp.data;
@@ -277,7 +280,7 @@ p {
 }
 
 .me-view-comment {
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
 .me-view-comment-title {

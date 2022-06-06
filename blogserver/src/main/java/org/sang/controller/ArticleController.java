@@ -144,12 +144,20 @@ public class ArticleController {
     }
 
     @RequestMapping("/dataStatistics")
-    public Map<String,Object> dataStatistics() {
+    public Map<String, Object> dataStatistics() {
         Map<String, Object> map = new HashMap<>();
-        List<String> categories = articleService.getCategories();
-        List<Integer> dataStatistics = articleService.getDataStatistics();
-        map.put("categories", categories);
-        map.put("ds", dataStatistics);
+        List<Direction> dataStatistics = articleService.getUserCountByDirection();
+        List<String> directionName = new ArrayList<>();
+        List<Integer> directionCount = new ArrayList<>();
+        int totalCount = 0;
+        for (Direction d: dataStatistics) {
+            totalCount ++;
+            directionName.add(d.getDirectionName());
+            directionCount.add(d.getDirectionCount());
+        }
+        map.put("directionName", directionName);
+        map.put("directionCount", directionCount);
+        map.put("totalCount",totalCount);
         return map;
     }
 }
