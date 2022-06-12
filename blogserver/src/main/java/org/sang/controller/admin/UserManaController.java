@@ -45,6 +45,15 @@ public class UserManaController {
         }
     }
 
+    @RequestMapping(value = "/user/auth", method = RequestMethod.PUT)
+    public RespBean updateUserAuth(Boolean auth, Long uid) {
+        if (userService.updateUserAuth(auth, uid) == 1) {
+            return new RespBean("success", "更新成功!");
+        } else {
+            return new RespBean("error", "更新失败!");
+        }
+    }
+
     @RequestMapping(value = "/user/{uid}", method = RequestMethod.DELETE)
     public RespBean deleteUserById(@PathVariable Long uid) {
         if (userService.deleteUserById(uid) == 1) {

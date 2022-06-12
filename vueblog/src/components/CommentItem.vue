@@ -68,7 +68,6 @@ export default {
     comment: Object,
     index: Number,
     rootCommentCounts: Number,
-
   },
   mounted: function (){
     let _this = this;

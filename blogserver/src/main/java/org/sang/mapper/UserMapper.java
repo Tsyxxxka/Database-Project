@@ -40,6 +40,7 @@ public interface UserMapper {
     List<Role> getAllRole();
 
     int updateUserEnabled(@Param("enabled") Boolean enabled, @Param("uid") Long uid);
+    int updateUserAuth(@Param("auth") Boolean auth, @Param("uid") Long uid);
 
     int deleteUserById(Long uid);
 

@@ -33,9 +33,7 @@
             var obj = {};
             obj["name"] = resp.data.directionName[i];
             obj["value"] = resp.data.directionCount[i];
-            console.info(typeof [{name: '测试', value: 1}]);
             _this.pieData.push(obj);
-            console.info(_this.pieData);
           }
           _this.$refs.dschart.options.xAxis.data = resp.data.directionName;
           _this.$refs.dschart.options.series[0].data = resp.data.directionCount;

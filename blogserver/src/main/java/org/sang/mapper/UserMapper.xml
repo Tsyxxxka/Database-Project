@@ -34,15 +34,14 @@
         UPDATE user set password=#{password} WHERE id=#{id}
     </update>
 
-    <select id="getUserByNickname" resultMap="BaseResultMap">
-        SELECT u.*,r.`id` AS rid,r.`name` AS rname FROM user u,roles r,roles_user ru WHERE u.`id`=ru.`uid` AND
-        r.`id`=ru.`rid` AND u.`id` NOT IN(SELECT u.`id` FROM user u,roles_user ru WHERE u.`id`=ru.`uid` AND ru.`rid`=1)
+    <select id="getUserByNickname" resultType="org.sang.bean.User">
+        SELECT * FROM user WHERE auth!=-1
         <choose>
             <when test="nickname!=null and nickname!=''">
-                and u.nickname like concat('%',#{nickname},'%') ORDER BY u.`id`
+                AND nickname like concat('%',#{nickname},'%') ORDER BY id
             </when>
             <otherwise>
-                ORDER BY u.`id` limit 20
+                ORDER BY id limit 20
             </otherwise>
         </choose>
     </select>
@@ -68,6 +67,9 @@
     </select>
     <update id="updateUserEnabled">
         UPDATE user set enabled=#{enabled} WHERE id=#{uid}
+    </update>
+    <update id="updateUserAuth">
+        UPDATE user set auth=#{auth} WHERE id=#{uid}
     </update>
     <delete id="deleteUserById">
         DELETE FROM user WHERE id=#{id}

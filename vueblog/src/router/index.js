@@ -46,38 +46,49 @@ export default new Router({
           path: '/thesisList',
           name: '论文列表',
           component: ThesisList,
-          meta: {
-            keepAlive: false
-          }
-        }, {
-          path: '/uploadThesis',
-          name: '上传论文',
-          component: uploadThesis,
-          meta: {
-            keepAlive: false
-          }
-        }, {
-          path: '/thesisDetail',
-          name: '论文详情',
-          component: ThesisDetail,
-          hidden: true,
-          meta: {
-            keepAlive: false
-          }
-        }, {
-          path: '/editThesis',
-          name: '编辑论文信息',
-          component: ThesisEdit,
-          hidden: true,
+          iconCls: 'fa fa-file-text-o',
           meta: {
             keepAlive: false
           }
         }
       ]
     }, {
+      path: '/thesisDetail',
+      name: '论文详情',
+      component: ThesisDetail,
+      hidden: true,
+      meta: {
+        keepAlive: false
+      }
+    }, {
+      path: '/editThesis',
+      name: '编辑论文信息',
+      component: ThesisEdit,
+      hidden: true,
+      meta: {
+        keepAlive: false
+      }
+    },{
+      path: '/home',
+      component: Home,
+      name: '上传论文',
+      iconCls: 'fa fa-file-text-o',
+      children: [{
+          path: '/uploadThesis',
+          name: '上传论文',
+          component: uploadThesis,
+          iconCls: 'fa fa-file-text-o',
+          meta: {
+            keepAlive: false
+          }
+        }
+      ]
+    },
+    {
       path: '/home',
       component: Home,
       name: '用户管理',
+      hidden: true,
       children: [
         {
           path: '/user',
@@ -103,6 +114,7 @@ export default new Router({
       path: '/home',
       component: Home,
       name: '研究方向管理',
+      hidden: true,
       children: [
         {
           path: '/setSearchDirection',

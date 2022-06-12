@@ -4,12 +4,19 @@
       <div class="home_title">实验室论文管理系统</div>
       <div class="home_userinfoContainer">
         <el-dropdown @command="handleCommand">
-  <span class="el-dropdown-link home_userinfo">
-    {{currentUserName}}<i class="el-icon-arrow-down el-icon--right home_userinfo"></i>
-  </span>
+      <span class="el-dropdown-link home_userinfo">
+        {{currentUserName}}<i class="el-icon-arrow-down el-icon--right home_userinfo"></i>
+      </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="sysMsg">系统消息</el-dropdown-item>
-            <el-dropdown-item command="MyArticle">我的文章</el-dropdown-item>
+            <el-dropdown-item v-if="currentUserAuth!=0">
+              <router-link to = '/user'>用户管理</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item v-if="currentUserAuth!=0">
+              <router-link to = '/setSearchDirection'>研究方向管理</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item v-if="currentUserAuth!=0">
+              <router-link to = '/charts'>数据管理</router-link>
+            </el-dropdown-item>
             <el-dropdown-item>
               <router-link to = '/selfUser'>个人主页</router-link>
             </el-dropdown-item>
@@ -79,21 +86,34 @@
       }
     },
     mounted: function () {
-     /*this.$alert('为了确保所有的小伙伴都能看到完整的数据演示，数据库只开放了查询权限和部分字段的更新权限，其他权限都不具备，完整权限的演示需要大家在自己本地部署后，换一个正常的数据库用户后即可查看，这点请大家悉知!', '友情提示', {
-        confirmButtonText: '确定',
-        callback: action => {
-        }
-      });*/
+      //TODO: Remove tourists
+      //TODO: Get Auth
       var _this = this;
       getRequest("/currentUserName").then(function (msg) {
         _this.currentUserName = msg.data;
       }, function (msg) {
         _this.currentUserName = '游客';
       });
+      getRequest("/currentUserId").then(function (msg) {
+        _this.currentUserId = msg.data;
+        if (msg.data) {
+          getRequest("/admin/user/" + _this.currentUserId).then(resp=> {
+            if (resp.status == 200) {
+              _this.currentUserAuth = resp.data.auth;
+            }
+          }, resp=> {
+            _this.$message({type: 'error', message: '用户身份错误！请联系管理员。'});
+          });
+        }
+      }, function (msg) {
+        this.$message.error("用户身份错误！请联系管理员。");
+      });
     },
     data(){
       return {
-        currentUserName: ''
+        currentUserName: '',
+        currentUserId: '',
+        currentUserAuth: ''
       }
     }
   }

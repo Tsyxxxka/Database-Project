@@ -24,13 +24,13 @@ public class User implements UserDetails {
     private String userface;
     private String regTime;
     private String code;
-    private Long auth;
+    private Integer auth;
 
-    public Long getAuth() {
+    public Integer getAuth() {
         return auth;
     }
 
-    public void setAuth(Long auth) {
+    public void setAuth(Integer auth) {
         this.auth = auth;
     }
 

@@ -44,13 +44,13 @@ public class UserService implements UserDetailsService {
         //查询用户的角色信息，并返回存入user中
         List<Role> roles = new ArrayList<>();
         Role r = new Role();
-        Long i = user.getAuth();
-        r.setId(i);
-        if (i==1) {
-            r.setName("超级管理员");
-        } else {
-            r.setName("普通用户");
-        }
+        Integer i = user.getAuth();
+//        r.setId(i);
+//        if (i==1) {
+//            r.setName("超级管理员");
+//        } else {
+//            r.setName("普通用户");
+//        }
         user.setRoles(roles);
         return user;
     }
@@ -97,7 +97,7 @@ public class UserService implements UserDetailsService {
         //插入用户,插入之前先对密码进行加密
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);//用户可用
-        user.setAuth(2L);
+        user.setAuth(0);//common user
         UserCode userCode = userMapper.findTrueCodeByEmail(user.getEmail());
         boolean a = (user.getCode()).equals(userCode.getTrueCode());
         if(!a)
@@ -153,7 +153,9 @@ public class UserService implements UserDetailsService {
     public int updateUserEnabled(Boolean enabled, Long uid) {
         return userMapper.updateUserEnabled(enabled, uid);
     }
-
+    public int updateUserAuth(Boolean auth, Long uid) {
+        return userMapper.updateUserAuth(auth, uid);
+    }
     public int deleteUserById(Long uid) {
         return userMapper.deleteUserById(uid);
     }

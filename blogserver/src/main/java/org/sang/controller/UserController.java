@@ -26,9 +26,7 @@ public class UserController {
     PasswordEncoder passwordEncoder;
 
     @RequestMapping("/currentUserName")
-    public String currentUserName() {
-        return Util.getCurrentUser().getNickname();
-    }
+    public String currentUserName() { return Util.getCurrentUser().getNickname(); }
 
     @RequestMapping("/currentUserId")
     public Long currentUserId() {
