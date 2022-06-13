@@ -56,8 +56,7 @@ public class CommentService {
             int result = commentMapper.updateById(comment);
             return result;
         }
-        else
-            return 2;
+        return 2;
     }
 
     public int deleteCommentByIds(long id) {

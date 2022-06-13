@@ -31,7 +31,6 @@ public class CommentController {
         if ("".equals(comment.getContent())) {
             return new RespBean("error", "请输入评论内容!");
         }
-        System.out.println("get here!");
         int result = commentsService.comment(comment);
         if(result == 1)
             return new RespBean("success", "添加成功!");
@@ -42,12 +41,15 @@ public class CommentController {
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public RespBean updateComment(Comments comment){
         int result = commentsService.changecomment(comment);
-        if(result == 1)
+        if(result == 1) {
             return new RespBean("success", "修改成功!");
-        if(result == 2)
-            return new RespBean("false", "修改失败，无权限!");
-        else
-            return new RespBean("false", "修改失败!");
+        }
+        else if(result == 2) {
+            return new RespBean("error", "修改失败，无权限!");
+        }
+        else {
+            return new RespBean("error", "修改失败!");
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

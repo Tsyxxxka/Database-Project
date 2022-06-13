@@ -116,14 +116,13 @@ export default {
       postRequest('/comment/', that.reply).then(data => {
         if(data.status == 200){
           if(data.data.status == 'success'){
-            that.$message.success('评论成功!')
             if(!that.comment.childrens){
               that.comment.childrens = []
             }
             that.comment.childrens.unshift(data.data)
             that.$emit('commentCountsIncrement')
             that.showComment(that.commentShowIndex)
-
+            that.refresh();
           }else{
             that.$message.error(data.data.msg);
           }
@@ -155,25 +154,16 @@ export default {
       this.loading = true;
       //删除
       deleteRequest("/comment/" + id).then(resp=> {
-        var json = resp.data;
-        _this.$message({
-          type: json.status,
-          message: json.msg
-        });
-      }, resp=> {
-        _this.loading = false;
-        if (resp.response.status == 403) {
-          _this.$message({
-            type: 'error',
-            message: resp.response.data
-          });
-        } else if (resp.response.status == 500) {
-          _this.$message({
-            type: 'error',
-            message: '该评论下尚有评论，删除失败!'
-          });
-        }
-      })
+          if(resp.data.status == 'success') {
+            _this.refresh();
+          } else if (resp.data.status == 'error') {
+            _this.$message({
+              type: 'error',
+              message: resp.data.msg
+            });
+          }
+      });
+      this.loading = false;
     },
     updateMyComment(){
       var _this = this;
@@ -211,6 +201,7 @@ export default {
           });
         }
       });
+
     },
     deleteMyComment2(id){
       let _this = this;
@@ -224,6 +215,9 @@ export default {
         //取消
         _this.loading = false;
       });
+    },
+    refresh() {
+      location.reload();
     },
     updateMyComment2(id){
       var _this = this;
@@ -244,21 +238,21 @@ export default {
             id: id,
             content: value
           }).then(resp=> {
-            var json = resp.data;
-            _this.$message({
-              type: json.status,
-              message: json.msg
-            });
-            _this.refresh();
-          }, resp=> {
-            if (resp.response.status == 403) {
+            console.info(resp.data);
+            if(resp.data.status == 'success') {
+              _this.$message({
+                type: 'success',
+                message: resp.data.msg
+              });
+              _this.refresh();
+            } else if (resp.data.status == 'error') {
               _this.$message({
                 type: 'error',
-                message: resp.response.data
+                message: resp.data.msg
               });
             }
-            _this.loading = false;
           });
+          _this.loading = false;
         }
       });
     },
