@@ -136,11 +136,15 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/restore", method = RequestMethod.PUT)
-    public RespBean restoreArticle(Integer articleId) {
-        if (articleService.restoreArticle(articleId) == 1) {
+    public RespBean restoreArticle(Long articleId) {
+        int r = articleService.restoreArticle(articleId);
+        if ( r == 1) {
             return new RespBean("success", "还原成功!");
+        } else if ( r==0 ) {
+            return new RespBean("error", "还原失败!");
+        } else {  //r==2
+            return new RespBean("error", "还原失败! 权限不足！");
         }
-        return new RespBean("error", "还原失败!");
     }
 
     @RequestMapping("/dataStatistics")

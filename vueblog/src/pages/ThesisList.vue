@@ -3,13 +3,13 @@
     <el-main class="main">
       <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
         <el-tab-pane label="全部论文" name="all">
-          <thesis-table :state=1 :showEdit="false" :showDelete="false" :showRestore="false"></thesis-table>
+          <thesis-table :state=1 :isAdmin="isAdmin" :showEdit="false" :showDelete="false" :showRestore="false"></thesis-table>
         </el-tab-pane>
         <el-tab-pane label="我上传的论文" name="myAll">
-          <thesis-table :state=0 :showEdit="true" :showDelete="true" :showRestore="false"></thesis-table>
+          <thesis-table :state=0 :isAdmin="isAdmin" :showEdit="true" :showDelete="true" :showRestore="false"></thesis-table>
         </el-tab-pane>
         <el-tab-pane label="回收站" name="dustbin">
-          <thesis-table :state=2 :showEdit="false" :showDelete="true" :showRestore="true"></thesis-table>
+          <thesis-table :state=2 :isAdmin="isAdmin" :showEdit="false" :showDelete="true" :showRestore="true"></thesis-table>
         </el-tab-pane>
       </el-tabs>
     </el-main>
@@ -23,10 +23,9 @@
   import {getRequest} from '../utils/api'
   export default {
     mounted: function () {
-      var _this = this;
       getRequest("/isAdmin").then(resp=> {
         if (resp.status == 200) {
-          _this.isAdmin = resp.data;
+          this.isAdmin = resp.data;
         }
       })
     },
@@ -39,7 +38,7 @@
     methods: {
       handleClick(tab, event) {
 //        console.log(tab, event);
-      }
+      },
     },
     components: {
       ThesisTable,

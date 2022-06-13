@@ -14,9 +14,9 @@
     <div style="display: flex;justify-content: flex-start">
       <thesis-search-bar @getSearchForm="getSearchForm" :state="state"></thesis-search-bar>
     </div>
-    <!--<div style="width: 100%;height: 1px;background-color: #20a0ff;margin-top: 8px;margin-bottom: 0px"></div>-->
     <el-table
       ref="multipleTable"
+      :key="isAdmin"
       :data="articles"
       tooltip-effect="dark"
       style="width: 100%;overflow-x: hidden; overflow-y: hidden;"
@@ -25,12 +25,15 @@
       :max-height="800">
       <el-table-column
         type="selection"
-        width="35" align="left" v-if="showEdit || showDelete">
+        width="35" align="left"
+        v-if="isAdmin || showDelete">
       </el-table-column>
       <el-table-column
+        prop="title"
         label="标题"
         width="300" align="left">
-        <template slot-scope="scope"><span style="color: #409eff;cursor: pointer" @click="itemClick(scope.row)">{{ scope.row.title}}</span>
+        <template slot-scope="scope">
+          <span style="color: #409eff;cursor: pointer" @click="itemClick(scope.row)">{{ scope.row.title}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -49,6 +52,7 @@
         width="150" align="left">
       </el-table-column>
       <el-table-column
+        prop="publishDate"
         label="发表日期" width="130" align="left">
         <template slot-scope="scope">{{ scope.row.publishDate.toString().slice(0,10) }}</template>
       </el-table-column>
@@ -64,10 +68,11 @@
         :formatter="typeFormatter">
       </el-table-column>
       <el-table-column
+        prop="editTime"
         label="最近编辑时间" width="140" align="left">
         <template slot-scope="scope">{{ scope.row.editTime | formatDateTime}}</template>
       </el-table-column>
-      <el-table-column label="操作" align="left" v-if="showEdit || showDelete">
+      <el-table-column label="操作" align="left" v-if="isAdmin || showEdit || showDelete">
         <template slot-scope="scope">
           <el-button
             @click="handleEdit(scope.$index, scope.row)" v-if="showEdit">编辑
@@ -77,13 +82,13 @@
           </el-button>
           <el-button
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)" v-if="showDelete">删除
+            @click="handleDelete(scope.$index, scope.row)" v-if="isAdmin || showDelete">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="blog_table_footer">
-      <el-button type="danger"  style="margin: 0px;" v-show="this.articles.length>0 && showDelete"
+      <el-button type="danger"  style="margin: 0px;" v-show="this.articles.length>0 && (isAdmin || showDelete)"
                  :disabled="this.selItems.length==0" @click="deleteMany">批量删除
       </el-button>
       <span></span>
@@ -101,8 +106,6 @@
   import {putRequest} from '../utils/api'
   import {getRequest} from '../utils/api'
   import thesisSearchBar from "./ThesisSearchBar";
-//  import Vue from 'vue'
-//  var bus = new Vue()
 
   export default{
     components: {
@@ -133,13 +136,20 @@
         default: 1
       },
       showEdit: {
-        type: Boolean
+        type: Boolean,
+        default: false,
       },
       showDelete: {
-        type: Boolean
+        type: Boolean,
+        default: false,
       },
       showRestore: {
-        type: Boolean
+        type: Boolean,
+        default: false,
+      },
+      isAdmin: {
+        type: Boolean,
+        default: false,
       }
     },
     mounted: function () {
@@ -147,7 +157,6 @@
       var _this = this;
       this.loading = true;
       this.loadBlogs(1, this.pageSize);
-      // ???
       var _this = this;
       window.bus.$on('blogTableReload', function () {
         _this.loading = true;
@@ -186,15 +195,11 @@
               "&author=" + this.searchForm.author +
               "&conference=" + this.searchForm.conference +
               "&direction=" + this.searchForm.direction;
-        /*if (this.state == -2) {
-          url = "/admin/article/all" + "?page=" + page + "&count=" + count + "&keywords=" + this.keywords;
-        } else {
-          url = "/article/all?state=" + this.state + "&page=" + page + "&count=" + count + "&keywords=" + this.keywords;
-        }*/
         getRequest(url).then( resp => {
           _this.loading = false;
           if (resp.status == 200) {
             _this.articles = resp.data.articles;
+            console.info(resp.data.articles);
             _this.totalCount = resp.data.totalCount;
           } else {
             _this.$message({type: 'error', message: '数据加载失败!'});
@@ -257,12 +262,6 @@
           type: 'warning'
         }).then(() => {
           _this.loading = true;
-          /*var url = '';
-          if (_this.state == -2) {
-            url = "/admin/article/dustbin";
-          } else {
-            url = "/article/dustbin";
-          }*/
           putRequest('/article/dustbin', {aids: _this.dustbinData, state: state}).then(resp=> {
             if (resp.status == 200) {
               var data = resp.data;

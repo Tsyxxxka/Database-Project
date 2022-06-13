@@ -155,17 +155,12 @@
         getRequest("/comment/" + aid).then(resp =>{
           if (resp.status == 200) {
             that.comments = resp.data;
-            //that.$message({type: 'success', message: resp.data});
-            console.info(resp.data);
           }
-          console.info(resp.data);
           that.loading = false;
           }, resp => {
-          console.info(resp.data);
           that.loading = false;
           that.$message({type: 'error', message: resp.data});
         });
-        console.info(222);
       },
       commentCountsIncrement() {
         this.article.commentCounts += 1
@@ -176,7 +171,6 @@
       var _this = this;
       this.loading = true;
       this.getCommentsByArticle();
-      console.info(this.comments);
       getRequest("/article/" + aid).then(resp => {
         if (resp.status == 200) {
           _this.article = resp.data;

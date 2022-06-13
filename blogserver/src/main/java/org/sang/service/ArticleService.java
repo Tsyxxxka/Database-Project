@@ -2,6 +2,7 @@ package org.sang.service;
 
 import org.sang.bean.Article;
 import org.sang.bean.Direction;
+import org.sang.bean.User;
 import org.sang.mapper.ArticleMapper;
 import org.sang.mapper.DirectionMapper;
 import org.sang.mapper.TagsMapper;
@@ -159,7 +160,7 @@ public class ArticleService {
     }
 
     public int updateArticleState(Long[] aids, Integer state) {
-        if (state == 2) {
+        if (state == 2) { //delete permanently
             // delete note
             int result1 = articleMapper.deleteNoteByArticleId(aids);
             if (result1 != 1) {
@@ -185,8 +186,14 @@ public class ArticleService {
         }
     }
 
-    public int restoreArticle(Integer articleId) {
-        return articleMapper.updateArticleStateById(articleId, 1); // 从回收站还原在原处
+    public int restoreArticle(Long articleId) {
+        User user = Util.getCurrentUser();
+        Article article = articleMapper.getArticleById(articleId);
+        Long uid = article.getUid();
+        if (user.getAuth()!=0 || user.getId()== uid) {
+            return articleMapper.updateArticleStateById(articleId, 1); // 从回收站还原在原处
+        }
+        return 2;
     }
 
     public Article getArticleById(Long aid) {

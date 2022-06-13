@@ -26,7 +26,7 @@ public interface ArticleMapper {
 
     int updateArticleState(@Param("aids") Long aids[], @Param("state") Integer state);
 
-    int updateArticleStateById(@Param("articleId") Integer articleId, @Param("state") Integer state);
+    int updateArticleStateById(@Param("articleId") Long articleId, @Param("state") Integer state);
 
     int deleteArticleById(@Param("aids") Long[] aids);
     int getReferencedNumber(@Param("aids") Long[] aids);

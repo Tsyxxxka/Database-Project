@@ -50,8 +50,9 @@ public class CommentService {
 
 
     public int changecomment(Comments comment) {
+        User user = getCurrentUser();
         Comments comment1 = commentMapper.findCommentById(comment.getId());
-        if(Util.getCurrentUser().getId()==comment1.getUid()){
+        if(user.getId()==comment1.getUid()){
             int result = commentMapper.updateById(comment);
             return result;
         }
@@ -62,8 +63,7 @@ public class CommentService {
     public int deleteCommentByIds(long id) {
         User user = getCurrentUser();
         Comments comment = commentMapper.findCommentById(id);
-        //还要判断管理员
-        if(comment.getUid()==user.getId()){
+        if(comment.getUid()==user.getId() || user.getAuth()!=0){
             if(comment.getLevel() == 1){
                 List<Comments> comments = commentMapper.findByParentIdLevel(id,2);
                 for (Comments comment1 : comments) {

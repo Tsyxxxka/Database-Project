@@ -46,11 +46,9 @@ public class UserController {
 
     @RequestMapping("/isAdmin")
     public Boolean isAdmin() {
-        List<GrantedAuthority> authorities = Util.getCurrentUser().getAuthorities();
-        for (GrantedAuthority authority : authorities) {
-            if (authority.getAuthority().contains("超级管理员")) {
-                return true;
-            }
+        User user = Util.getCurrentUser();
+        if (user.getAuth()!=0) {
+            return true;
         }
         return false;
     }
