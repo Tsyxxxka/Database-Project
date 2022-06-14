@@ -1,12 +1,7 @@
 package org.sang.bean;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Created by sang on 2017/12/20.
@@ -26,6 +21,7 @@ public class Article {
     private String[] dynamicTags;
     private String nickname;
     private String directionName;
+    private List<Integer> multiDirection;
     private String cateName;
     private List<Tags> tags;
     private String stateStr;
@@ -235,5 +231,13 @@ public class Article {
 
     public void setDirection(Integer direction) {
         this.direction = direction;
+    }
+
+    public void setMultiDirection(List<Integer> multiDirection) {
+        this.multiDirection = multiDirection;
+    }
+
+    public List<Integer> getMultiDirection() {
+        return multiDirection;
     }
 }

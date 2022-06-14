@@ -43,7 +43,9 @@ export default {
         type: '',
         author: '',
         conference: '',
+        isMul: false,
         direction: '',
+        multiDirection: '',
         summary: '',
         publishDate: ''
       },
@@ -61,24 +63,28 @@ export default {
     getNext() {
       if (this.active==0) {
         this.$refs.searchBar.searchClick();
-        for (let k in this.uploadForm) {
-          if (this.uploadForm[k].length == 0 && k != 'user') {
-            this.$message.error('请填上必要信息！');
-            return;
+        if (this.uploadForm.isMul) {
+          for (let k in this.uploadForm) {
+            if (this.uploadForm[k].length == 0 && k != 'user' && k != 'direction') {
+              this.$message.error('请填上必要信息！');
+              return;
+            }
+          }
+        } else {
+          for (let k in this.uploadForm) {
+            if (this.uploadForm[k].length == 0 && k != 'user' && k != 'multiDirection') {
+              this.$message.error('请填上必要信息！');
+              return;
+            }
           }
         }
+
       }
       if (this.active == 1) {
        this.$refs.referenceForm.getReferenceForm();
       }
       this.active = this.active + 1;
-    },/*
-    getFront() {
-      this.active = this.active - 1;
-      if (this.active==0) {
-        //TODO: remain info
-      }
-    },*/
+    },
     uploadThesis() {
       var referenceList = [];
       this.referenceArticles.forEach(a => {
@@ -92,7 +98,8 @@ export default {
         summary: this.uploadForm.summary,
         link: this.uploadForm.link,
         publishDate: this.uploadForm.publishDate,
-        directionName: this.uploadForm.direction,
+        //directionName: this.uploadForm.direction,
+        multiDirection: this.uploadForm.multiDirection,
         referenceList: referenceList,
         note: this.note
       }).then(resp => {
@@ -100,12 +107,6 @@ export default {
           //成功
           this.$message.success('上传成功!');
           this.$router.push('/thesisList');
-          /*var json = resp.data;
-          if (json.status == 'success') {
-            _this.$router.replace({path: '/home'});
-          } else {
-            _this.$alert('登录失败!', '失败!');
-          }*/
         } else {
           //失败
           this.$alert('失败!', '失败!');

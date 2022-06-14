@@ -29,21 +29,24 @@ public class ArticleService {
     DirectionMapper directionMapper;
 
     public int addNewArticle(Article article) {
-        String directionName = article.getDirectionName();
-        List<Direction> allDirections = directionMapper.getAllDirection();
-        for (Direction d : allDirections) {
-            if (directionName.equals(d.getDirectionName())) {
-                article.setDirection(d.getId());
-                break;
-            }
-        }
         article.setEditTime(new Timestamp(System.currentTimeMillis()));
         article.setUid(Util.getCurrentUser().getId());
         article.setCommentCounts(0);
         int i = articleMapper.addNewArticle(article);
+        Long aid = article.getId();
+        List<Integer> directionsId = article.getMultiDirection();
+        for (Integer did : directionsId) {
+            int r = setArticleDirection(aid, did);
+            if (r != 1) {
+                return -1;
+            }
+        }
         return i;
     }
 
+    public int setArticleDirection(Long aid, Integer did) {
+        return articleMapper.setArticleDirection(aid, did);
+    }
 
     public int addReference(Long aid,List<Long> referenceList) {
         for (Long r : referenceList) {

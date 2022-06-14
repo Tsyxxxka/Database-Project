@@ -74,21 +74,23 @@ public class ArticleController {
     @RequestMapping(value = "/addNew", method = RequestMethod.POST)
     public RespBean addNewArticle(Article article) {
         int result1 = articleService.addNewArticle(article);
-        if (result1 != 1) {
-            return new RespBean("error", "Upload failed!");
+        if (result1 == -1) {
+            return new RespBean("error", "研究方向设置失败!请联系管理员!");
+        } else if (result1 != 1) {
+            return new RespBean("error", "上传失败!");
         }
         Long aid = article.getId();
         List<Long> referenceList = article.getReferenceList();
         int result2 = articleService.addReference(aid,referenceList);
         if (result2 != 1) {
-            return new RespBean("error","Set reference thesis failed!");
+            return new RespBean("error","引用文献失败！");
         }
         String note = article.getNote();
         int result3 = articleService.addNote(aid, note);
         if (result3 != 1) {
-            return new RespBean("error","Upload note failed!");
+            return new RespBean("error","笔记上传失败！");
         }
-        return new RespBean("success","Upload succeeded!");
+        return new RespBean("success","上传成功！");
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)

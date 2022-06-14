@@ -187,7 +187,6 @@
       loadBlogs(page, count){ //keywords search
         var _this = this;
         var url = '';
-
         url = "/article/all?state=" + this.state +
               "&page=" + page + "&count=" + count +
               "&keywords=" + this.searchForm.keywords +
@@ -196,7 +195,6 @@
               "&author=" + this.searchForm.author +
               "&conference=" + this.searchForm.conference +
               "&direction=" + this.searchForm.direction;
-        console.info(url);
         getRequest(url).then( resp => {
           _this.loading = false;
           if (resp.status == 200) {

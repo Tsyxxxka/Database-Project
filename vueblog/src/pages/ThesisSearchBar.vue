@@ -66,15 +66,30 @@
         <el-button>
           研究方向
         </el-button>
-        <el-autocomplete
-          style="width: 310px"
-          prefix-icon="el-icon-search"
-          v-model="searchForm.direction"
-          :fetch-suggestions="querySearchDirection"
-          @select="handleSelectDirection"
-        ></el-autocomplete>
+        <el-select v-model="searchForm.multiDirection" multiple filterable placeholder="请选择" :filter-method="queryDirection"
+                   style="width: 310px">
+          <el-option
+            v-for="item in directionAllForSelect"
+            :key="item.id"
+            :label="item.value"
+            :value="item.id">
+          </el-option>
+        </el-select>
         <el-button type="text" @click="goToDirection">添加研究方向</el-button>
       </el-form-item>
+<!--      <el-form-item v-if="barType!=1">-->
+<!--        <el-button>-->
+<!--          研究方向-->
+<!--        </el-button>-->
+<!--        <el-autocomplete-->
+<!--          style="width: 310px"-->
+<!--          prefix-icon="el-icon-search"-->
+<!--          v-model="searchForm.direction"-->
+<!--          :fetch-suggestions="querySearchDirection"-->
+<!--          @select="handleSelectDirection"-->
+<!--        ></el-autocomplete>-->
+<!--        <el-button type="text" @click="goToDirection">添加研究方向</el-button>-->
+<!--      </el-form-item>-->
       <el-form-item v-else>
         <el-button>
           研究方向
@@ -133,14 +148,18 @@ export default {
   },
   data() {
     return {
+      directionAllForSelect: [],
+      //value1: [],
       searchForm: {
         keywords: '',
         user: '',
         type: '',
         author: '',
         conference: '',
+        isMul: false,
         direction: '',
-        //bartype==0
+        multiDirection: [],
+        //bar-type==0
         link: '',
         summary: '',
         publishDate: '',
@@ -178,8 +197,9 @@ export default {
         if (resp.status == 200) {
           resp.data.forEach(r => {
             if (r.directionName != null) {
-              this.directionAll.push({"value": r.directionName});
+              this.directionAll.push({"id": r.id,"value": r.directionName});
             }
+            this.directionAllForSelect = this.directionAll;
           })
         }
       })
@@ -202,6 +222,14 @@ export default {
         return (all.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
     },
+    queryDirection(queryString) {
+      var directionAll = this.directionAll;
+      if (queryString == '') {
+        this.directionAllForSelect = directionAll;
+        return
+      }
+      this.directionAllForSelect = queryString ? directionAll.filter(this.createFilter(queryString)) : directionAll;
+    },
     handleSelectUser(item) {
       this.searchForm.user = item.value;
     },
@@ -213,9 +241,12 @@ export default {
       this.searchForm.direction = item.value;
     },
     searchClick() {
+      if (this.barType == 0) {
+        this.searchForm.isMul = true;
+      };
       if (this.searchType == '') {
         this.searchForm.type = '';
-      }
+      };
       this.$emit('getSearchForm',this.searchForm);
     },
     resetSearch() {

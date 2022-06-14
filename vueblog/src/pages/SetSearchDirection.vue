@@ -191,7 +191,6 @@ export default{
       let _this = this;
       getRequest("/direction/all").then(resp=> {
         _this.categories = resp.data;
-        console.info(resp.data);
         _this.loading = false;
       }, resp=> {
         if (resp.response.status == 403) {

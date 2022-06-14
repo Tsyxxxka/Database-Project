@@ -11,6 +11,7 @@ import SetSearchDirection from "../pages/SetSearchDirection";
 import ThesisList from "../pages/ThesisList";
 import uploadThesis from "../pages/UploadThesis";
 import ThesisEdit from "../pages/ThesisEdit";
+import testMultiSele from "../pages/testMultiSele";
 
 Vue.use(Router)
 
@@ -123,6 +124,18 @@ export default new Router({
           iconCls: 'fa fa-reorder',
           name: '个人主页',
           component: SelfUser,
+        }
+      ]
+    },{
+      path: '/home',
+      component: Home,
+      name: '个人',
+      children: [
+        {
+          path: '/testMul',
+          iconCls: 'fa fa-reorder',
+          name: '个人',
+          component: testMultiSele,
         }
       ]
     },
