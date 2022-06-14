@@ -2,12 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Login'
 import Home from '@/components/Home'
-import ArticleList from '@/components/ArticleList'
-import CateMana from '@/components/CateMana'
 import DataCharts from '@/components/DataCharts'
-import PostArticle from '@/components/PostArticle'
 import UserMana from '@/components/UserMana'
-import BlogDetail from '@/components/BlogDetail'
 import Register from "../pages/Register"
 import SelfUser from "../pages/SelfUser";
 import ThesisDetail from "../pages/ThesisDetail";
@@ -117,19 +113,7 @@ export default new Router({
           component: SetSearchDirection
         }
       ]
-    },/* {
-      path: '/home',
-      component: Home,
-      name: '用户注册',
-      children: [
-        {
-          path: '/register',
-          iconCls: 'fa fa-reorder',
-          name: '用户注册',
-          component: Register,
-        }
-      ]
-    },*/{
+    },{
       path: '/home',
       component: Home,
       name: '个人主页',

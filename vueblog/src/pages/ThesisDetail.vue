@@ -25,8 +25,9 @@
     <div class="content">
       <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">
         <el-descriptions-item label="论文链接">
-          <el-button type="text" @click="openUrl">
-            {{article.link}}
+          {{article.link}}
+          <el-button type="text" @click="openUrl" size="large">
+            点击跳转
           </el-button>
         </el-descriptions-item>
       </el-descriptions>
@@ -117,12 +118,7 @@
         window.open(this.article.link, "_blank");
       },
       publishComment() {
-        //this.loading = true;
         var that = this;
-        //if (!this.comment.content) {
-         // return;
-       // }
-        //that.comment.article.id = that.article.id;
         postRequest('/comment/', {
           articleId: this.article.id,
           parentId: this.comment.parentId,

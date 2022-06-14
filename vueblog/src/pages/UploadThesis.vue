@@ -16,7 +16,6 @@
         v-if="active==2"></mavon-editor>
     </div>
     <el-button-group>
-<!--      <el-button type="primary" icon="el-icon-arrow-left" @click="getFront" :disabled="active==0">上一步</el-button>-->
       <el-button type="primary" @click="getNext" :disabled="active==3">确定<i class="el-icon-arrow-right el-icon--right"></i></el-button>
       <el-button type="success" @click="uploadThesis" v-if="active==3">上传</el-button>
     </el-button-group>
@@ -27,6 +26,7 @@
 import ThesisSearchBar from "./ThesisSearchBar";
 import {postRequest} from "../utils/api";
 import {mavonEditor} from "mavon-editor";
+import 'mavon-editor/dist/css/index.css'
 import ReferenceThesis from "./ReferenceThesis";
 export default {
   name: "UploadThesis",

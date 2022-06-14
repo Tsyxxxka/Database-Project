@@ -23,7 +23,15 @@ public class UserManaController {
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public List<User> getUserByNickname(String nickname) {
-        return userService.getUserByNickname(nickname);
+        List<User> users = userService.getUserByNickname(nickname);
+        for (User u: users) {
+            if (u.getAuth() == 0) {
+                u.setAdmin(false);
+            } else {
+                u.setAdmin(true);
+            }
+        }
+        return users;
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)

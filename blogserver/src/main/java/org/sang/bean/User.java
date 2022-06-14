@@ -25,6 +25,15 @@ public class User implements UserDetails {
     private String regTime;
     private String code;
     private Integer auth;
+    private Boolean isAdmin;
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
 
     public Integer getAuth() {
         return auth;

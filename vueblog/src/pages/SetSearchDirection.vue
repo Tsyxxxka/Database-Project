@@ -191,6 +191,7 @@ export default{
       let _this = this;
       getRequest("/direction/all").then(resp=> {
         _this.categories = resp.data;
+        console.info(resp.data);
         _this.loading = false;
       }, resp=> {
         if (resp.response.status == 403) {
@@ -220,7 +221,7 @@ export default{
 </script>
 <style>
 .cate_mana_header {
-  background-color: #ececec;
+  background-color: #FFFFFF;
   margin-top: 20px;
   padding-left: 5px;
   display: flex;
@@ -232,7 +233,7 @@ export default{
   display: flex;
   flex-direction: column;
   padding-left: 5px;
-  background-color: #ececec;
+  background-color: #ffffff;
   margin-top: 20px;
   padding-top: 10px;
 }

@@ -44,10 +44,10 @@
           <div style="text-align: left;color:#335A66;font-size: 12px;margin-top: 13px">
             <span>用户角色: </span>
             <el-switch
-              v-model="user.auth"
+              v-model="user.isAdmin"
               active-text="管理员"
               active-color="#13ce66"
-              @change="authChange(user.auth,user.id,index)"
+              @change="authChange(user.isAdmin,user.id,index)"
               inactive-text="普通用户" style="margin-left: 10px;">
             </el-switch>
           </div>
@@ -118,7 +118,8 @@
           _this.loadOneUserById(id, index);
         });
       },
-      authChange(auth, id, index) {
+      authChange(isAdmin, id, index) {
+        var auth = (isAdmin == true) ? 1 : 0;
         var _this = this;
         _this.cardloading.splice(index, 1, true);
         putRequest("/admin/user/auth", {auth: auth, uid: id}).then(resp=> {
