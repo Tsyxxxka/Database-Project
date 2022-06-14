@@ -166,6 +166,9 @@ public class ArticleService {
     }
     public int updateArticleState(Long[] aids, Integer state) {
         if (state == 2) { //delete permanently
+            User user = Util.getCurrentUser();
+            if(user.getAuth()==0)
+                return -4;
             //delete comments
             List<Comments> comments = commentMapper.findCommentByArticleId(aids);
             for (Comments comment1 : comments) {

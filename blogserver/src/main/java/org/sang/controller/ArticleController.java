@@ -116,6 +116,8 @@ public class ArticleController {
             return new RespBean("error", "有选中的论文引用删除失败，论文删除失败！请联系管理员！");
         } else if (result == -3) {
             return new RespBean("error", "有选中的论文笔记删除失败，论文永久删除失败！请联系管理员！");
+        } else if (result == -4) {
+            return new RespBean("error", "请联系管理员永久删除论文！");
         }
         return new RespBean("error", "删除失败!");
     }
