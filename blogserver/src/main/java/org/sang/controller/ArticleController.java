@@ -57,7 +57,7 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public Map<String, Object> getArticleByState(@RequestParam(value = "state", defaultValue = "-1") Integer state, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "count", defaultValue = "6") Integer count, String keywords, String nickname, Integer type, String author, String conference, String direction) {
+    public Map<String, Object> getArticleByState(@RequestParam(value = "state", defaultValue = "1") Integer state, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "count", defaultValue = "6") Integer count, String keywords, String nickname, Integer type, String author, String conference, String direction) {
         int totalCount = articleService.getArticleCountByState(state, Util.getCurrentUser().getId(),keywords,nickname,type,author,conference,direction);
         List<Article> articles = articleService.getArticleByState(state, page, count,keywords,nickname,type,author,conference,direction);
         Map<String, Object> map = new HashMap<>();

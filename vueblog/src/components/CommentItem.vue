@@ -238,7 +238,6 @@ export default {
             id: id,
             content: value
           }).then(resp=> {
-            console.info(resp.data);
             if(resp.data.status == 'success') {
               _this.$message({
                 type: 'success',

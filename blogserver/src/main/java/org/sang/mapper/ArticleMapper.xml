@@ -30,6 +30,9 @@
         <if test="state==0">
             AND uid=#{uid} AND state=1
         </if>
+        <if test="state==1">
+            AND state=1
+        </if>
         <if test="keywords!=null">
             AND title LIKE concat('%',#{keywords},'%')
         </if>
@@ -65,6 +68,9 @@
         </if>
         <if test="state==0">
             AND uid=#{uid} AND state=1
+        </if>
+        <if test="state==1">
+            AND state=1
         </if>
         <if test="keywords!=null">
             AND a.title LIKE concat('%',#{keywords},'%')

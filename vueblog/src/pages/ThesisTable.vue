@@ -187,6 +187,7 @@
       loadBlogs(page, count){ //keywords search
         var _this = this;
         var url = '';
+
         url = "/article/all?state=" + this.state +
               "&page=" + page + "&count=" + count +
               "&keywords=" + this.searchForm.keywords +
@@ -195,11 +196,11 @@
               "&author=" + this.searchForm.author +
               "&conference=" + this.searchForm.conference +
               "&direction=" + this.searchForm.direction;
+        console.info(url);
         getRequest(url).then( resp => {
           _this.loading = false;
           if (resp.status == 200) {
             _this.articles = resp.data.articles;
-            console.info(resp.data.articles);
             _this.totalCount = resp.data.totalCount;
           } else {
             _this.$message({type: 'error', message: '数据加载失败!'});
