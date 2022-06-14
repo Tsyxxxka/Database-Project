@@ -224,7 +224,11 @@ public class ArticleService {
         return articleMapper.getDataStatistics(Util.getCurrentUser().getId());
     }
 
-    public List<Direction> getUserCountByDirection() {
-        return articleMapper.getUserCountByDirection(Util.getCurrentUser().getId());
+    public List<Direction> getUserCountByDirection(Long uid) {
+        Long id = uid;
+        if (id==-1) {
+            id = Util.getCurrentUser().getId();
+        }
+        return articleMapper.getUserCountByDirection(id);
     }
 }

@@ -29,21 +29,6 @@ public class ArticleController {
     @Autowired
     ArticleService articleService;
 
-    /*@RequestMapping(value = "/", method = RequestMethod.POST)
-    public RespBean addNewArticle(Article article) {
-        int result = articleService.addNewArticle(article);
-        if (result == 1) {
-            return new RespBean("success", article.getId() + "");
-        } else {
-            return new RespBean("error", article.getState() == 0 ? "文章保存失败!" : "文章发表失败!");
-        }
-    }*/
-
-    /**
-     * 上传图片
-     *
-     * @return 返回值为图片的地址
-     */
     @RequestMapping(value = "/uploadimg", method = RequestMethod.POST)
     public RespBean uploadImg(HttpServletRequest req, MultipartFile image) {
         StringBuffer url = new StringBuffer();
@@ -147,10 +132,11 @@ public class ArticleController {
         }
     }
 
-    @RequestMapping("/dataStatistics")
-    public Map<String, Object> dataStatistics() {
+    @RequestMapping(value = "/dataStatistics/{uid}", method = RequestMethod.GET)
+    public Map<String, Object> dataStatistics(@PathVariable Long uid) {
         Map<String, Object> map = new HashMap<>();
-        List<Direction> dataStatistics = articleService.getUserCountByDirection();
+        //add uid
+        List<Direction> dataStatistics = articleService.getUserCountByDirection(uid);
         List<String> directionName = new ArrayList<>();
         List<Integer> directionCount = new ArrayList<>();
         int totalCount = 0;

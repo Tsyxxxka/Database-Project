@@ -26,8 +26,12 @@
       'chart': ECharts
     },
     mounted: function () {
+      var uid = this.$route.query.uid;
+      if (uid==null) {
+        uid = -1;
+      }
       var _this = this;
-      getRequest("/article/dataStatistics").then(resp=> {
+      getRequest("/article/dataStatistics/" + uid).then(resp=> {
         if (resp.status == 200) {
           for (let i = 0; i < resp.data.totalCount; i++) {
             var obj = {};

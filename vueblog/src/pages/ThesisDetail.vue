@@ -116,7 +116,6 @@
       openUrl() {
         window.open(this.article.link, "_blank");
       },
-
       publishComment() {
         //this.loading = true;
         var that = this;

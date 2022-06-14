@@ -14,7 +14,7 @@
                v-loading="cardloading[index]">
         <div slot="header" style="text-align: left">
           <i class="icon-user"></i>
-          <span>{{user.nickname}}</span>
+          <el-button type="text" @click="toUserStatistics(user.id)">{{user.nickname}}</el-button>
           <el-button style="float: right; padding: 3px 0;color: #ff0509" type="text" icon="el-icon-delete"
                      @click="deleteUser(user.id)"
                      v-if="user.auth==0">删除
@@ -72,6 +72,9 @@
       });
     },
     methods: {
+      toUserStatistics(uid) {
+        this.$router.push({path:"charts",query:{uid:uid}});
+      },
       deleteUser(id){
         var _this = this;
         this.$confirm('删除该用户, 是否继续?', '提示', {
