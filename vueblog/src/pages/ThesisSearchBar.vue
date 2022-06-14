@@ -62,30 +62,37 @@
           style="width: 400px">
         </el-date-picker>
       </el-form-item>
+
       <el-form-item v-if="barType!=1">
         <el-button>
           研究方向
         </el-button>
-        <el-autocomplete
-          style="width: 310px"
-          prefix-icon="el-icon-search"
-          v-model="searchForm.direction"
-          :fetch-suggestions="querySearchDirection"
-          @select="handleSelectDirection"
-        ></el-autocomplete>
+        <SelectTree
+            prefix-icon="el-icon-search"
+            style="width: 310px"
+            :props="props"
+            :options="optionData"
+            :value="valueId"
+            :clearable="isClearable"
+            :accordion="isAccordion"
+            @getValue="getValue($event)"
+        />
         <el-button type="text" @click="goToDirection">添加研究方向</el-button>
       </el-form-item>
       <el-form-item v-else>
         <el-button>
           研究方向
         </el-button>
-        <el-autocomplete
-          style="width: 400px"
-          prefix-icon="el-icon-search"
-          v-model="searchForm.direction"
-          :fetch-suggestions="querySearchDirection"
-          @select="handleSelectDirection"
-        ></el-autocomplete>
+        <SelectTree
+            prefix-icon="el-icon-search"
+            style="width: 400px"
+            :props="props"
+            :options="optionData"
+            :value="valueId"
+            :clearable="isClearable"
+            :accordion="isAccordion"
+            @getValue="getValue($event)"
+        />
       </el-form-item>
       <el-form-item v-if="barType!=1">
         <el-button >
@@ -118,9 +125,15 @@
 
 <script>
 import {getRequest} from "../utils/api";
+import {mavonEditor} from "mavon-editor";
+import ReferenceThesis from "./ReferenceThesis";
+import SelectTree from "../components/treeSelect.vue";
 
 export default {
   name: "ThesisSearchBar",
+  components:{
+    SelectTree
+  },
   props: {
     state: {
       type: Number,
@@ -133,6 +146,19 @@ export default {
   },
   data() {
     return {
+      isClearable: true, // 可清空（可选）
+      isAccordion: true, // 可收起（可选）
+      valueId: 0, // 初始ID（可选）
+      props: {
+        // 配置项（必选）
+        value: "id",
+        label: 'directionName',
+        children: "children"
+        // disabled:true
+      },
+      // 选项列表（必选）
+      directionList: [],
+
       searchForm: {
         keywords: '',
         user: '',
@@ -155,13 +181,67 @@ export default {
         {"value": "工具型", "type": 3},
         {"value": "数据集型", "type": 4}
       ],
+      currentUserAuth: ''
     }
   },
   mounted: function () {
     this.loadUsers();
     this.loadDirections();
+    this.onLoadDirections();
+
+    var _this = this;
+    getRequest("/currentUserId").then(function (msg) {
+      _this.currentUserId = msg.data;
+      if (msg.data) {
+        getRequest("/admin/user/" + _this.currentUserId).then(resp=> {
+          if (resp.status == 200) {
+            _this.currentUserAuth = resp.data.auth;
+          }
+        }, resp=> {
+          _this.$message({type: 'error', message: '用户身份错误！请联系管理员。'});
+        });
+      }
+    }, function (msg) {
+      this.$message.error("用户身份错误！请联系管理员。");
+    });
+  },
+  computed: {
+    /* 转树形数据 */
+    optionData() {
+      let cloneData = JSON.parse(JSON.stringify(this.directionList)); // 对源数据深度克隆
+      return cloneData.filter(father => {
+        // 循环所有项，并添加children属性
+        let branchArr = cloneData.filter(child => father.id == child.parentId); // 返回每一项的子级数组
+        branchArr.length > 0 ? (father.children = branchArr) : ""; //给父级添加一个children属性，并赋值
+        return father.parentId == 0; //返回第一层
+      });
+    }
   },
   methods: {
+    // 取值
+    getValue(value) {
+      this.valueId = value;
+      getRequest('/direction/' + this.valueId).then(resp =>{
+        if (resp.status == 200) {
+          this.searchForm.direction = resp.data.directionName;
+        }
+      })
+      //console.log(this.valueId);
+      //console.log(this.searchForm.direction);
+    },
+    onLoadDirections(){
+      let that = this;
+      getRequest('/direction/all').then(resp =>{
+        if (resp.status == 200) {
+          resp.data.forEach(r => {
+            if (r.parentId == null) {
+              r.parentId = 0;
+            }
+          })
+          that.directionList = resp.data;
+        }
+      })
+    },
     loadUsers() {
       getRequest('/getAllNickname').then(resp => {
         if (resp.status == 200) {
@@ -226,7 +306,11 @@ export default {
       this.searchClick();
     },
     goToDirection() {
-      this.$router.push('/setSearchDirection');
+      if(this.currentUserAuth != 0)
+        this.$router.push('/setSearchDirection');
+      else{
+        this.$message.error("请联系管理员添加研究方向");
+      }
     }
   }
 }

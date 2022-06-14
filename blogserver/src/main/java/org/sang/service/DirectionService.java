@@ -33,4 +33,8 @@ public class DirectionService {
         // direction.setDate(new Timestamp(System.currentTimeMillis()));
         return directionMapper.addDirection(direction);
     }
+
+    public Direction findDirectionNameById(long id) {
+        return directionMapper.findDirectionNameById(id);
+    }
 }

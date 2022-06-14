@@ -128,6 +128,14 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public UserCode findTrueCodeByEmail(String email) {
+        return userMapper.findTrueCodeByEmail(email);
+    }
+
+    public String findEmailByUid(Long id) {
+        return userMapper.findEmailByUid(id);
+    }
+
     public int updateUserEmail(String email) {
         return userMapper.updateUserEmail(email, Util.getCurrentUser().getId());
     }
@@ -158,6 +166,9 @@ public class UserService implements UserDetailsService {
     }
     public int deleteUserById(Long uid) {
         return userMapper.deleteUserById(uid);
+    }
+    public int deleteUserCodeByEmail(String email) {
+        return userMapper.deleteUserCodeByEmail(email);
     }
 
     public int updateUserRoles(Long[] rids, Long id) {

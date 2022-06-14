@@ -64,7 +64,10 @@ public class UserManaController {
 
     @RequestMapping(value = "/user/{uid}", method = RequestMethod.DELETE)
     public RespBean deleteUserById(@PathVariable Long uid) {
-        if (userService.deleteUserById(uid) == 1) {
+        String emailNow = userService.findEmailByUid(uid);
+        int result1 = userService.deleteUserById(uid);
+        int result2 = userService.deleteUserCodeByEmail(emailNow);
+        if (result1 == 1 && result2 == 1 ) {
             return new RespBean("success", "删除成功!");
         } else {
             return new RespBean("error", "删除失败!");

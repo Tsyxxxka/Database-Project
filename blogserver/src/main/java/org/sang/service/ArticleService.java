@@ -1,9 +1,11 @@
 package org.sang.service;
 
 import org.sang.bean.Article;
+import org.sang.bean.Comments;
 import org.sang.bean.Direction;
 import org.sang.bean.User;
 import org.sang.mapper.ArticleMapper;
+import org.sang.mapper.CommentMapper;
 import org.sang.mapper.DirectionMapper;
 import org.sang.mapper.TagsMapper;
 import org.sang.utils.Util;
@@ -23,6 +25,10 @@ import java.util.List;
 public class ArticleService {
     @Autowired
     ArticleMapper articleMapper;
+    @Autowired
+    CommentService commentService;
+    @Autowired
+    CommentMapper commentMapper;
     @Autowired
     TagsMapper tagsMapper;
     @Autowired
@@ -158,9 +164,15 @@ public class ArticleService {
     public int getArticleCountByState(Integer state, Long uid,String keywords, String nickname, Integer type, String author, String conference, String direction) {
         return articleMapper.getArticleCountByState(state, uid,keywords,nickname,type,author,conference,direction);
     }
-
     public int updateArticleState(Long[] aids, Integer state) {
         if (state == 2) { //delete permanently
+            //delete comments
+            List<Comments> comments = commentMapper.findCommentByArticleId(aids);
+            for (Comments comment1 : comments) {
+                int result2 = commentService.deleteArticleCommentByIds(comment1.getId());
+                if (result2==2)
+                    return result2;
+            }
             // delete note
             int result1 = articleMapper.deleteNoteByArticleId(aids);
             if (result1 != 1) {

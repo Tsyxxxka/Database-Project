@@ -16,4 +16,6 @@ public interface DirectionMapper {
     int updateDirectionById(Direction direction);
 
     int addDirection(Direction direction);
+
+    Direction findDirectionNameById(Long id);
 }

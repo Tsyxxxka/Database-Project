@@ -79,16 +79,20 @@ export default {
       const regexMail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
       if (!regexMail.test(this.mailForm.email)) {
         this.$message.warning('请输入正确的邮箱')
-      } else {
-        postRequest('/sendMail',{email: this.mailForm.email}).then(resp => {
-          if (resp.status === 200) {
-            this.$message.success(resp.data.msg)
-          }else{
-            this.$message.error('发送失败!')
-          }
-        }).catch(() => {
-          this.$message.error('发送失败!!')
-        });
+      } else{
+          postRequest('/sendMail',{email: this.mailForm.email}).then(resp => {
+            if (resp.status === 200) {
+              if(resp.data.status === 'success')
+                this.$message.success(resp.data.msg)
+              else
+                this.$message.error(resp.data.msg)
+            }else{
+              this.$message.error(resp.data.msg)
+            }
+          }).catch(() => {
+            this.$message.error('发送失败!!')
+          });
+        }
         // 验证码倒计时
         if (!this.timer) {
           this.count = TIME_COUNT
@@ -103,7 +107,6 @@ export default {
             }
           }, 1000)
         }
-      }
     },
     submit() {
       // 验证码校验

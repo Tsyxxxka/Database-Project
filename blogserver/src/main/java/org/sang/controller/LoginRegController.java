@@ -2,6 +2,8 @@ package org.sang.controller;
 
 import org.sang.bean.RespBean;
 import org.sang.bean.User;
+import org.sang.bean.UserCode;
+import org.sang.mapper.UserMapper;
 import org.sang.service.EmailService;
 import org.sang.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,13 +64,19 @@ public class LoginRegController {
 
     @RequestMapping(value = "/sendMail",method = RequestMethod.POST)
     public RespBean sendEmail(String email) throws MessagingException {
-        String resultCode = emailService.toUserEmailWithCode(email);
-        int result = userService.saveCode(email,resultCode);
+
+        UserCode userCode1 = userService.findTrueCodeByEmail(email);
+        if(userCode1 != null)
+            return new RespBean("error", "邮箱已存在!");
+        else{
+            String resultCode = emailService.toUserEmailWithCode(email);
+            int result = userService.saveCode(email,resultCode);
             //成功
-        if(result == 1)
-            return new RespBean("success", "发送成功!");
-        else
-            return new RespBean("error", "发送失败1!");
+            if(result == 1)
+                return new RespBean("success", "发送成功!");
+            else
+                return new RespBean("error", "发送失败!");
+        }
     }
 
     @PostMapping("/insertUser")
@@ -78,7 +86,7 @@ public class LoginRegController {
             //成功
             return new RespBean("success", "注册成功!");
         } else if (result == 1) {
-            return new RespBean("error", "账户名重复，注册失败!");
+            return new RespBean("error", "账户名已存在!");
         } else if (result == 3) {
             return new RespBean("error", "验证码错误!");
         }else {

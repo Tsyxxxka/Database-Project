@@ -54,4 +54,9 @@ public class DirectionController {
         }
         return new RespBean("error", "修改失败!");
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Direction findDirectionNameById(@PathVariable Long id) {
+        return directionService.findDirectionNameById(id);
+    }
 }

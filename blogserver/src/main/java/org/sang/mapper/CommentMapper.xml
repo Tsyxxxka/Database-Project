@@ -15,6 +15,13 @@
         SELECT * FROM comments where articleId=#{articleId} and level=#{level}
         order by publishDate
     </select>
+    <select id="findCommentByArticleId" resultType="org.sang.bean.Comments">
+        SELECT * FROM comments WHERE level=1 AND articleId IN
+        <foreach collection="aids" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+        order by publishDate
+    </select>
     <select id="findByParentIdLevel" resultType="org.sang.bean.Comments">
         SELECT * FROM comments where parentId=#{parentId} and level=#{level}
         order by publishDate

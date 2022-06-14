@@ -9,6 +9,12 @@
     <select id="loadUserByUsername" resultType="org.sang.bean.User">
         SELECT * FROM user WHERE username=#{username}
     </select>
+    <select id="loadUserByUserEmail" resultType="org.sang.bean.User">
+        SELECT * FROM user WHERE email=#{email}
+    </select>
+    <select id="findEmailByUid" parameterType="Long" resultType="String">
+        SELECT a.email FROM user_code a LEFT JOIN user u ON a.`email`=u.`email` WHERE u.id=#{id}
+    </select>
     <insert id="reg" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user set username=#{username},password=#{password}
     </insert>
@@ -73,6 +79,9 @@
     </update>
     <delete id="deleteUserById">
         DELETE FROM user WHERE id=#{id}
+    </delete>
+    <delete id="deleteUserCodeByEmail">
+        DELETE FROM user_code WHERE email=#{email}
     </delete>
     <delete id="deleteUserRolesByUid">
         DELETE FROM roles_user WHERE uid=#{id}

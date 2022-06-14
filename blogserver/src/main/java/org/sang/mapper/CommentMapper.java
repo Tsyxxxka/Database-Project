@@ -8,6 +8,7 @@ import java.util.List;
 public interface CommentMapper {
     int addNewComment(Comments comment);
     List<Comments> findCommentByArticleIdLevel(long articleId,int level);
+    List<Comments> findCommentByArticleId(@Param("aids") Long[] aids);
     List<Comments> findByParentIdLevel(long parentId,int level);
     Comments findCommentById(long id);
     int updateById (Comments comment);

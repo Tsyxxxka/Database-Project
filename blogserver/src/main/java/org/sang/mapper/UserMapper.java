@@ -16,11 +16,15 @@ public interface UserMapper {
 
     User loadUserByUsername(@Param("username") String username);
 
+    User loadUserByUserEmail(@Param("email") String email);
+
     int saveCode(UserCode userCode);
 
     int updateCode(@Param("email") String email, @Param("trueCode") String trueCode);
 
     UserCode findTrueCodeByEmail(@Param("email") String email);
+
+    String findEmailByUid(@Param("id") Long id);
 
     long reg(User user);
 
@@ -43,6 +47,8 @@ public interface UserMapper {
     int updateUserAuth(@Param("auth") Boolean auth, @Param("uid") Long uid);
 
     int deleteUserById(Long uid);
+
+    int deleteUserCodeByEmail(String email);
 
     int deleteUserRolesByUid(Long id);
 

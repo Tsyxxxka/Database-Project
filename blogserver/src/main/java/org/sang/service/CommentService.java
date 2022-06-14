@@ -75,7 +75,17 @@ public class CommentService {
         else
             return 2;
     }
-
+    public int deleteArticleCommentByIds(long id) {
+        Comments comment = commentMapper.findCommentById(id);
+        if(comment.getLevel() == 1){
+            List<Comments> comments = commentMapper.findByParentIdLevel(id,2);
+            for (Comments comment1 : comments) {
+                commentMapper.deleteCommentByIds(comment1.getId());
+            }
+        }
+        int result = commentMapper.deleteCommentByIds(id);
+        return result;
+    }
     private List<CommentVo> copyList(List<Comments> comments) {
         List<CommentVo> commentVoList = new ArrayList<>();
         for (Comments comment : comments) {
