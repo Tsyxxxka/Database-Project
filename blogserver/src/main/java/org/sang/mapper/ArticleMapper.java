@@ -15,6 +15,8 @@ import java.util.List;
 public interface ArticleMapper {
     int addNewArticle(Article article);
 
+    int setArticleDirection(Long aid, Integer did);
+
     int updateArticle(Article article);
 
     List<Article> getArticleByState(@Param("state") Integer state, @Param("start") Integer start, @Param("count") Integer count, @Param("uid") Long uid,@Param("keywords") String keywords, @Param("nickname") String nickname, @Param("type") Integer type, @Param("author") String author, @Param("conference") String conference, @Param("direction")String direction);

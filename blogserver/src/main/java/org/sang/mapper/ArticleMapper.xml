@@ -7,7 +7,10 @@
         SELECT * FROM article
     </select>
     <insert id="addNewArticle" parameterType="org.sang.bean.Article" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO article SET title=#{title},summary=#{summary},uid=#{uid},editTime=#{editTime},state=1,author=#{author},conference=#{conference},type=#{type},link=#{link},publishDate=#{publishDate},direction=#{direction}
+        INSERT INTO article SET title=#{title},summary=#{summary},uid=#{uid},editTime=#{editTime},state=1,author=#{author},conference=#{conference},type=#{type},link=#{link},publishDate=#{publishDate}
+    </insert>
+    <insert id="setArticleDirection">
+        INSERT INTO article_direction SET directionId=#{did}, aid=#{aid}
     </insert>
     <insert id="addReference">
         INSERT INTO reference SET id=#{aid},rid=#{rid}
@@ -23,7 +26,13 @@
         UPDATE article set pageView=pageView+1 WHERE id=#{aid}
     </update>
     <select id="getArticleByState" resultType="org.sang.bean.Article">
-        SELECT a.id, a.title, a.publishDate, a.editTime, a.author, a.conference, a.link, a.type, u.nickname, d.directionName FROM article a, user u, search_direction d WHERE a.uid=u.id AND a.direction=d.ID
+        SELECT a.id, a.title, a.publishDate, a.editTime, a.author, a.conference, a.link, a.type, u.nickname, q.*
+        FROM article a, user u, (
+        SELECT aid, GROUP_CONCAT(sd.directionName SEPARATOR ',') as directionName
+        FROM article_direction ad, search_direction sd
+        WHERE ad.directionId = sd.ID
+        GROUP BY ad.aid) q
+        WHERE a.uid=u.id AND a.id=q.aid
         <if test="state==2">
             AND state=#{state}
         </if>
@@ -49,7 +58,7 @@
             AND a.conference LIKE concat('%',#{conference},'%')
         </if>
         <if test="direction!=''">
-            AND d.directionName=#{direction}
+            AND q.directionName LIKE concat('%',#{direction},'%')
         </if>
         ORDER BY editTime DESC limit #{start},#{count};
     </select>
@@ -62,7 +71,13 @@
         ORDER BY a.editTime DESC limit #{start},#{count};
     </select>
     <select id="getArticleCountByState" resultType="int">
-        SELECT count(*) FROM article a, user u, search_direction d WHERE a.uid=u.id AND a.direction=d.ID
+        SELECT count(*)
+        FROM article a, user u, (
+        SELECT aid, GROUP_CONCAT(sd.directionName SEPARATOR ',') as directionName
+        FROM article_direction ad, search_direction sd
+        WHERE ad.directionId = sd.ID
+        GROUP BY ad.aid) q
+        WHERE a.uid=u.id AND a.id=q.aid
         <if test="state==2">
             AND state=#{state}
         </if>
@@ -88,7 +103,7 @@
             AND a.conference LIKE concat('%',#{conference},'%')
         </if>
         <if test="direction!=''">
-            AND d.directionName=#{direction}
+            AND q.directionName LIKE concat('%',#{direction},'%')
         </if>
     </select>
     <update id="updateArticleState">
