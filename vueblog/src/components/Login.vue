@@ -68,11 +68,11 @@ export default{
           if (json.status == 'success') {
             _this.$router.replace({path: '/home'});
           } else {
-            _this.$message.error(resp.data.msg);
+            _this.$message.error('登录失败! 请输入正确的账号和密码！');
           }
         } else {
           //失败
-          _this.$alert('登录失败!!', '失败!!');
+          _this.$alert('登录失败!', '请输入正确的账号和密码！');
         }
       }, resp=> {
         _this.loading = false;

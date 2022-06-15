@@ -61,8 +61,23 @@ import {postRequest} from '../utils/api'
 import {putRequest} from '../utils/api'
 import {deleteRequest} from '../utils/api'
 import {getRequest} from '../utils/api'
+import {treeSelect} from "../components/treeSelect";
 export default{
+  components: {
+    treeSelect,
+  },
   methods: {
+    // 取值
+    getValue(value) {
+      this.valueId = value;
+      getRequest('/direction/' + this.valueId).then(resp =>{
+        if (resp.status == 200) {
+          this.searchForm.direction = resp.data.directionName;
+        }
+      })
+      //console.log(this.valueId);
+      //console.log(this.searchForm.direction);
+    },
     addNewCate(){
       this.loading = true;
       var _this = this;
@@ -207,8 +222,32 @@ export default{
     this.loading = true;
     this.refresh();
   },
+  computed: {
+    /* 转树形数据 */
+    optionData() {
+      let cloneData = JSON.parse(JSON.stringify(this.directionList)); // 对源数据深度克隆
+      return cloneData.filter(father => {
+        // 循环所有项，并添加children属性
+        let branchArr = cloneData.filter(child => father.id == child.parentId); // 返回每一项的子级数组
+        branchArr.length > 0 ? (father.children = branchArr) : ""; //给父级添加一个children属性，并赋值
+        return father.parentId == 0; //返回第一层
+      });
+    }
+  },
   data(){
     return {
+      isClearable: true, // 可清空（可选）
+      isAccordion: true, // 可收起（可选）
+      valueId: 0, // 初始ID（可选）
+      props: {
+        // 配置项（必选）
+        value: "id",
+        label: 'directionName',
+        children: "children"
+        // disabled:true
+      },
+      // 选项列表（必选）
+      directionList: [],
       directionName: '',
       parentId: '',
       selItems: [],

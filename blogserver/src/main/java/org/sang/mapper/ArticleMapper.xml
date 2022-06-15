@@ -122,9 +122,13 @@
         </foreach>
     </delete>
     <select id="getArticleById" parameterType="Long" resultType="org.sang.bean.Article">
-        SELECT a.*,u.`nickname`,d.`directionName`
-        FROM article a LEFT JOIN user u ON a.`uid`=u.`id` LEFT JOIN search_direction d ON a.`direction`=d.`id`
-        WHERE a.id=#{aid}
+        SELECT a.*,u.nickname,q.directionName
+        FROM article a, user u, (
+            SELECT aid, GROUP_CONCAT(sd.directionName SEPARATOR ',') as directionName
+            FROM article_direction ad, search_direction sd
+            WHERE ad.directionId = sd.ID
+            GROUP BY ad.aid) q
+        WHERE a.uid=u.id AND a.id=q.aid AND a.id=#{aid}
     </select>
     <select id="getNoteByAid" parameterType="Long" resultType="String">
         SELECT content FROM note WHERE note.aid=#{aid}
@@ -185,9 +189,9 @@
     </select>
 
     <select id="getUserCountByDirection" parameterType="long" resultType="org.sang.bean.Direction">
-        SELECT d.directionName, count(*) AS directionCount
-        FROM article a JOIN search_direction d ON a.direction=d.ID
-        WHERE a.uid=#{uid} AND state=1
-        GROUP BY d.directionName
+        SELECT search_direction.directionName, count(*) as directionCount
+        FROM article JOIN article_direction ON article.id=article_direction.aid JOIN search_direction ON article_direction.directionId=search_direction.ID
+        WHERE article.uid=#{uid} AND state=1
+        GROUP BY search_direction.directionName
     </select>
 </mapper>

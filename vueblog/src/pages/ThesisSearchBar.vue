@@ -63,22 +63,12 @@
         </el-date-picker>
       </el-form-item>
 
-      <el-form-item v-if="barType!=1">
+      <el-form-item>
         <el-button>
           研究方向
         </el-button>
-        <SelectTree
-            prefix-icon="el-icon-search"
-            style="width: 310px"
-            :props="props"
-            :options="optionData"
-            :value="valueId"
-            :clearable="isClearable"
-            :accordion="isAccordion"
-            @getValue="getValue($event)"
-        />
         <el-select v-model="searchForm.multiDirection" multiple filterable placeholder="请选择" :filter-method="queryDirection"
-                   style="width: 310px">
+                   style="width: 310px" v-if="barType!=1">
           <el-option
             v-for="item in directionAllForSelect"
             :key="item.id"
@@ -86,6 +76,16 @@
             :value="item.id">
           </el-option>
         </el-select>
+        <SelectTree v-else
+          prefix-icon="el-icon-search"
+          style="width: 310px"
+          :props="props"
+          :options="optionData"
+          :value="valueId"
+          :clearable="isClearable"
+          :accordion="isAccordion"
+          @getValue="getValue($event)"
+        />
         <el-button type="text" @click="goToDirection">添加研究方向</el-button>
       </el-form-item>
 <!--      <el-form-item v-if="barType!=1">-->
@@ -101,21 +101,21 @@
 <!--        ></el-autocomplete>-->
 <!--        <el-button type="text" @click="goToDirection">添加研究方向</el-button>-->
 <!--      </el-form-item>-->
-      <el-form-item v-else>
-        <el-button>
-          研究方向
-        </el-button>
-        <SelectTree
-            prefix-icon="el-icon-search"
-            style="width: 400px"
-            :props="props"
-            :options="optionData"
-            :value="valueId"
-            :clearable="isClearable"
-            :accordion="isAccordion"
-            @getValue="getValue($event)"
-        />
-      </el-form-item>
+<!--      <el-form-item v-else>-->
+<!--        <el-button>-->
+<!--          研究方向-->
+<!--        </el-button>-->
+<!--        <SelectTree-->
+<!--            prefix-icon="el-icon-search"-->
+<!--            style="width: 400px"-->
+<!--            :props="props"-->
+<!--            :options="optionData"-->
+<!--            :value="valueId"-->
+<!--            :clearable="isClearable"-->
+<!--            :accordion="isAccordion"-->
+<!--            @getValue="getValue($event)"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item v-if="barType!=1">
         <el-button >
           论文链接
@@ -147,8 +147,6 @@
 
 <script>
 import {getRequest} from "../utils/api";
-import {mavonEditor} from "mavon-editor";
-import ReferenceThesis from "./ReferenceThesis";
 import SelectTree from "../components/treeSelect.vue";
 
 export default {
@@ -251,8 +249,6 @@ export default {
           this.searchForm.direction = resp.data.directionName;
         }
       })
-      //console.log(this.valueId);
-      //console.log(this.searchForm.direction);
     },
     onLoadDirections(){
       let that = this;
