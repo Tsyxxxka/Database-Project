@@ -108,6 +108,7 @@
       }, function (msg) {
         this.$message.error("用户身份错误！请联系管理员。");
       });
+      this.$router.push("/thesisList");
     },
     data(){
       return {

@@ -121,6 +121,12 @@
             #{aid}
         </foreach>
     </delete>
+    <delete id="deleteArticleDirection">
+        DELETE FROM article_direction WHERE aid IN
+        <foreach collection="aids" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </delete>
     <select id="getArticleById" parameterType="Long" resultType="org.sang.bean.Article">
         SELECT a.*,u.nickname,q.directionName
         FROM article a, user u, (

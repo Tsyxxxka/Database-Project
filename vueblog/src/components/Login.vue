@@ -32,8 +32,8 @@ export default{
       login: true,
       checked: false,
       loginForm: {
-        username: 'Good',
-        password: '123'
+        username: 'Tsyxxxka',
+        password: '111'
       },
       loading: false
     }

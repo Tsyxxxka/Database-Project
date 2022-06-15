@@ -61,11 +61,7 @@ import {postRequest} from '../utils/api'
 import {putRequest} from '../utils/api'
 import {deleteRequest} from '../utils/api'
 import {getRequest} from '../utils/api'
-import {treeSelect} from "../components/treeSelect";
 export default{
-  components: {
-    treeSelect,
-  },
   methods: {
     // 取值
     getValue(value) {

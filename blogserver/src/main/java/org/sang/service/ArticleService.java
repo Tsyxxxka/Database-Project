@@ -184,6 +184,8 @@ public class ArticleService {
             if (result1 != 1) {
                 return -3;
             }
+            //delete from article_direction
+            articleMapper.deleteArticleDirection(aids);
             // delete from dustbin
             return articleMapper.deleteArticleById(aids);
         } else {
