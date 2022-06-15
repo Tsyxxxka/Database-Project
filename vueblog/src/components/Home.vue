@@ -1,6 +1,6 @@
 <template>
   <el-container class="home_container">
-    <el-header>
+    <el-header class="el-header">
       <div class="home_title">实验室论文管理系统</div>
       <div class="home_userinfoContainer">
         <el-dropdown @command="handleCommand">
@@ -26,7 +26,7 @@
       </div>
     </el-header>
     <el-container>
-      <el-aside width="250px">
+      <el-aside width="250px" class="el-aside">
         <el-menu
           default-active="0"
           class="el-menu-vertical-demo" style="background-color: #abbfbd;" router>

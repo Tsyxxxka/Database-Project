@@ -15,6 +15,12 @@
     <insert id="addReference">
         INSERT INTO reference SET id=#{aid},rid=#{rid}
     </insert>
+    <select id="getReferenceByAid" resultType="String">
+        SELECT GROUP_CONCAT(article.link SEPARATOR ',') AS referenceLinks
+        FROM article JOIN reference ON article.id=reference.rid
+        WHERE reference.id=#{aid}
+        GROUP BY reference.id
+    </select>
     <insert id="addNote" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO note SET aid=#{aid},content=#{note},uploadTime=#{uploadTime},uid=#{uid}
     </insert>

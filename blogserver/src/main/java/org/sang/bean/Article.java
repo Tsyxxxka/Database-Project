@@ -33,6 +33,15 @@ public class Article {
     private List<Long> referenceList;
     private String note;
     private Integer commentCounts;
+    private String referenceLinks;
+
+    public void setReferenceLinks(String referenceLinks) {
+        this.referenceLinks = referenceLinks;
+    }
+
+    public String getReferenceLinks() {
+        return referenceLinks;
+    }
 
     public Integer getCommentCounts() {
         return commentCounts;

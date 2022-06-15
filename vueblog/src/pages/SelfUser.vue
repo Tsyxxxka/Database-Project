@@ -2,28 +2,29 @@
     <div v-loading="loading">
       <div style="text-align: left">
         <el-form :model="updateInfoForm" label-position="top" ref="updateInfoForm"
-                 style="color:#20a0ff;font-size: 14px;">
-          <el-form-item prop="nickname" label="修改昵称">
+                 style="color:#20a0ff;font-size: 14px;margin-top: 30px;">
+          <el-form-item prop="nickname">
+            <el-button>修改昵称</el-button>
             <el-input type="nickname" v-model.nickname="updateInfoForm.nickname" auto-complete="off" style="width: 300px"
-                      placeholder="请输入新昵称。不超过14个字符！" size="mini"></el-input>
+                      placeholder="请输入新昵称。不超过14个字符！"></el-input>
+            <el-button type="success" @click="submitForm1('updateInfoForm')">确定</el-button>
           </el-form-item>
-          <el-form-item prop="userface" label="修改头像">
-            <el-input type="userface" v-model.nickname="updateInfoForm.userface" auto-complete="off" style="width: 300px"
-                      placeholder="请上传新头像..." size="mini"></el-input>
-          </el-form-item>
-          <el-button type="primary" @click="submitForm1('updateInfoForm')" size="mini">确定</el-button>
+
 
         </el-form>
         <el-form :model="changepwdForm" label-position="top" ref="changepwdForm"
-                 style="color:#20a0ff;font-size: 14px;">
-          <el-form-item prop="password" label="修改密码">
+                 style="color:#20a0ff;font-size: 14px;margin-top: 50px;">
+          <el-form-item prop="password">
+            <el-button>修改密码</el-button>
             <el-input type="password" v-model.password="changepwdForm.password" auto-complete="off" style="width: 300px"
-                      placeholder="请输入新密码..." size="mini"></el-input>
+                      placeholder="请输入新密码..."></el-input>
           </el-form-item>
-          <el-form-item label="确认密码" class="cd" style="width: 300px">
-            <el-input type="password" v-model="password2" placeholder="请再次输入新密码..." size="mini"></el-input>
+          <el-form-item>
+            <el-button>确认密码</el-button>
+            <el-input type="password" v-model="password2" style="width: 300px"
+                      placeholder="请再次输入新密码..."></el-input>
+            <el-button type="success" @click="submitForm2('changepwdForm')">确定</el-button>
           </el-form-item>
-          <el-button type="primary" @click="submitForm2('changepwdForm')" size="mini">确定</el-button>
         </el-form>
       </div>
     </div>

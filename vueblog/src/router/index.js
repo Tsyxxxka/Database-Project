@@ -11,9 +11,13 @@ import SetSearchDirection from "../pages/SetSearchDirection";
 import ThesisList from "../pages/ThesisList";
 import uploadThesis from "../pages/UploadThesis";
 import ThesisEdit from "../pages/ThesisEdit";
-import testMultiSele from "../pages/testMultiSele";
 
 Vue.use(Router)
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default new Router({
   //mode: "history",
@@ -126,19 +130,7 @@ export default new Router({
           component: SelfUser,
         }
       ]
-    },{
-      path: '/home',
-      component: Home,
-      name: '个人',
-      children: [
-        {
-          path: '/testMul',
-          iconCls: 'fa fa-reorder',
-          name: '个人',
-          component: testMultiSele,
-        }
-      ]
-    },
+    }
   ]
 })
 

@@ -1,5 +1,5 @@
 <template>
-  <div  class="background_style">
+  <div class="background_style">
     <el-form class="login-container" label-position="left"
              label-width="0px" v-loading="loading">
       <h3 class="login_title" >系统登录</h3>
@@ -32,8 +32,8 @@ export default{
       login: true,
       checked: false,
       loginForm: {
-        username: 'Tsyxxxka',
-        password: '111'
+        username: 'Teng',
+        password: '123'
       },
       loading: false
     }

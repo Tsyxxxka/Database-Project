@@ -39,6 +39,7 @@ public interface ArticleMapper {
     Article getArticleById(Long aid);
 
     String getNoteByAid(Long aid);
+    String getReferenceByAid(Long aid);
     void pvIncrement(Long aid);
 
     //INSERT INTO pv(countDate,pv,uid) SELECT NOW(),SUM(pageView),uid FROM article GROUP BY uid

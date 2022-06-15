@@ -218,9 +218,11 @@ public class ArticleService {
 
     public Article getArticleById(Long aid) {
         String note = articleMapper.getNoteByAid(aid);
+        String referenceLinks = articleMapper.getReferenceByAid(aid);
         Article article = articleMapper.getArticleById(aid);
         articleMapper.pvIncrement(aid);
         article.setNote(note);
+        article.setReferenceLinks(referenceLinks);
         return article;
     }
 

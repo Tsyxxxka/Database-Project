@@ -25,10 +25,16 @@
     <div class="content">
       <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">
         <el-descriptions-item label="论文链接">
-          {{article.link}}
-          <el-button type="text" @click="openUrl" size="large">
-            点击跳转
-          </el-button>
+          <md-button type="primary" @click="openUrl" style="color: #78b6f7; font-size: 15px;">{{article.link}}</md-button>
+        </el-descriptions-item>
+      </el-descriptions>
+    </div>
+    <div class="content" v-if="referenceLinks!=''">
+      <el-descriptions direction="vertical" :column="4" border style="width: 1000px; margin-left:15px; font-size: 20px;">
+        <el-descriptions-item label="引用文献">
+          <div v-for="item in referenceLinks" style="margin-bottom: 20px;">
+            <md-button type="primary" @click="goToReference(item)" style="color: #78b6f7; font-size: 15px;">{{item}}</md-button>
+          </div>
         </el-descriptions-item>
       </el-descriptions>
     </div>
@@ -117,6 +123,9 @@
       openUrl() {
         window.open(this.article.link, "_blank");
       },
+      goToReference(link) {
+        window.open(link, "_blank");
+      },
       publishComment() {
         var that = this;
         postRequest('/comment/', {
@@ -169,6 +178,9 @@
       getRequest("/article/" + aid).then(resp => {
         if (resp.status == 200) {
           _this.article = resp.data;
+          if (resp.data.referenceLinks!=null) {
+            _this.referenceLinks = resp.data.referenceLinks.split(",");
+          }
           var type = _this.article.type;
           if (type == 0) {
             this.typeName = "理论证明型";
@@ -200,7 +212,7 @@
         loading: false,
         activeName: '',
         typeName: '',
-
+        referenceLinks: '',
         comments: [],
         comment: {
           article: {},
