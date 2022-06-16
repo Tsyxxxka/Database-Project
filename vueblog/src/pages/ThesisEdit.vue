@@ -3,7 +3,7 @@
     <div style="text-align: left; margin-top: 10px;margin-bottom: 20px;">
       <el-button type="text" icon="el-icon-back" @click="goBack" style="padding-bottom: 0px;">返回</el-button>
     </div>
-    <div style="height: 600px">
+    <div style="height: 700px">
       <el-form style="margin-bottom: 50px;margin-left: 10px;">
         <el-form-item>
           <el-button>
@@ -57,16 +57,19 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button >
+          <el-button>
             研究方向
           </el-button>
-          <el-autocomplete
-            style="width: 400px"
-            prefix-icon="el-icon-search"
-            v-model="updateForm.directionName"
-            :fetch-suggestions="querySearchDirection"
-            @select="handleSelectDirection"
-          ></el-autocomplete>
+          <el-select v-model="updateForm.multiDirection" multiple filterable placeholder="请选择" :filter-method="queryDirection"
+                     style="width: 310px">
+            <el-option
+              v-for="item in directionAllForSelect"
+              :key="item.id"
+              :label="item.value"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-button type="text" @click="goToDirection">添加研究方向</el-button>
         </el-form-item>
         <el-form-item>
           <el-button >
@@ -114,6 +117,7 @@ export default {
         author: '',
         conference: '',
         directionName: '',
+        multiDirection: [],
         summary: '',
         publishDate: '',
         link: ''
@@ -122,6 +126,7 @@ export default {
       loading: '',
       userAll: [],
       directionAll: [],
+      directionAllForSelect: [],
       typeAll: [
         {"value": "理论证明型", "type": 0},
         {"value": "综述型", "type": 1},
@@ -142,7 +147,8 @@ export default {
         this.updateForm.conference = resp.data.conference;
         this.updateForm.keywords = resp.data.title;
         this.updateForm.publishDate = resp.data.publishDate;
-        this.updateForm.directionName = resp.data.directionName;
+        this.updateForm.multiDirection = resp.data.multiDirection;
+        //this.updateForm.directionName = resp.data.directionName;
         this.updateForm.summary = resp.data.summary;
         this.updateForm.link = resp.data.link;
 
@@ -172,7 +178,28 @@ export default {
     goBack(){
       this.$router.go(-1);
     },
+    goToDirection() {
+      if(this.currentUserAuth != 0)
+        this.$router.push('/setSearchDirection');
+      else{
+        this.$message.error("请联系管理员添加研究方向");
+      }
+    },
+    queryDirection(queryString) {
+      var directionAll = this.directionAll;
+      if (queryString == '') {
+        this.directionAllForSelect = directionAll;
+        return
+      }
+      this.directionAllForSelect = queryString ? directionAll.filter(this.createFilter(queryString)) : directionAll;
+    },
+    createFilter(queryString) {
+      return (all) => {
+        return (all.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      };
+    },
     editThesis() {
+      console.info(this.updateForm);
       postRequest('/article/update', {
         id: this.$route.query.aid,
         title: this.updateForm.keywords,
@@ -182,7 +209,8 @@ export default {
         summary: this.updateForm.summary,
         link: this.updateForm.link,
         publishDate: this.updateForm.publishDate,
-        directionName: this.updateForm.directionName
+        multiDirection: this.updateForm.multiDirection,
+        //directionName: this.updateForm.directionName
       }).then(resp => {
         if (resp.status == 200) {
           //成功
@@ -218,9 +246,10 @@ export default {
         if (resp.status == 200) {
           resp.data.forEach(r => {
             if (r.directionName != null) {
-              this.directionAll.push({"value": r.directionName});
+              this.directionAll.push({"id": r.id,"value": r.directionName});
             }
           })
+          this.directionAllForSelect = this.directionAll;
         }
       })
     },
@@ -236,11 +265,6 @@ export default {
       var directionAll = this.directionAll;
       var results = queryString ? directionAll.filter(this.createFilter(queryString)) : directionAll;
       cb(results);
-    },
-    createFilter(queryString) {
-      return (all) => {
-        return (all.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-      };
     },
     handleSelectUser(item) {
       this.updateForm.user = item.value;

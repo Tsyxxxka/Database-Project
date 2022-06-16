@@ -15,6 +15,9 @@
     <insert id="addReference">
         INSERT INTO reference SET id=#{aid},rid=#{rid}
     </insert>
+    <delete id="deleteArticleDirectionByOne">
+        DELETE FROM article_direction WHERE aid=#{aid}
+    </delete>
     <select id="getReferenceByAid" resultType="String">
         SELECT GROUP_CONCAT(article.link SEPARATOR ',') AS referenceLinks
         FROM article JOIN reference ON article.id=reference.rid
@@ -25,12 +28,17 @@
         INSERT INTO note SET aid=#{aid},content=#{note},uploadTime=#{uploadTime},uid=#{uid}
     </insert>
     <update id="updateArticle" parameterType="org.sang.bean.Article">
-        UPDATE article SET title=#{title},summary=#{summary},author=#{author},conference=#{conference},type=#{type},link=#{link},publishDate=#{publishDate},direction=#{direction}
+        UPDATE article SET title=#{title},summary=#{summary},author=#{author},conference=#{conference},type=#{type},link=#{link},publishDate=#{publishDate}
         WHERE id=#{id}
     </update>
     <update id="pvIncrement" parameterType="Long">
         UPDATE article set pageView=pageView+1 WHERE id=#{aid}
     </update>
+    <select id="getArticleDirectionByAid" resultType="Integer">
+        SELECT directionId AS multiDirection
+        FROM article_direction
+        WHERE aid=#{aid}
+    </select>
     <select id="getArticleByState" resultType="org.sang.bean.Article">
         SELECT a.id, a.title, a.publishDate, a.editTime, a.author, a.conference, a.link, a.type, u.nickname, q.*
         FROM article a, user u, (

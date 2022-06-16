@@ -36,10 +36,12 @@ public interface ArticleMapper {
     int deleteReference(@Param("aids") Long[] aids);
     int deleteNoteByArticleId(@Param("aids")Long[] aids);
     int deleteArticleDirection(@Param("aids")Long[] aids);
+    int deleteArticleDirectionByOne(@Param("aid")Long aid);
     Article getArticleById(Long aid);
 
     String getNoteByAid(Long aid);
     String getReferenceByAid(Long aid);
+    List<Integer> getArticleDirectionByAid(Long aid);
     void pvIncrement(Long aid);
 
     //INSERT INTO pv(countDate,pv,uid) SELECT NOW(),SUM(pageView),uid FROM article GROUP BY uid

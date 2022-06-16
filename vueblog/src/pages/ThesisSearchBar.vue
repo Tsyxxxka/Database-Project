@@ -88,34 +88,6 @@
         />
         <el-button type="text" @click="goToDirection">添加研究方向</el-button>
       </el-form-item>
-<!--      <el-form-item v-if="barType!=1">-->
-<!--        <el-button>-->
-<!--          研究方向-->
-<!--        </el-button>-->
-<!--        <el-autocomplete-->
-<!--          style="width: 310px"-->
-<!--          prefix-icon="el-icon-search"-->
-<!--          v-model="searchForm.direction"-->
-<!--          :fetch-suggestions="querySearchDirection"-->
-<!--          @select="handleSelectDirection"-->
-<!--        ></el-autocomplete>-->
-<!--        <el-button type="text" @click="goToDirection">添加研究方向</el-button>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item v-else>-->
-<!--        <el-button>-->
-<!--          研究方向-->
-<!--        </el-button>-->
-<!--        <SelectTree-->
-<!--            prefix-icon="el-icon-search"-->
-<!--            style="width: 400px"-->
-<!--            :props="props"-->
-<!--            :options="optionData"-->
-<!--            :value="valueId"-->
-<!--            :clearable="isClearable"-->
-<!--            :accordion="isAccordion"-->
-<!--            @getValue="getValue($event)"-->
-<!--        />-->
-<!--      </el-form-item>-->
       <el-form-item v-if="barType!=1">
         <el-button >
           论文链接
