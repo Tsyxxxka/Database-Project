@@ -23,7 +23,7 @@
 # 快速运行  
 
 1.克隆本项目到本地  
-2.找到blogserver项目中resources目录下的vueblog.sql文件，在MySQL数据库中执行  
+2.配置mysql数据库
 3.根据自己本地情况修改数据库配置，数据库配置在SpringBoot项目的application.properties中  
 4.在IntelliJ IDEA中运行blogserver项目  
 
