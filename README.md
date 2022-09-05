@@ -23,8 +23,11 @@
 # 快速运行  
 
 1.克隆本项目到本地  
+
 2.配置mysql数据库
+
 3.根据自己本地情况修改数据库配置，数据库配置在SpringBoot项目的application.properties中  
+
 4.在IntelliJ IDEA中运行blogserver项目  
 
 **服务端就启动成功了 
